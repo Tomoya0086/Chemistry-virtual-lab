@@ -1,2 +1,0 @@
-# ChemSpace uses only the Python standard library.
-# Add packages here (e.g. rdkit-pypi, numpy) if you extend api/chem.py.
