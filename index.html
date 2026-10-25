@@ -3,17 +3,33 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>ChemSpace — Periodic Table, Zeff &amp; Virtual Lab</title>
+<title>ChemSpace | Periodic Table, Slater Zeff &amp; 3D Molecular Virtual Lab</title>
+
+<!-- Meta Descriptions (Rule 2) -->
+<meta name="description" content="ChemSpace is an interactive chemistry workstation: complete periodic table, Slater's rules effective nuclear charge, electron configurations, 3D molecular lab, and quantum wavefunctions.">
+<meta name="keywords" content="chemistry, periodic table, slater rules, zeff, electron configuration, 3d molecule builder, SMILES, quantum orbitals">
+<meta name="author" content="ChemSpace Laboratory Systems">
+<meta name="theme-color" content="#03050C">
+
+<!-- Open Graph / Social Cards -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="ChemSpace | Interactive Chemistry Workstation &amp; 3D Virtual Lab">
+<meta property="og:description" content="Explore atoms from orbit to orbital: periodic table, Slater Zeff calculator, and 3D molecular builder.">
+<meta property="twitter:card" content="summary_large_image">
+
+<!-- Embedded SVG Favicon (Rule 3) -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300f0ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='3' fill='%2300ff9d'/%3E%3Cellipse cx='12' cy='12' rx='10' ry='4' transform='rotate(30 12 12)'/%3E%3Cellipse cx='12' cy='12' rx='10' ry='4' transform='rotate(-30 12 12)'/%3E%3C/svg%3E">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#04060f; --ink:#e9edff; --mut:#93a0c9; --dim:#67739b;
-  --panel:rgba(146,170,255,.055); --panel2:rgba(146,170,255,.09);
-  --line:rgba(150,175,255,.16); --acc:#63e6ff; --acc2:#a78bfa; --acc3:#ff8ad4;
-  --ok:#5ef2a8; --warn:#ffd166; --bad:#ff7a90;
-  --r:16px; --mono:"JetBrains Mono",ui-monospace,monospace;
+  --bg:#03050c; --ink:#edf2f7; --mut:#94a3b8; --dim:#64748b;
+  --panel:rgba(0,240,255,.04); --panel2:rgba(0,240,255,.08);
+  --line:rgba(0,240,255,.15); --acc:#00f0ff; --acc2:#00ff9d; --acc3:#38bdf8;
+  --ok:#00ff9d; --warn:#ffd166; --bad:#ff4d6d;
+  --r:8px; --r-btn:6px; --mono:"JetBrains Mono",ui-monospace,monospace;
   box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
   color-scheme:dark;
 }
@@ -23,10 +39,10 @@ body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 "Space Grotesk
 #space{position:fixed;inset:0;z-index:-2;display:block}
 .neb{position:fixed;inset:0;z-index:-1;pointer-events:none;
   background:
-   radial-gradient(48vw 40vw at 12% 8%, rgba(99,230,255,.13), transparent 62%),
-   radial-gradient(52vw 44vw at 88% 22%, rgba(167,139,250,.15), transparent 64%),
-   radial-gradient(46vw 40vw at 62% 92%, rgba(255,138,212,.10), transparent 62%);
-  filter:blur(6px)}
+   radial-gradient(48vw 40vw at 12% 8%, rgba(0,240,255,.09), transparent 62%),
+   radial-gradient(52vw 44vw at 88% 22%, rgba(0,255,157,.07), transparent 64%),
+   radial-gradient(46vw 40vw at 62% 92%, rgba(56,189,248,.06), transparent 62%);
+  filter:blur(10px)}
 a{color:var(--acc);text-decoration:none}
 h1,h2,h3{line-height:1.2;margin:0 0 .4em;letter-spacing:-.02em}
 h2{font-size:clamp(24px,3.4vw,38px)}
@@ -34,60 +50,71 @@ h3{font-size:18px}
 p{margin:0 0 .9em;color:var(--mut)}
 .wrap{max-width:1220px;margin:0 auto;padding:0 18px}
 
+/* Scroll Progress Laser Beam & Telemetry */
+#scrollBeam{position:fixed;top:0;left:0;height:3px;z-index:999;background:linear-gradient(90deg,var(--acc),var(--acc2));box-shadow:0 0 12px var(--acc);width:0%;pointer-events:none;transition:width .05s ease-out}
+#scrollHud{position:fixed;bottom:16px;right:18px;z-index:90;font-family:var(--mono);font-size:11px;padding:6px 12px;background:rgba(3,5,12,.88);border:1px solid rgba(0,240,255,.25);border-radius:6px;backdrop-filter:blur(10px);color:var(--acc);display:flex;align-items:center;gap:10px;pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,.6)}
+
 /* nav */
 header{position:sticky;top:env(safe-area-inset-top,0px);z-index:60;backdrop-filter:blur(16px);
-  background:linear-gradient(180deg,rgba(4,6,15,.88),rgba(4,6,15,.55));border-bottom:1px solid var(--line)}
+  background:linear-gradient(180deg,rgba(3,5,12,.92),rgba(3,5,12,.65));border-bottom:1px solid var(--line)}
 .nav{display:flex;align-items:center;gap:14px;height:64px}
-.brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:-.03em;font-size:19px;white-space:nowrap}
-.orb{width:24px;height:24px;border-radius:50%;background:radial-gradient(circle at 32% 30%,#fff,var(--acc) 42%,var(--acc2) 100%);box-shadow:0 0 18px rgba(99,230,255,.65);flex:none}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:-.03em;font-size:18px;white-space:nowrap}
+.orb{width:22px;height:22px;border-radius:4px;border:1.5px solid var(--acc);background:radial-gradient(circle at 35% 35%,#fff,var(--acc) 50%,#03050c 100%);box-shadow:0 0 14px rgba(0,240,255,.6);flex:none}
 nav.links{display:flex;gap:4px;overflow-x:auto;margin-left:auto;scrollbar-width:none;mask-image:linear-gradient(90deg,transparent,#000 12px,#000 calc(100% - 12px),transparent)}
 nav.links::-webkit-scrollbar{display:none}
-nav.links a{padding:8px 13px;border-radius:999px;color:var(--mut);font-size:14px;white-space:nowrap;border:1px solid transparent;transition:.22s}
-nav.links a:hover{color:var(--ink);background:var(--panel)}
-nav.links a.on{color:#04060f;background:linear-gradient(135deg,var(--acc),var(--acc2));font-weight:700}
+nav.links a{padding:7px 12px;border-radius:var(--r-btn);color:var(--mut);font-size:13.5px;white-space:nowrap;border:1px solid transparent;transition:.18s}
+nav.links a:hover{color:var(--ink);background:var(--panel);border-color:rgba(0,240,255,.25)}
+nav.links a.on{color:#03050c;background:linear-gradient(135deg,var(--acc),var(--acc2));font-weight:700;box-shadow:0 0 12px rgba(0,240,255,.3)}
+.nav-actions{display:flex;align-items:center;gap:8px;margin-left:10px;font-family:var(--mono);font-size:12px}
+.audio-btn{background:var(--panel);border:1px solid var(--line);color:var(--acc);padding:6px 10px;border-radius:var(--r-btn);cursor:pointer;font-family:var(--mono);font-size:11px;transition:.2s}
+.audio-btn:hover{background:var(--panel2);border-color:var(--acc)}
 
 /* hero */
-.hero{min-height:82vh;display:flex;align-items:center;padding:70px 0 40px}
-.tag{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border:1px solid var(--line);border-radius:999px;background:var(--panel);font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--acc);margin-bottom:22px}
-.hero h1{font-size:clamp(38px,7.2vw,78px);font-weight:700;
-  background:linear-gradient(120deg,#fff 10%,var(--acc) 45%,var(--acc2) 72%,var(--acc3));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero{min-height:80vh;display:flex;align-items:center;padding:70px 0 40px}
+.tag{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border:1px solid var(--line);border-radius:var(--r-btn);background:var(--panel);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--acc);margin-bottom:20px;font-family:var(--mono)}
+.hero h1{font-size:clamp(36px,6.8vw,74px);font-weight:700;
+  background:linear-gradient(120deg,#fff 15%,var(--acc) 50%,var(--acc2) 85%);-webkit-background-clip:text;background-clip:text;color:transparent}
 .hero p{font-size:clamp(16px,1.9vw,20px);max-width:660px}
 .cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
-.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:999px;border:1px solid var(--line);
-  background:var(--panel);color:var(--ink);font:inherit;font-size:15px;font-weight:500;cursor:pointer;transition:.22s}
-.btn:hover{background:var(--panel2);border-color:rgba(99,230,255,.45);transform:translateY(-2px)}
-.btn.p{background:linear-gradient(135deg,var(--acc),var(--acc2));color:#04060f;font-weight:700;border-color:transparent}
-.btn.p:hover{box-shadow:0 10px 34px rgba(99,230,255,.3)}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:var(--r-btn);border:1px solid var(--line);
+  background:var(--panel);color:var(--ink);font:inherit;font-size:14.5px;font-weight:500;cursor:pointer;transition:.2s}
+.btn:hover{background:var(--panel2);border-color:rgba(0,240,255,.5);transform:translateY(-2px);box-shadow:0 4px 18px rgba(0,240,255,.15)}
+.btn.p{background:linear-gradient(135deg,var(--acc),var(--acc2));color:#03050c;font-weight:700;border-color:transparent}
+.btn.p:hover{box-shadow:0 6px 26px rgba(0,240,255,.35);transform:translateY(-2px)}
 .btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
-.stats{display:flex;gap:26px;flex-wrap:wrap;margin-top:38px}
-.stat b{display:block;font-size:26px;font-family:var(--mono);color:var(--acc)}
-.stat span{font-size:12.5px;color:var(--dim);letter-spacing:.08em;text-transform:uppercase}
+.stats{display:flex;gap:24px;flex-wrap:wrap;margin-top:36px}
+.stat{background:var(--panel);border:1px solid var(--line);padding:10px 16px;border-radius:var(--r-btn)}
+.stat b{display:block;font-size:24px;font-family:var(--mono);color:var(--acc)}
+.stat span{font-size:11.5px;color:var(--dim);letter-spacing:.08em;text-transform:uppercase}
 
 section{padding:70px 0;scroll-margin-top:80px}
 .sechead{margin-bottom:26px;max-width:760px}
-.kicker{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--acc2);font-weight:700;margin-bottom:8px}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:20px;backdrop-filter:blur(9px)}
+.kicker{font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--acc2);font-weight:700;margin-bottom:8px;font-family:var(--mono)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:20px;backdrop-filter:blur(10px);transition:transform .24s cubic-bezier(.16,1,.3,1),border-color .24s,box-shadow .24s;transform-style:preserve-3d}
+.card:hover{border-color:rgba(0,240,255,.4);box-shadow:0 12px 30px rgba(0,0,0,.6),0 0 18px rgba(0,240,255,.08);transform:translateY(-3px)}
 .grid{display:grid;gap:16px}
 .g2{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
 .g3{grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
-.reveal{opacity:0;transform:translateY(22px);transition:.7s cubic-bezier(.2,.7,.3,1)}
+
+/* Scroll 3D Reveal */
+.reveal{opacity:0;transform:translateY(36px) scale(.98) rotateX(3deg);transform-origin:top center;transition:.75s cubic-bezier(.16,1,.3,1)}
 .reveal.in{opacity:1;transform:none}
 
 /* controls */
-input,select,textarea{font:inherit;color:var(--ink);background:rgba(8,12,26,.72);border:1px solid var(--line);border-radius:11px;padding:11px 13px;width:100%;outline:none;transition:.2s}
-input:focus,select:focus,textarea:focus{border-color:var(--acc);box-shadow:0 0 0 3px rgba(99,230,255,.13)}
-label{display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:6px;font-weight:700}
-select option{background:#0a0f22}
+input,select,textarea{font:inherit;color:var(--ink);background:rgba(6,10,22,.8);border:1px solid var(--line);border-radius:var(--r-btn);padding:10px 13px;width:100%;outline:none;transition:.2s}
+input:focus,select:focus,textarea:focus{border-color:var(--acc);box-shadow:0 0 0 2px rgba(0,240,255,.2)}
+label{display:block;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:6px;font-weight:700;font-family:var(--mono)}
+select option{background:#060a16}
 .row{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end}
 .row>div{flex:1 1 180px}
 
 /* periodic table */
 .ptscroll{overflow-x:auto;padding-bottom:12px}
 .pt{display:grid;grid-template-columns:repeat(18,minmax(46px,1fr));gap:4px;min-width:900px}
-.el{position:relative;aspect-ratio:1;border-radius:8px;border:1px solid rgba(255,255,255,.14);background:var(--c,#333);
+.el{position:relative;aspect-ratio:1;border-radius:6px;border:1px solid rgba(255,255,255,.14);background:var(--c,#333);
   color:#05070f;display:flex;flex-direction:column;justify-content:center;align-items:center;cursor:pointer;
   transition:transform .16s,box-shadow .16s,filter .16s;overflow:hidden}
-.el:hover{transform:translateY(-4px) scale(1.09);z-index:5;box-shadow:0 10px 28px rgba(0,0,0,.6),0 0 0 2px #fff inset}
+.el:hover{transform:translateY(-4px) scale(1.1);z-index:5;box-shadow:0 10px 28px rgba(0,0,0,.7),0 0 0 2px #fff inset,0 0 16px rgba(0,240,255,.5)}
 .el .z{position:absolute;top:3px;left:5px;font:700 9px var(--mono);opacity:.7}
 .el .sym{font-weight:700;font-size:clamp(13px,1.3vw,18px);letter-spacing:-.02em}
 .el .nm{font-size:8px;opacity:.78;max-width:95%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -95,20 +122,20 @@ select option{background:#0a0f22}
 .el.ph{background:transparent;border-style:dashed;color:var(--dim);font:700 10px var(--mono);cursor:default}
 .el.ph:hover{transform:none;box-shadow:none}
 .legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
-.lg{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--mut);padding:4px 10px;border-radius:999px;border:1px solid var(--line);cursor:pointer}
-.lg i{width:10px;height:10px;border-radius:3px;display:block}
+.lg{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--mut);padding:4px 10px;border-radius:var(--r-btn);border:1px solid var(--line);cursor:pointer}
+.lg i{width:10px;height:10px;border-radius:2px;display:block}
 .lg.off{opacity:.35}
 
 /* modal */
 .modal{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:18px;
-  background:rgba(2,4,12,.72);backdrop-filter:blur(8px)}
+  background:rgba(2,4,12,.85);backdrop-filter:blur(10px)}
 .modal.on{display:flex}
-.sheet{width:min(720px,100%);max-height:86vh;overflow:auto;border-radius:20px;border:1px solid var(--line);
-  background:linear-gradient(160deg,#0b1024,#070a18);padding:24px;animation:pop .25s cubic-bezier(.2,.8,.3,1)}
+.sheet{width:min(720px,100%);max-height:86vh;overflow:auto;border-radius:10px;border:1px solid var(--line);
+  background:linear-gradient(160deg,#070b1a,#04060f);padding:24px;animation:pop .22s cubic-bezier(.16,1,.3,1)}
 @keyframes pop{from{opacity:0;transform:translateY(20px) scale(.97)}}
 .x{position:absolute;top:14px;right:16px;background:none;border:0;color:var(--mut);font-size:26px;cursor:pointer;line-height:1}
 .kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:14px 0}
-.kv div{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.kv div{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-btn);padding:10px 12px}
 .kv b{display:block;font:700 15px var(--mono);color:var(--acc)}
 .kv span{font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:var(--dim)}
 
@@ -116,54 +143,62 @@ select option{background:#0a0f22}
 .orbs{display:flex;flex-wrap:wrap;gap:14px;margin-top:10px}
 .ob{text-align:center}
 .ob .bx{display:flex;gap:3px}
-.ob .b{width:30px;height:26px;border:1.5px solid var(--line);border-radius:5px;display:flex;align-items:center;justify-content:center;
-  font-family:var(--mono);font-size:14px;background:rgba(8,12,26,.6);color:var(--acc)}
+.ob .b{width:30px;height:26px;border:1.5px solid var(--line);border-radius:4px;display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:14px;background:rgba(6,10,22,.6);color:var(--acc)}
 .ob .b.full{color:var(--acc2)}
 .ob small{display:block;margin-top:5px;font:700 12px var(--mono);color:var(--mut)}
 
 /* tables */
 table{width:100%;border-collapse:collapse;font-size:14px}
 th,td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:left}
-th{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--dim)}
+th{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--dim);font-family:var(--mono)}
 td.n{font-family:var(--mono);color:var(--acc)}
 .steps{counter-reset:s;display:grid;gap:12px}
-.step{position:relative;padding:14px 16px 14px 52px;border-radius:12px;background:var(--panel);border:1px solid var(--line)}
-.step::before{counter-increment:s;content:counter(s);position:absolute;left:14px;top:14px;width:26px;height:26px;border-radius:50%;
-  background:linear-gradient(135deg,var(--acc),var(--acc2));color:#04060f;font:700 13px var(--mono);display:flex;align-items:center;justify-content:center}
+.step{position:relative;padding:14px 16px 14px 52px;border-radius:var(--r-btn);background:var(--panel);border:1px solid var(--line)}
+.step::before{counter-increment:s;content:counter(s);position:absolute;left:14px;top:14px;width:26px;height:26px;border-radius:4px;
+  background:linear-gradient(135deg,var(--acc),var(--acc2));color:#03050c;font:700 13px var(--mono);display:flex;align-items:center;justify-content:center}
 .step h4{margin:0 0 4px;font-size:15px}
 .step p{margin:0;font-size:14px}
-.eq{font-family:var(--mono);background:rgba(8,12,26,.7);border:1px solid var(--line);border-left:3px solid var(--acc);
-  border-radius:8px;padding:11px 14px;margin:10px 0;overflow-x:auto;white-space:nowrap;color:var(--ink);font-size:14px}
+.eq{font-family:var(--mono);background:rgba(6,10,22,.7);border:1px solid var(--line);border-left:3px solid var(--acc);
+  border-radius:var(--r-btn);padding:11px 14px;margin:10px 0;overflow-x:auto;white-space:nowrap;color:var(--ink);font-size:14px}
 .big{font-family:var(--mono);font-size:clamp(28px,5vw,46px);font-weight:700;
   background:linear-gradient(120deg,var(--acc),var(--acc2));-webkit-background-clip:text;background-clip:text;color:transparent}
-.pill{display:inline-block;padding:3px 10px;border-radius:999px;font-size:11.5px;font-weight:700;letter-spacing:.05em;
-  background:var(--panel2);border:1px solid var(--line);color:var(--mut)}
-.pill.ok{color:var(--ok);border-color:rgba(94,242,168,.4)}
+.pill{display:inline-block;padding:3px 8px;border-radius:4px;font-size:11px;font-weight:700;letter-spacing:.05em;
+  background:var(--panel2);border:1px solid var(--line);color:var(--mut);font-family:var(--mono)}
+.pill.ok{color:var(--ok);border-color:rgba(0,255,157,.4)}
 .pill.warn{color:var(--warn);border-color:rgba(255,209,102,.4)}
 
 /* lab */
-#viewer{width:100%;height:clamp(300px,52vh,480px);border-radius:14px;border:1px solid var(--line);
-  background:radial-gradient(circle at 50% 40%,rgba(99,230,255,.07),rgba(4,6,15,.85));position:relative;overflow:hidden}
+#viewer{width:100%;height:clamp(300px,52vh,480px);border-radius:var(--r);border:1px solid var(--line);
+  background:radial-gradient(circle at 50% 40%,rgba(0,240,255,.05),rgba(3,5,12,.9));position:relative;overflow:hidden}
 .chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
-.chip{padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--panel);font-size:13px;cursor:pointer;color:var(--mut);transition:.2s}
+.chip{padding:6px 12px;border-radius:var(--r-btn);border:1px solid var(--line);background:var(--panel);font-size:13px;cursor:pointer;color:var(--mut);transition:.2s}
 .chip:hover{color:var(--ink);border-color:var(--acc);background:var(--panel2)}
 
 /* quiz */
-.opt{display:block;width:100%;text-align:left;padding:12px 15px;border-radius:11px;border:1px solid var(--line);
+.opt{display:block;width:100%;text-align:left;padding:12px 15px;border-radius:var(--r-btn);border:1px solid var(--line);
   background:var(--panel);color:var(--ink);font:inherit;font-size:15px;cursor:pointer;margin-bottom:9px;transition:.18s}
 .opt:hover:not(:disabled){border-color:var(--acc);transform:translateX(4px)}
-.opt.right{border-color:var(--ok);background:rgba(94,242,168,.14)}
-.opt.wrong{border-color:var(--bad);background:rgba(255,122,144,.14)}
-.bar{height:6px;border-radius:99px;background:var(--panel2);overflow:hidden;margin-bottom:18px}
+.opt.right{border-color:var(--ok);background:rgba(0,255,157,.14)}
+.opt.wrong{border-color:var(--bad);background:rgba(255,77,109,.14)}
+.bar{height:6px;border-radius:3px;background:var(--panel2);overflow:hidden;margin-bottom:18px}
 .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--acc),var(--acc2));transition:.4s}
 
-footer{padding:40px 0 60px;border-top:1px solid var(--line);color:var(--dim);font-size:13.5px;text-align:center}
+footer{padding:40px 0 60px;border-top:1px solid var(--line);color:var(--dim);font-size:13px}
 .muted{color:var(--dim);font-size:13px}
-@media (max-width:760px){.hero{min-height:70vh}.nav{height:58px}section{padding:52px 0}}
+@media (max-width:760px){.hero{min-height:70vh}.nav{height:58px}section{padding:52px 0}.nav-actions{display:none}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
 </style>
 </head>
 <body>
+<div id="scrollBeam"></div>
+<div id="scrollHud">
+  <span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--acc);animation:pop .6s infinite alternate"></span>
+  <span id="scrollPct">0%</span>
+  <span>|</span>
+  <span id="scrollModule">MODULE: OVERVIEW</span>
+</div>
+
 <canvas id="space"></canvas><div class="neb"></div>
 
 <header><div class="wrap nav">
@@ -174,6 +209,9 @@ footer{padding:40px 0 60px;border-top:1px solid var(--line);color:var(--dim);fon
     <a href="#quantum">Quantum</a><a href="#bonding">MO &amp; Hückel</a><a href="#cheminfo">Cheminformatics</a>
     <a href="#practicals">Practicals</a><a href="#quiz">Quiz</a><a href="#report">Report</a>
   </nav>
+  <div class="nav-actions">
+    <button class="audio-btn" id="audioToggle" onclick="toggleChemAudio()" title="Toggle Quantum Synthesizer Audio">AUDIO: ON</button>
+  </div>
 </div></header>
 
 <main>
@@ -407,62 +445,436 @@ input[type=range]{padding:0;background:transparent;border:0;accent-color:#63e6ff
 </div></section>
 </main>
 
-<footer><div class="wrap">ChemSpace — built for learning. Data values are standard reference approximations; geometries are force-field estimates, not quantum-optimised structures.</div></footer>
+<footer>
+  <div class="wrap" style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:20px;text-align:left">
+    <div>
+      <div style="font-weight:700;color:var(--ink);font-size:15px;margin-bottom:4px;display:flex;align-items:center;gap:8px">
+        <span class="orb" style="width:16px;height:16px"></span>
+        ChemSpace Laboratory Systems
+      </div>
+      <p style="margin:0;font-size:12.5px;color:var(--dim);max-width:440px">
+        Interactive chemistry workstation and 3D molecular lab. Standard reference approximations for higher education and molecular engineering.
+      </p>
+    </div>
 
+    <div style="font-family:var(--mono);font-size:12px;color:var(--mut);display:flex;flex-direction:column;gap:6px">
+      <div style="color:var(--acc);font-weight:700;font-size:11px;letter-spacing:.1em;text-transform:uppercase">Direct Lab Desk</div>
+      <a href="mailto:support@chemspace.io" style="color:var(--ink);display:flex;align-items:center;gap:6px">
+        <span>✉</span> support@chemspace.io
+      </a>
+      <a href="tel:+18005550199" style="color:var(--ok);display:flex;align-items:center;gap:6px">
+        <span>☎</span> +1 (800) 555-0199
+      </a>
+    </div>
+
+    <div style="font-family:var(--mono);font-size:12px;display:flex;flex-direction:column;gap:6px">
+      <div style="color:var(--acc2);font-weight:700;font-size:11px;letter-spacing:.1em;text-transform:uppercase">Compliance &amp; Ethics</div>
+      <a href="javascript:void(0)" onclick="openLegalModal('privacy')" style="color:var(--mut);text-decoration:underline">Privacy &amp; Local Storage</a>
+      <a href="javascript:void(0)" onclick="openLegalModal('terms')" style="color:var(--mut);text-decoration:underline">Terms &amp; Academic License</a>
+    </div>
+  </div>
+  <div class="wrap" style="margin-top:28px;padding-top:18px;border-top:1px solid rgba(0,240,255,.1);font-size:12px;color:var(--dim);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+    <div>&copy; 2026 ChemSpace Systems. Zero tracking cookies. All rights reserved.</div>
+    <div style="font-family:var(--mono);color:var(--acc)">QUANTUM PERSPECTIVE ENGINE v3.2</div>
+  </div>
+</footer>
+
+<!-- Element Modal -->
 <div class="modal" id="modal"><div class="sheet" style="position:relative"><button class="x" onclick="closeModal()">×</button><div id="sheet"></div></div></div>
+
+<!-- Legal Compliance Modal -->
+<div class="modal" id="legalModal"><div class="sheet" style="position:relative"><button class="x" onclick="closeLegalModal()">×</button><div id="legalSheet"></div></div></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
-/* ============ 1. BACKGROUND ============ */
-(function(){
-  var c=document.getElementById('space'),x=c.getContext('2d',{alpha:false}),W,H,dpr,stars=[],ats=[],run=true;
-  var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
-  function size(){dpr=Math.min(devicePixelRatio||1,1.6);W=innerWidth;H=innerHeight;c.width=W*dpr;c.height=H*dpr;c.style.width=W+'px';c.style.height=H+'px';x.setTransform(dpr,0,0,dpr,0,0);seed();}
-  function seed(){
-    stars=[];for(var i=0;i<Math.min(220,Math.round(W*H/7000));i++)stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.25+.25,a:Math.random(),s:Math.random()*.02+.004,d:Math.random()*.04+.01});
-    ats=[];var n=W<700?7:13;
-    for(var j=0;j<n;j++){var e=[],k=1+Math.floor(Math.random()*3);
-      for(var m=0;m<k;m++)e.push({r:12+Math.random()*20,a:Math.random()*6.28,s:(Math.random()*.02+.008)*(Math.random()<.5?-1:1),t:Math.random()*3.14});
-      ats.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.22,vy:(Math.random()-.5)*.22,r:2.2+Math.random()*2.4,e:e,h:Math.random()<.5?190:270});}
+/* ============ 1. WEB AUDIO SYNTHESIZER & ACOUSTIC TELEMETRY ============ */
+var ChemAudio = (function(){
+  var ctx = null, enabled = true;
+  function init(){
+    if(!ctx && window.AudioContext){ ctx = new AudioContext(); }
+    if(ctx && ctx.state === 'suspended'){ ctx.resume(); }
   }
-  function frame(){
-    if(!run){return;}
-    x.fillStyle='#04060f';x.fillRect(0,0,W,H);
-    for(var i=0;i<stars.length;i++){var s=stars[i];s.a+=s.s;var al=.28+Math.abs(Math.sin(s.a))*.6;
-      x.globalAlpha=al;x.fillStyle='#dfe8ff';x.beginPath();x.arc(s.x,s.y,s.r,0,6.283);x.fill();
-      s.y+=s.d;if(s.y>H)s.y=0;}
-    x.globalAlpha=1;
-    for(var j=0;j<ats.length;j++){var a=ats[j];
-      if(!reduce){a.x+=a.vx;a.y+=a.vy;}
-      if(a.x<-60)a.x=W+60;if(a.x>W+60)a.x=-60;if(a.y<-60)a.y=H+60;if(a.y>H+60)a.y=-60;
-      for(var k=j+1;k<ats.length;k++){var b=ats[k],dx=a.x-b.x,dy=a.y-b.y,d=Math.sqrt(dx*dx+dy*dy);
-        if(d<210){x.globalAlpha=(1-d/210)*.16;x.strokeStyle='#7fd8ff';x.lineWidth=1;x.beginPath();x.moveTo(a.x,a.y);x.lineTo(b.x,b.y);x.stroke();}}
-      x.globalAlpha=1;
-      var g=x.createRadialGradient(a.x,a.y,0,a.x,a.y,a.r*7);
-      g.addColorStop(0,'hsla('+a.h+',100%,78%,.95)');g.addColorStop(1,'hsla('+a.h+',100%,60%,0)');
-      x.fillStyle=g;x.beginPath();x.arc(a.x,a.y,a.r*7,0,6.283);x.fill();
-      for(var m=0;m<a.e.length;m++){var o=a.e[m];if(!reduce)o.a+=o.s;
-        var ex=a.x+Math.cos(o.a)*o.r,ey=a.y+Math.sin(o.a)*o.r*Math.cos(o.t);
-        x.globalAlpha=.2;x.strokeStyle='hsla('+a.h+',90%,72%,1)';x.lineWidth=.8;
-        x.beginPath();x.ellipse(a.x,a.y,o.r,o.r*Math.abs(Math.cos(o.t))+1,o.t,0,6.283);x.stroke();
-        x.globalAlpha=.95;x.fillStyle='#eaf6ff';x.beginPath();x.arc(ex,ey,1.5,0,6.283);x.fill();}
-      x.globalAlpha=1;
+  return {
+    toggle: function(){
+      enabled = !enabled;
+      var btn = document.getElementById('audioToggle');
+      if(btn) btn.innerText = enabled ? 'AUDIO: ON' : 'AUDIO: MUTED';
+      if(enabled) this.click();
+      return enabled;
+    },
+    click: function(){
+      if(!enabled) return;
+      try {
+        init(); if(!ctx) return;
+        var osc = ctx.createOscillator(), g = ctx.createGain();
+        osc.type = 'sine'; osc.frequency.setValueAtTime(1200, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(400, ctx.currentTime + 0.03);
+        g.gain.setValueAtTime(0.04, ctx.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.03);
+        osc.connect(g); g.connect(ctx.destination);
+        osc.start(); osc.stop(ctx.currentTime + 0.03);
+      } catch(e){}
+    },
+    warp: function(){
+      if(!enabled) return;
+      try {
+        init(); if(!ctx) return;
+        var now = ctx.currentTime, osc = ctx.createOscillator(), g = ctx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(260, now);
+        osc.frequency.exponentialRampToValueAtTime(780, now + 0.08);
+        osc.frequency.exponentialRampToValueAtTime(140, now + 0.18);
+        g.gain.setValueAtTime(0.05, now);
+        g.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+        osc.connect(g); g.connect(ctx.destination);
+        osc.start(now); osc.stop(now + 0.18);
+      } catch(e){}
+    },
+    elementTone: function(z){
+      if(!enabled) return;
+      try {
+        init(); if(!ctx) return;
+        var now = ctx.currentTime;
+        var freq = 160 + (z * 7.5);
+        var osc = ctx.createOscillator(), osc2 = ctx.createOscillator(), g = ctx.createGain();
+        osc.type = 'sine'; osc.frequency.setValueAtTime(freq, now);
+        osc2.type = 'triangle'; osc2.frequency.setValueAtTime(freq * 1.5, now);
+        g.gain.setValueAtTime(0.08, now);
+        g.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+        osc.connect(g); osc2.connect(g); g.connect(ctx.destination);
+        osc.start(now); osc2.start(now);
+        osc.stop(now + 0.28); osc2.stop(now + 0.28);
+      } catch(e){}
     }
-    requestAnimationFrame(frame);
-  }
-  addEventListener('resize',size,{passive:true});
-  document.addEventListener('visibilitychange',function(){run=!document.hidden;if(run)requestAnimationFrame(frame);});
-  size();requestAnimationFrame(frame);
+  };
 })();
 
-function go(h){var e=document.querySelector(h);if(e)e.scrollIntoView({behavior:'smooth'});}
-document.querySelectorAll('.reveal').length&&new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');}});},{threshold:.08}).observe&&
-document.querySelectorAll('.reveal').forEach(function(el){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)e.target.classList.add('in');});},{threshold:.08});io.observe(el);});
-(function(){var ls=[].slice.call(document.querySelectorAll('#nav a')),ss=ls.map(function(a){return document.querySelector(a.getAttribute('href'));});
- var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){var i=ss.indexOf(e.target);ls.forEach(function(a,k){a.classList.toggle('on',k===i);});}});},{rootMargin:'-45% 0px -50% 0px'});
- ss.forEach(function(s){s&&io.observe(s);});})();
+function toggleChemAudio(){ ChemAudio.toggle(); }
 
-/* ============ 2. ELEMENT DATA ============ */
+/* ============ 2. CRAZY 3D SUBATOMIC SCROLL REACTOR CANVAS ============ */
+(function(){
+  var c = document.getElementById('space'), x = c.getContext('2d', {alpha: false}), W, H, dpr;
+  var stars = [], lattice = [], shockwaves = [];
+  var scrollY = 0, targetScrollY = 0, scrollVel = 0, lastScrollY = 0;
+  var rotX = 0, rotY = 0, rotZ = 0;
+  var activeModule = 'OVERVIEW';
+
+  function size(){
+    dpr = Math.min(devicePixelRatio || 1, 2);
+    W = innerWidth; H = innerHeight;
+    c.width = W * dpr; c.height = H * dpr;
+    c.style.width = W + 'px'; c.style.height = H + 'px';
+    x.setTransform(dpr, 0, 0, dpr, 0, 0);
+    seed();
+  }
+
+  function seed(){
+    stars = [];
+    var starCount = Math.min(180, Math.round(W * H / 8000));
+    for(var i = 0; i < starCount; i++){
+      stars.push({
+        x: (Math.random() - 0.5) * W * 1.8,
+        y: (Math.random() - 0.5) * H * 1.8,
+        z: Math.random() * 800 + 50,
+        r: Math.random() * 1.4 + 0.4,
+        hue: Math.random() < 0.6 ? 186 : 155
+      });
+    }
+
+    lattice = [];
+    var latCount = 40;
+    for(var j = 0; j < latCount; j++){
+      lattice.push({
+        x: (Math.random() - 0.5) * 600,
+        y: (Math.random() - 0.5) * 600,
+        z: (Math.random() - 0.5) * 600,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.3,
+        vz: (Math.random() - 0.5) * 0.3,
+        r: Math.random() * 2.5 + 2,
+        isProton: j % 2 === 0
+      });
+    }
+  }
+
+  // 3D perspective projection
+  function project(px, py, pz, cx, cy){
+    var fov = 420;
+    var dist = pz + 650;
+    if(dist <= 10) dist = 10;
+    var scale = fov / dist;
+    return { x: cx + px * scale, y: cy + py * scale, s: scale, z: pz };
+  }
+
+  // 3D Rotation math
+  function rotate3D(p, rx, ry, rz){
+    // X-axis
+    var y1 = p.y * Math.cos(rx) - p.z * Math.sin(rx);
+    var z1 = p.y * Math.sin(rx) + p.z * Math.cos(rx);
+    // Y-axis
+    var x2 = p.x * Math.cos(ry) + z1 * Math.sin(ry);
+    var z2 = -p.x * Math.sin(ry) + z1 * Math.cos(ry);
+    // Z-axis
+    var x3 = x2 * Math.cos(rz) - y1 * Math.sin(rz);
+    var y3 = x2 * Math.sin(rz) + y1 * Math.cos(rz);
+    return { x: x3, y: y3, z: z2 };
+  }
+
+  function frame(time){
+    targetScrollY = window.pageYOffset || document.documentElement.scrollTop;
+    scrollVel = Math.abs(targetScrollY - lastScrollY);
+    lastScrollY = targetScrollY;
+    scrollY += (targetScrollY - scrollY) * 0.12;
+
+    // Update Top Laser Progress Beam
+    var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    var scrollPct = docHeight > 0 ? (scrollY / docHeight) * 100 : 0;
+    var beam = document.getElementById('scrollBeam');
+    if(beam) beam.style.width = scrollPct + '%';
+
+    var pctEl = document.getElementById('scrollPct');
+    if(pctEl) pctEl.innerText = Math.round(scrollPct) + '%';
+
+    // Rotation is coupled to scroll position + velocity
+    rotX = scrollY * 0.0018;
+    rotY = scrollY * 0.0028 + (time * 0.0006);
+    rotZ = scrollY * 0.0008;
+
+    x.fillStyle = '#03050c';
+    x.fillRect(0, 0, W, H);
+
+    var cx = W / 2;
+    var cy = H / 2;
+
+    // 1. Draw Starfield with Relativistic Scroll Warp Streaks
+    for(var s = 0; s < stars.length; s++){
+      var st = stars[s];
+      var p = project(st.x, st.y, st.z, cx, cy);
+
+      // Warp stretch length on high velocity
+      var streakLen = Math.min(28, scrollVel * 0.6);
+      x.fillStyle = 'hsla(' + st.hue + ', 100%, 75%, ' + Math.min(0.9, p.s * 1.2) + ')';
+
+      if(streakLen > 2){
+        x.strokeStyle = 'hsla(' + st.hue + ', 100%, 75%, ' + Math.min(0.8, p.s * 1.4) + ')';
+        x.lineWidth = p.s * 1.5;
+        x.beginPath();
+        x.moveTo(p.x, p.y);
+        x.lineTo(p.x, p.y - streakLen * p.s);
+        x.stroke();
+      } else {
+        x.beginPath();
+        x.arc(p.x, p.y, st.r * p.s, 0, 6.283);
+        x.fill();
+      }
+
+      // Drift stars
+      st.z -= 0.6 + scrollVel * 0.08;
+      if(st.z < 10) st.z = 800;
+    }
+
+    // 2. Draw 4 Interlocking 3D Quantum Orbital Rings
+    var ringCount = 4;
+    var orbitalSpeed = 0.0015 + (scrollVel * 0.0005);
+    for(var r = 0; r < ringCount; r++){
+      var ringRadius = 140 + r * 38;
+      var tiltAngle = (r * Math.PI) / ringCount;
+
+      x.beginPath();
+      var firstPt = true;
+      var step = 0.15;
+      for(var th = 0; th <= Math.PI * 2 + 0.1; th += step){
+        var rx = Math.cos(th) * ringRadius;
+        var ry = Math.sin(th) * ringRadius * Math.cos(tiltAngle);
+        var rz = Math.sin(th) * ringRadius * Math.sin(tiltAngle);
+
+        var rRot = rotate3D({x: rx, y: ry, z: rz}, rotX, rotY, rotZ);
+        var pr = project(rRot.x, rRot.y, rRot.z, cx, cy);
+
+        if(firstPt){ x.moveTo(pr.x, pr.y); firstPt = false; }
+        else { x.lineTo(pr.x, pr.y); }
+      }
+      x.strokeStyle = r % 2 === 0 ? 'rgba(0, 240, 255, 0.22)' : 'rgba(0, 255, 157, 0.18)';
+      x.lineWidth = 1.2;
+      x.stroke();
+
+      // Glowing Wave-Packet Electron racing along orbital
+      var electronAngle = (time * orbitalSpeed * (r % 2 === 0 ? 1 : -1)) + (r * 1.5);
+      var ex = Math.cos(electronAngle) * ringRadius;
+      var ey = Math.sin(electronAngle) * ringRadius * Math.cos(tiltAngle);
+      var ez = Math.sin(electronAngle) * ringRadius * Math.sin(tiltAngle);
+
+      var eRot = rotate3D({x: ex, y: ey, z: ez}, rotX, rotY, rotZ);
+      var pe = project(eRot.x, eRot.y, eRot.z, cx, cy);
+
+      var grad = x.createRadialGradient(pe.x, pe.y, 0, pe.x, pe.y, 14 * pe.s);
+      grad.addColorStop(0, r % 2 === 0 ? '#00f0ff' : '#00ff9d');
+      grad.addColorStop(1, 'transparent');
+      x.fillStyle = grad;
+      x.beginPath();
+      x.arc(pe.x, pe.y, 14 * pe.s, 0, 6.283);
+      x.fill();
+
+      x.fillStyle = '#ffffff';
+      x.beginPath();
+      x.arc(pe.x, pe.y, 2.8 * pe.s, 0, 6.283);
+      x.fill();
+    }
+
+    // 3. Central 3D Subatomic Nucleus (Clustered Protons & Neutrons)
+    for(var k = 0; k < lattice.length; k++){
+      var node = lattice[k];
+      node.x += node.vx; node.y += node.vy; node.z += node.vz;
+      if(Math.abs(node.x) > 280) node.vx *= -1;
+      if(Math.abs(node.y) > 280) node.vy *= -1;
+      if(Math.abs(node.z) > 280) node.vz *= -1;
+
+      var nRot = rotate3D(node, rotX, rotY, rotZ);
+      var pn = project(nRot.x, nRot.y, nRot.z, cx, cy);
+
+      // Covalent bond springs
+      for(var m = k + 1; m < Math.min(lattice.length, k + 8); m++){
+        var nodeB = lattice[m];
+        var dx = node.x - nodeB.x, dy = node.y - nodeB.y, dz = node.z - nodeB.z;
+        var dist3D = Math.sqrt(dx*dx + dy*dy + dz*dz);
+        if(dist3D < 110){
+          var bRot = rotate3D(nodeB, rotX, rotY, rotZ);
+          var pb = project(bRot.x, bRot.y, bRot.z, cx, cy);
+          x.strokeStyle = 'rgba(0, 240, 255, ' + ((1 - dist3D / 110) * 0.16) + ')';
+          x.lineWidth = 0.8;
+          x.beginPath();
+          x.moveTo(pn.x, pn.y);
+          x.lineTo(pb.x, pb.y);
+          x.stroke();
+        }
+      }
+
+      x.fillStyle = node.isProton ? 'rgba(0, 240, 255, 0.75)' : 'rgba(0, 255, 157, 0.75)';
+      x.beginPath();
+      x.arc(pn.x, pn.y, node.r * pn.s, 0, 6.283);
+      x.fill();
+    }
+
+    // 4. Expanding Quantum Shockwave Rings
+    for(var w = shockwaves.length - 1; w >= 0; w--){
+      var sw = shockwaves[w];
+      sw.radius += 20;
+      sw.alpha *= 0.94;
+
+      x.beginPath();
+      x.arc(sw.x, sw.y, sw.radius, 0, 6.283);
+      x.strokeStyle = 'rgba(0, 240, 255, ' + (sw.alpha * 0.5) + ')';
+      x.lineWidth = 2.5;
+      x.stroke();
+
+      if(sw.alpha < 0.01) shockwaves.splice(w, 1);
+    }
+
+    requestAnimationFrame(frame);
+  }
+
+  function triggerShockwave(){
+    shockwaves.push({ x: W / 2, y: H / 2, radius: 10, alpha: 0.9 });
+  }
+
+  window.addEventListener('resize', size, {passive: true});
+  size();
+  requestAnimationFrame(frame);
+
+  window.triggerChemShockwave = triggerShockwave;
+})();
+
+/* ============ 3. SECTION DETECTION & DYNAMIC PAGE TITLES ============ */
+function go(h){
+  ChemAudio.warp();
+  if(window.triggerChemShockwave) window.triggerChemShockwave();
+  var e = document.querySelector(h);
+  if(e) e.scrollIntoView({behavior: 'smooth'});
+}
+
+(function(){
+  var navLinks = [].slice.call(document.querySelectorAll('#nav a'));
+  var sections = navLinks.map(function(a){ return document.querySelector(a.getAttribute('href')); });
+
+  var moduleNames = {
+    'home': 'Overview',
+    'table': 'Periodic Table (118 Elements)',
+    'trends': 'Periodic Trends & Plots',
+    'zeff': "Slater's Zeff Calculator",
+    'config': 'Electron Configurations',
+    'lab': '3D Molecular Virtual Lab',
+    'quantum': 'Quantum Wavefunctions',
+    'bonding': 'MO Diagrams & Hückel Theory',
+    'cheminfo': 'Cheminformatics Descriptors',
+    'practicals': 'Quantitative Titrations',
+    'quiz': 'Chemistry Knowledge Assessment',
+    'report': 'Certified Session Report'
+  };
+
+  var lastModule = '';
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        var idx = sections.indexOf(entry.target);
+        navLinks.forEach(function(link, k){
+          link.classList.toggle('on', k === idx);
+        });
+
+        var secId = entry.target.id;
+        var mName = moduleNames[secId] || secId.toUpperCase();
+        var modHud = document.getElementById('scrollModule');
+        if(modHud) modHud.innerText = 'MODULE: ' + mName.toUpperCase();
+
+        if(lastModule !== secId){
+          lastModule = secId;
+          document.title = '[ChemSpace] ' + mName + ' | Chemistry Workstation';
+          if(window.triggerChemShockwave) window.triggerChemShockwave();
+        }
+      }
+    });
+  }, { rootMargin: '-40% 0px -50% 0px' });
+
+  sections.forEach(function(s){ if(s) io.observe(s); });
+})();
+
+// Scroll 3D Reveal Observer
+document.querySelectorAll('.reveal').forEach(function(el){
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        entry.target.classList.add('in');
+      }
+    });
+  }, { threshold: 0.1 });
+  io.observe(el);
+});
+
+/* ============ 4. LEGAL COMPLIANCE MODALS ============ */
+function openLegalModal(type){
+  ChemAudio.click();
+  var content = '';
+  if(type === 'privacy'){
+    content = '<h3 style="color:var(--acc);margin-bottom:12px;font-size:18px">Data Sanitization &amp; Privacy Policy</h3>'+
+      '<p><b>1. Ephemeral Client-Side Processing:</b> ChemSpace executes all calculations, quantum wavefunctions, Slater rules, and SMILES distance-geometry relaxations directly within the local browser runtime.</p>'+
+      '<p><b>2. Zero Third-Party Analytics:</b> No external telemetry, tracking cookies, or tracking beacons are used. Your session data resides solely in local ephemeral memory.</p>'+
+      '<p><b>3. Local Report Generation:</b> PDF reports stamped with your name and register number are generated client-side using jsPDF and never transmitted to remote database servers.</p>';
+  } else {
+    content = '<h3 style="color:var(--acc2);margin-bottom:12px;font-size:18px">Terms of Service &amp; Academic License</h3>'+
+      '<p><b>1. Permitted Educational Use:</b> ChemSpace is provided under the open-source MIT License for educational exploration, academic research, and chemical simulation.</p>'+
+      '<p><b>2. Computational Approximation Notice:</b> Molecular geometries, orbital diagrams, and QSAR toxicity predictions are force-field/heuristic educational models, not experimental laboratory certifications.</p>'+
+      '<p><b>3. Limitation of Liability:</b> The developers assume no liability for experimental errors resulting from the use of reference values in laboratory titrations.</p>';
+  }
+  document.getElementById('legalSheet').innerHTML = content + '<div style="margin-top:20px;text-align:right"><button class="btn p" onclick="closeLegalModal()">Acknowledge &amp; Close</button></div>';
+  document.getElementById('legalModal').classList.add('on');
+}
+
+function closeLegalModal(){
+  ChemAudio.click();
+  document.getElementById('legalModal').classList.remove('on');
+}
+document.getElementById('legalModal').onclick = function(e){ if(e.target === this) closeLegalModal(); };
+
+/* ============ 5. ELEMENT DATA ============ */
 var RAW="H,Hydrogen,1.008,1,nm,2.20,53,13.60|He,Helium,4.0026,18,ng,-,31,24.59|Li,Lithium,6.94,1,am,0.98,167,5.39|Be,Beryllium,9.0122,2,ae,1.57,112,9.32|B,Boron,10.81,13,ml,2.04,87,8.30|C,Carbon,12.011,14,nm,2.55,67,11.26|N,Nitrogen,14.007,15,nm,3.04,56,14.53|O,Oxygen,15.999,16,nm,3.44,48,13.62|F,Fluorine,18.998,17,hal,3.98,42,17.42|Ne,Neon,20.180,18,ng,-,38,21.56|Na,Sodium,22.990,1,am,0.93,190,5.14|Mg,Magnesium,24.305,2,ae,1.31,145,7.65|Al,Aluminium,26.982,13,ptm,1.61,118,5.99|Si,Silicon,28.085,14,ml,1.90,111,8.15|P,Phosphorus,30.974,15,nm,2.19,98,10.49|S,Sulfur,32.06,16,nm,2.58,88,10.36|Cl,Chlorine,35.45,17,hal,3.16,79,12.97|Ar,Argon,39.948,18,ng,-,71,15.76|K,Potassium,39.098,1,am,0.82,243,4.34|Ca,Calcium,40.078,2,ae,1.00,194,6.11|Sc,Scandium,44.956,3,tm,1.36,184,6.56|Ti,Titanium,47.867,4,tm,1.54,176,6.83|V,Vanadium,50.942,5,tm,1.63,171,6.75|Cr,Chromium,51.996,6,tm,1.66,166,6.77|Mn,Manganese,54.938,7,tm,1.55,161,7.43|Fe,Iron,55.845,8,tm,1.83,156,7.90|Co,Cobalt,58.933,9,tm,1.88,152,7.88|Ni,Nickel,58.693,10,tm,1.91,149,7.64|Cu,Copper,63.546,11,tm,1.90,145,7.73|Zn,Zinc,65.38,12,tm,1.65,142,9.39|Ga,Gallium,69.723,13,ptm,1.81,136,6.00|Ge,Germanium,72.630,14,ml,2.01,125,7.90|As,Arsenic,74.922,15,ml,2.18,114,9.79|Se,Selenium,78.971,16,nm,2.55,103,9.75|Br,Bromine,79.904,17,hal,2.96,94,11.81|Kr,Krypton,83.798,18,ng,3.00,88,14.00|Rb,Rubidium,85.468,1,am,0.82,265,4.18|Sr,Strontium,87.62,2,ae,0.95,219,5.69|Y,Yttrium,88.906,3,tm,1.22,212,6.22|Zr,Zirconium,91.224,4,tm,1.33,206,6.63|Nb,Niobium,92.906,5,tm,1.60,198,6.76|Mo,Molybdenum,95.95,6,tm,2.16,190,7.09|Tc,Technetium,[98],7,tm,1.90,183,7.28|Ru,Ruthenium,101.07,8,tm,2.20,178,7.36|Rh,Rhodium,102.91,9,tm,2.28,173,7.46|Pd,Palladium,106.42,10,tm,2.20,169,8.34|Ag,Silver,107.87,11,tm,1.93,165,7.58|Cd,Cadmium,112.41,12,tm,1.69,161,8.99|In,Indium,114.82,13,ptm,1.78,156,5.79|Sn,Tin,118.71,14,ptm,1.96,145,7.34|Sb,Antimony,121.76,15,ml,2.05,133,8.61|Te,Tellurium,127.60,16,ml,2.10,123,9.01|I,Iodine,126.90,17,hal,2.66,115,10.45|Xe,Xenon,131.29,18,ng,2.60,108,12.13|Cs,Caesium,132.91,1,am,0.79,298,3.89|Ba,Barium,137.33,2,ae,0.89,253,5.21|La,Lanthanum,138.91,0,lan,1.10,195,5.58|Ce,Cerium,140.12,0,lan,1.12,185,5.54|Pr,Praseodymium,140.91,0,lan,1.13,185,5.47|Nd,Neodymium,144.24,0,lan,1.14,184,5.53|Pm,Promethium,[145],0,lan,1.13,183,5.58|Sm,Samarium,150.36,0,lan,1.17,180,5.64|Eu,Europium,151.96,0,lan,1.20,180,5.67|Gd,Gadolinium,157.25,0,lan,1.20,178,6.15|Tb,Terbium,158.93,0,lan,1.22,177,5.86|Dy,Dysprosium,162.50,0,lan,1.23,175,5.94|Ho,Holmium,164.93,0,lan,1.24,174,6.02|Er,Erbium,167.26,0,lan,1.24,173,6.11|Tm,Thulium,168.93,0,lan,1.25,172,6.18|Yb,Ytterbium,173.05,0,lan,1.10,171,6.25|Lu,Lutetium,174.97,0,lan,1.27,170,5.43|Hf,Hafnium,178.49,4,tm,1.30,208,6.83|Ta,Tantalum,180.95,5,tm,1.50,200,7.55|W,Tungsten,183.84,6,tm,2.36,193,7.86|Re,Rhenium,186.21,7,tm,1.90,188,7.83|Os,Osmium,190.23,8,tm,2.20,185,8.44|Ir,Iridium,192.22,9,tm,2.20,180,8.97|Pt,Platinum,195.08,10,tm,2.28,177,8.96|Au,Gold,196.97,11,tm,2.54,174,9.23|Hg,Mercury,200.59,12,tm,2.00,171,10.44|Tl,Thallium,204.38,13,ptm,1.62,156,6.11|Pb,Lead,207.2,14,ptm,2.33,154,7.42|Bi,Bismuth,208.98,15,ptm,2.02,143,7.29|Po,Polonium,[209],16,ml,2.00,135,8.41|At,Astatine,[210],17,hal,2.20,127,9.32|Rn,Radon,[222],18,ng,-,120,10.75|Fr,Francium,[223],1,am,0.70,260,4.07|Ra,Radium,[226],2,ae,0.90,215,5.28|Ac,Actinium,[227],0,act,1.10,195,5.17|Th,Thorium,232.04,0,act,1.30,180,6.31|Pa,Protactinium,231.04,0,act,1.50,180,5.89|U,Uranium,238.03,0,act,1.38,175,6.19|Np,Neptunium,[237],0,act,1.36,175,6.27|Pu,Plutonium,[244],0,act,1.28,175,6.03|Am,Americium,[243],0,act,1.30,175,5.97|Cm,Curium,[247],0,act,1.30,176,5.99|Bk,Berkelium,[247],0,act,1.30,170,6.20|Cf,Californium,[251],0,act,1.30,186,6.28|Es,Einsteinium,[252],0,act,1.30,186,6.42|Fm,Fermium,[257],0,act,1.30,186,6.50|Md,Mendelevium,[258],0,act,1.30,186,6.58|No,Nobelium,[259],0,act,1.30,186,6.65|Lr,Lawrencium,[266],0,act,1.30,186,4.96|Rf,Rutherfordium,[267],4,tm,-,157,6.01|Db,Dubnium,[268],5,tm,-,149,-|Sg,Seaborgium,[269],6,tm,-,143,-|Bh,Bohrium,[270],7,tm,-,141,-|Hs,Hassium,[269],8,tm,-,134,-|Mt,Meitnerium,[278],9,tm,-,129,-|Ds,Darmstadtium,[281],10,tm,-,128,-|Rg,Roentgenium,[282],11,tm,-,121,-|Cn,Copernicium,[285],12,tm,-,122,-|Nh,Nihonium,[286],13,ptm,-,136,-|Fl,Flerovium,[289],14,ptm,-,143,-|Mc,Moscovium,[290],15,ptm,-,162,-|Lv,Livermorium,[293],16,ptm,-,175,-|Ts,Tennessine,[294],17,hal,-,165,-|Og,Oganesson,[294],18,ng,-,157,-";
 var CAT={am:['Alkali metal','#ff7b7b'],ae:['Alkaline earth','#ffb277'],tm:['Transition metal','#6fdcff'],ptm:['Post-transition','#9bb8ff'],ml:['Metalloid','#6fffc8'],nm:['Nonmetal','#b7ff7d'],hal:['Halogen','#ffe27b'],ng:['Noble gas','#d79bff'],lan:['Lanthanide','#ff9be0'],act:['Actinide','#ff9bb0']};
 var EL=RAW.split('|').map(function(r,i){var p=r.split(',');
@@ -577,9 +989,10 @@ function drawLegend(){
   Object.keys(CAT).forEach(function(k){
     var b=document.createElement('button');b.className='lg'+(hidden[k]?' off':'');
     b.innerHTML='<i style="background:'+CAT[k][1]+'"></i>'+CAT[k][0];
-    b.onclick=function(){hidden[k]=!hidden[k];drawLegend();drawPT();};
+    b.onclick=function(){ChemAudio.click();hidden[k]=!hidden[k];drawLegend();drawPT();};
     l.appendChild(b);});}
 function showEl(z){
+  ChemAudio.elementTone(z);
   var e=byZ(z),c=config(z),ze=zeff(z,outerOrb(z));
   var h='<h2 style="color:'+e.color+';margin-bottom:2px">'+e.name+'</h2>'+
    '<div style="display:flex;align-items:center;gap:12px;margin-bottom:8px"><span class="big" style="font-size:44px">'+e.sym+'</span>'+
@@ -596,11 +1009,11 @@ function showEl(z){
    '<h3>Electronic configuration</h3><div class="eq">'+cfgStr(c.sub)+'</div><div class="eq">'+shortCfg(z)+'</div>'+
    (c.exc?'<p class="muted"><b style="color:var(--warn)">Exception:</b> '+c.why+'</p>':'')+
    '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">'+
-   '<button class="btn" onclick="closeModal();pickZeff('+z+')">Z_eff steps</button>'+
-   '<button class="btn" onclick="closeModal();pickCfg('+z+')">Orbital diagram</button>'+
-   '<button class="btn" onclick="closeModal();pickLab(\''+e.sym+'\')">View in 3D lab</button></div>';
+   '<button class="btn" onclick="ChemAudio.click();closeModal();pickZeff('+z+')">Z_eff steps</button>'+
+   '<button class="btn" onclick="ChemAudio.click();closeModal();pickCfg('+z+')">Orbital diagram</button>'+
+   '<button class="btn" onclick="ChemAudio.click();closeModal();pickLab(\''+e.sym+'\')">View in 3D lab</button></div>';
   document.getElementById('sheet').innerHTML=h;document.getElementById('modal').classList.add('on');}
-function closeModal(){document.getElementById('modal').classList.remove('on');}
+function closeModal(){ChemAudio.click();document.getElementById('modal').classList.remove('on');}
 document.getElementById('modal').onclick=function(ev){if(ev.target===this)closeModal();};
 addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
 document.getElementById('ptq').oninput=drawPT;
@@ -636,8 +1049,8 @@ function drawTrend(){
   var dots=pts.map(function(o,i){return '<circle cx="'+X(i).toFixed(1)+'" cy="'+Y(o.v).toFixed(1)+'" r="4.5" fill="#04060f" stroke="url(#lg)" stroke-width="2.5"><title>'+byZ(o.z).name+': '+o.v+'</title></circle>'+
     '<text x="'+X(i).toFixed(1)+'" y="'+(H-PB+18)+'" text-anchor="middle" fill="#93a0c9" font-size="11" font-family="JetBrains Mono,monospace">'+o.sym+'</text>';}).join('');
   document.getElementById('trChart').innerHTML='<svg viewBox="0 0 '+W+' '+H+'" style="width:100%;height:auto;overflow:visible">'+
-    '<defs><linearGradient id="lg" x1="0" x2="1"><stop offset="0" stop-color="#63e6ff"/><stop offset="1" stop-color="#ff8ad4"/></linearGradient>'+
-    '<linearGradient id="ag" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#63e6ff" stop-opacity=".28"/><stop offset="1" stop-color="#63e6ff" stop-opacity="0"/></linearGradient></defs>'+
+    '<defs><linearGradient id="lg" x1="0" x2="1"><stop offset="0" stop-color="#00F0FF"/><stop offset="1" stop-color="#00FF9D"/></linearGradient>'+
+    '<linearGradient id="ag" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#00F0FF" stop-opacity=".28"/><stop offset="1" stop-color="#00F0FF" stop-opacity="0"/></linearGradient></defs>'+
     g+'<path d="'+area+'" fill="url(#ag)"/><path d="'+path+'" fill="none" stroke="url(#lg)" stroke-width="2.6" stroke-linejoin="round"/>'+dots+'</svg>';
   var dir=pts[pts.length-1].v>pts[0].v?'increases':'decreases';
   var pname={radius:'Atomic radius',ie:'Ionisation energy',en:'Electronegativity',zeff:'Slater Z_eff'}[p];
@@ -849,7 +1262,7 @@ function load3D(cb){
 function fallbackDraw(mol){
   var el=document.getElementById('viewer'),w=el.clientWidth||600,h=el.clientHeight||380;
   var A=mol.atoms,sc=Math.min(w,h)/(2.4*Math.max(2,Math.max.apply(null,A.map(function(a){return Math.hypot(a.p[0],a.p[1],a.p[2]);}))+1));
-  var col={H:'#e6ecff',C:'#5b6b8c',N:'#5b7dff',O:'#ff6b6b',S:'#ffd166',Cl:'#6fffc8',Br:'#c97a4a',F:'#8affd1',P:'#ff9b4a',Na:'#a78bfa',I:'#b07bff'};
+  var col={H:'#e6ecff',C:'#5b6b8c',N:'#5b7dff',O:'#ff6b6b',S:'#ffd166',Cl:'#6fffc8',Br:'#c97a4a',F:'#8affd1',P:'#ff9b4a',Na:'#70a1ff',I:'#00d2d3'};
   var pts=A.map(function(a){return [w/2+a.p[0]*sc,h/2-a.p[1]*sc,a.p[2]];});
   var lines=mol.bonds.map(function(b){return '<line x1="'+pts[b.a][0]+'" y1="'+pts[b.a][1]+'" x2="'+pts[b.b][0]+'" y2="'+pts[b.b][1]+'" stroke="#8fa3cc" stroke-width="5" stroke-linecap="round" opacity=".8"/>';}).join('');
   var idxs=A.map(function(a,i){return i;}).sort(function(i,j){return pts[i][2]-pts[j][2];});
@@ -1061,9 +1474,9 @@ function pib(){
   for(var i=0;i<=240;i++){var x=i/240*L,y=Math.sqrt(2/L)*Math.sin(n*Math.PI*x/L);psi.push([x,y]);pr.push([x,y*y]);}
   var E=function(k){return 0.37603*k*k/(L*L);};
   var lad='';for(var k=6;k>=1;k--){lad+='<tr'+(k===n?' style="color:var(--acc)"':'')+'><td class="n">'+k+'</td><td class="n">'+E(k).toFixed(3)+'</td><td class="n">'+(k>1?(E(k)-E(k-1)).toFixed(3):'—')+'</td><td class="n">'+(k-1)+'</td></tr>';}
-  el('pibOut').innerHTML=
+   el('pibOut').innerHTML=
    kvbox([['Energy Eₙ',E(n).toFixed(3)+' eV'],['Nodes (interior)',(n-1)],['Wavelength λ',(2*L/n).toFixed(3)+' nm'],['ΔE to n+1',(E(n+1)-E(n)).toFixed(3)+' eV']])+
-   mkPlot([{n:'ψₙ(x)',c:'#63e6ff',pts:psi},{n:'|ψₙ(x)|² (probability)',c:'#ff8ad4',pts:pr}],{xl:'x / nm',h:250})+
+   mkPlot([{n:'ψₙ(x)',c:'#00F0FF',pts:psi},{n:'|ψₙ(x)|² (probability)',c:'#00FF9D',pts:pr}],{xl:'x / nm',h:250})+
    '<div style="overflow-x:auto"><table class="mini"><thead><tr><th>n</th><th>Eₙ (eV)</th><th>ΔE from n−1 (eV)</th><th>Nodes</th></tr></thead><tbody>'+lad+'</tbody></table></div>'+
    '<p class="muted">Energy is quantised and goes as n², and as 1/L² — squeeze the box and the levels fly apart. That 1/L² dependence is the whole reason confinement raises energy, and it is the same logic behind quantum dots and conjugated dye absorption.</p>';
 }
@@ -1083,7 +1496,7 @@ function polar(l){
   return '<svg viewBox="0 0 '+S+' '+S+'" style="width:210px;max-width:100%;height:auto">'+
    '<line x1="'+c+'" y1="6" x2="'+c+'" y2="'+(S-6)+'" stroke="rgba(150,175,255,.25)"/>'+
    '<line x1="6" y1="'+c+'" x2="'+(S-6)+'" y2="'+c+'" stroke="rgba(150,175,255,.25)"/>'+
-   '<path d="'+d+'" fill="rgba(167,139,250,.25)" stroke="#a78bfa" stroke-width="2"/>'+
+   '<path d="'+d+'" fill="rgba(0,240,255,.20)" stroke="#00F0FF" stroke-width="2"/>'+
    '<text x="'+(c+5)+'" y="14" fill="#67739b" font-size="10">z</text></svg>';
 }
 function hAtom(){
@@ -1124,7 +1537,7 @@ function moDraw(){
     var y=30+(n-1-i)*sp,g=L[1],e=fill[i],w=g===2?60:96,gap=g===2?18:0;
     for(var k=0;k<g;k++){
       var x=W/2-(g===2?(w+gap)/2:w/2)+k*(w+gap);
-      svg+='<line x1="'+x+'" y1="'+y+'" x2="'+(x+w)+'" y2="'+y+'" stroke="'+(L[2]?'#63e6ff':'#ff8ad4')+'" stroke-width="2.5"/>';
+      svg+='<line x1="'+x+'" y1="'+y+'" x2="'+(x+w)+'" y2="'+y+'" stroke="'+(L[2]?'#00F0FF':'#00FF9D')+'" stroke-width="2.5"/>';
       var ke=e<=g?(k<e?1:0):(k<2*g-e?2:1);
       if(e>g)ke=(k<e-g?2:1);
       if(e<=g)ke=(k<e?1:0);
@@ -1161,7 +1574,7 @@ function huckel(){
   xs.forEach(function(x,q){var y=Y(x),key=x.toFixed(6),slot=seen[key]||0;seen[key]=slot+1;
     var wd=78,gp=12,tot=xs.filter(function(z){return Math.abs(z-x)<1e-9;}).length;
     var x0=W/2-(tot*wd+(tot-1)*gp)/2+slot*(wd+gp);
-    s+='<line x1="'+x0+'" y1="'+y+'" x2="'+(x0+wd)+'" y2="'+y+'" stroke="'+(x>1e-9?'#63e6ff':(x<-1e-9?'#ff8ad4':'#ffd166'))+'" stroke-width="2.5"/>';
+    s+='<line x1="'+x0+'" y1="'+y+'" x2="'+(x0+wd)+'" y2="'+y+'" stroke="'+(x>1e-9?'#00F0FF':(x<-1e-9?'#00FF9D':'#ffd166'))+'" stroke-width="2.5"/>';
     for(var m=0;m<occ[q];m++){var ax=x0+wd/2+(m?8:-8);
       s+='<path d="M'+ax+' '+(y+9)+' L'+ax+' '+(y-9)+'" stroke="#e9edff" stroke-width="1.8"/>';}
     if(slot===0)s+='<text x="34" y="'+(y+4)+'" text-anchor="end" fill="#93a0c9" font-size="11" font-family="JetBrains Mono,monospace">α'+(x>=0?'+':'−')+Math.abs(x).toFixed(3)+'β</text>';});
