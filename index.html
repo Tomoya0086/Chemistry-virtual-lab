@@ -3,24 +3,22 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Cheminformatics Virtual Laboratory | SRM Institute of Science &amp; Technology</title>
+<title>Cheminformatics Virtual Laboratory | 2D &amp; 3D Chemical Structures | SRM IST</title>
 
-<!-- SEO & Meta Descriptions (Rule 2) -->
-<meta name="description" content="Cheminformatics Virtual Laboratory and 3D Molecular Simulation Workstation. Developed for SRM Institute of Science and Technology, Division of Chemistry, with Tomoya Okazaki. Calculate 18 molecular descriptors, visualize 2D/3D chemical structures, compute Slater Zeff, and export PDF laboratory reports.">
-<meta name="keywords" content="cheminformatics, SRM Institute of Science and Technology, molecular visualization, 3D molecules, SMILES, Lipinski rule, TPSA, LogP, periodic table, Slater rules, Dr. R. Subramanian, Tomoya Okazaki">
-<meta name="author" content="SRM Institute of Science and Technology &amp; Tomoya Okazaki">
+<!-- SEO & Meta Descriptions -->
+<meta name="description" content="Cheminformatics Virtual Laboratory: Representation of 2D and 3D Chemical Structures. Developed for the Division of Chemistry at SRM Institute of Science and Technology, Tiruchirappalli, with Tomoya Okazaki. Convert SMILES, visualize 3D molecular models, evaluate 18 descriptors, and export certified PDF reports.">
+<meta name="keywords" content="cheminformatics, 2D chemical structure, 3D molecular visualization, SMILES, SRM Institute of Science and Technology, Dr. R. Subramanian, Tomoya Okazaki, Lipinski rule, TPSA, LogP, molecular descriptors">
+<meta name="author" content="Dr. R. Subramanian &amp; Tomoya Okazaki">
 <meta name="theme-color" content="#030712">
 
-<!-- Open Graph / Social Media Cards -->
+<!-- Open Graph / Social Media -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="Cheminformatics Virtual Laboratory | SRM Institute of Science &amp; Technology">
-<meta property="og:description" content="Interactive 2D/3D chemical structure simulation, molecular descriptors, and quantum chemistry workstation.">
+<meta property="og:title" content="Cheminformatics Virtual Laboratory | SRM IST &times; Tomoya Okazaki">
+<meta property="og:description" content="Interactive 2D &amp; 3D Chemical Structure Simulation, 18 Molecular Descriptors, and Certified Student Reports.">
 <meta property="og:image" content="assets/srm_logo.jpeg">
 <meta property="twitter:card" content="summary_large_image">
-<meta property="twitter:title" content="Cheminformatics Virtual Laboratory - SRM IST">
-<meta property="twitter:description" content="Interactive 2D/3D chemical structures, molecular properties calculation, and laboratory reports.">
 
-<!-- Embedded Crisp SVG Favicon (Rule 3) -->
+<!-- Crisp Embedded SVG Favicon -->
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300f0ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10 2v7.31M14 2v7.31M8.5 2h7M14 9.3a6.5 6.5 0 1 1-4 0'/%3E%3Ccircle cx='12' cy='15' r='1.5' fill='%2300ff9d'/%3E%3C/svg%3E">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -33,18 +31,18 @@
    ========================================================================== */
 :root {
   --bg: #030712;
-  --bg-deep: #02040a;
-  --panel: rgba(15, 23, 42, 0.72);
-  --panel-hover: rgba(30, 41, 59, 0.85);
-  --panel-active: rgba(15, 23, 42, 0.95);
+  --bg-deep: #020409;
+  --panel: rgba(15, 23, 42, 0.75);
+  --panel-hover: rgba(30, 41, 59, 0.9);
   --border: rgba(0, 240, 255, 0.16);
-  --border-focus: rgba(0, 240, 255, 0.55);
+  --border-glow: rgba(0, 240, 255, 0.45);
   --ink: #f8fafc;
   --mut: #94a3b8;
   --dim: #64748b;
   --acc: #00f0ff;      /* Electric Cyan */
   --acc-glow: rgba(0, 240, 255, 0.35);
   --acc2: #00ff9d;     /* Quantum Emerald */
+  --acc2-glow: rgba(0, 255, 157, 0.35);
   --acc3: #38bdf8;     /* Sky Titanium */
   --warn: #ffd166;
   --bad: #ff4d6d;
@@ -63,7 +61,6 @@
 }
 
 html {
-  scroll-behavior: auto; /* Handled smoothly by our Momentum Engine */
   background: var(--bg);
   color: var(--ink);
   font-family: var(--font-main);
@@ -79,16 +76,16 @@ body {
 }
 
 /* ==========================================================================
-   SCROLL ENGINE & JITTER-STYLE VELOCITY KINETICS
+   TOP LASER BEAM & KINETIC SCROLL PROGRESS
    ========================================================================== */
-#scrollProgress {
+#scrollLaser {
   position: fixed;
   top: 0;
   left: 0;
   height: 3px;
   width: 0%;
-  background: linear-gradient(90deg, var(--acc), var(--acc2));
-  box-shadow: 0 0 14px var(--acc);
+  background: linear-gradient(90deg, var(--acc), var(--acc2), var(--acc3));
+  box-shadow: 0 0 16px var(--acc), 0 0 8px var(--acc2);
   z-index: 1000;
   pointer-events: none;
   transition: width 0.05s ease-out;
@@ -96,40 +93,42 @@ body {
 
 #telemetryHud {
   position: fixed;
-  bottom: 18px;
+  bottom: 20px;
   right: 20px;
   z-index: 90;
   font-family: var(--mono);
   font-size: 11px;
   padding: 8px 14px;
-  background: rgba(3, 7, 18, 0.9);
+  background: rgba(3, 7, 18, 0.92);
   border: 1px solid var(--border);
   border-radius: var(--r-btn);
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(14px);
   color: var(--acc);
   display: flex;
   align-items: center;
   gap: 12px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.75);
   pointer-events: none;
 }
 
-.hud-dot {
+.hud-pulse {
   width: 7px;
   height: 7px;
   border-radius: 50%;
   background: var(--acc2);
   box-shadow: 0 0 8px var(--acc2);
-  animation: pulse 1.5s infinite;
+  animation: pulse 1.6s infinite alternate;
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.4; transform: scale(0.85); }
+  0% { opacity: 0.3; transform: scale(0.85); }
+  100% { opacity: 1; transform: scale(1.15); }
 }
 
-/* Background Atmosphere */
-#spaceCanvas {
+/* ==========================================================================
+   INTERACTIVE MOLECULAR CANVAS BACKGROUND
+   ========================================================================== */
+#molCanvas {
   position: fixed;
   inset: 0;
   z-index: -2;
@@ -143,10 +142,10 @@ body {
   z-index: -1;
   pointer-events: none;
   background:
-    radial-gradient(50vw 45vw at 10% 15%, rgba(0, 240, 255, 0.07), transparent 70%),
-    radial-gradient(55vw 50vw at 90% 25%, rgba(0, 255, 157, 0.06), transparent 70%),
-    radial-gradient(45vw 45vw at 50% 85%, rgba(56, 189, 248, 0.05), transparent 70%);
-  filter: blur(20px);
+    radial-gradient(45vw 40vw at 12% 18%, rgba(0, 240, 255, 0.08), transparent 70%),
+    radial-gradient(50vw 45vw at 88% 28%, rgba(0, 255, 157, 0.07), transparent 70%),
+    radial-gradient(40vw 40vw at 50% 80%, rgba(56, 189, 248, 0.06), transparent 70%);
+  filter: blur(25px);
 }
 
 .wrap {
@@ -156,12 +155,12 @@ body {
 }
 
 /* ==========================================================================
-   INSTITUTIONAL SRM & TOMOYA OKAZAKI BANNER & NAVIGATION
+   INSTITUTIONAL HEADER - SRM IST & TOMOYA OKAZAKI
    ========================================================================== */
 .inst-bar {
   background: #020617;
   border-bottom: 1px solid rgba(0, 240, 255, 0.12);
-  padding: 6px 20px;
+  padding: 7px 20px;
   font-size: 12px;
   font-family: var(--mono);
   color: var(--mut);
@@ -180,12 +179,12 @@ body {
 .inst-tag {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   color: var(--ink);
 }
 
 .inst-tag img {
-  height: 20px;
+  height: 22px;
   width: auto;
   border-radius: 2px;
 }
@@ -193,7 +192,7 @@ body {
 .inst-status {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
 }
 
 .status-badge {
@@ -202,7 +201,7 @@ body {
   gap: 6px;
   padding: 2px 8px;
   border-radius: 4px;
-  background: rgba(0, 255, 157, 0.1);
+  background: rgba(0, 255, 157, 0.08);
   border: 1px solid rgba(0, 255, 157, 0.3);
   color: var(--acc2);
   font-size: 11px;
@@ -232,18 +231,12 @@ header {
   text-decoration: none;
 }
 
-.brand-logo-wrap {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
 .tomoya-avatar {
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
   border-radius: 6px;
   border: 1.5px solid var(--acc);
-  box-shadow: 0 0 12px var(--acc-glow);
+  box-shadow: 0 0 14px var(--acc-glow);
   object-fit: cover;
   transition: transform 0.25s var(--ease);
 }
@@ -274,7 +267,7 @@ nav.links {
 }
 
 nav.links a {
-  padding: 8px 12px;
+  padding: 8px 13px;
   border-radius: var(--r-btn);
   color: var(--mut);
   text-decoration: none;
@@ -282,18 +275,17 @@ nav.links a {
   font-weight: 500;
   border: 1px solid transparent;
   transition: all 0.2s var(--ease);
-  position: relative;
 }
 
 nav.links a:hover {
   color: var(--ink);
   background: var(--panel);
   border-color: var(--border);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
 }
 
 nav.links a.active {
-  color: #030712;
+  color: #020617;
   background: linear-gradient(135deg, var(--acc), var(--acc2));
   font-weight: 700;
   box-shadow: 0 0 16px var(--acc-glow);
@@ -305,7 +297,6 @@ nav.links a.active {
   gap: 10px;
 }
 
-/* Audio Toggle Button */
 .ctrl-btn {
   background: var(--panel);
   border: 1px solid var(--border);
@@ -342,7 +333,7 @@ nav.links a.active {
 .mobile-drawer {
   position: fixed;
   inset: 0;
-  background: rgba(2, 4, 10, 0.95);
+  background: rgba(2, 4, 10, 0.96);
   backdrop-filter: blur(20px);
   z-index: 150;
   display: none;
@@ -361,7 +352,7 @@ nav.links a.active {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 30px;
+  margin-bottom: 24px;
   padding-bottom: 16px;
   border-bottom: 1px solid var(--border);
 }
@@ -373,8 +364,8 @@ nav.links a.active {
 }
 
 .mobile-nav-links a {
-  font-size: 18px;
-  padding: 12px;
+  font-size: 17px;
+  padding: 12px 16px;
   border-radius: var(--r-btn);
   color: var(--ink);
   text-decoration: none;
@@ -383,14 +374,14 @@ nav.links a.active {
 }
 
 /* ==========================================================================
-   BUTTONS WITH DYNAMIC HOVER SHINE & KINETIC MICRO-INTERACTIONS
+   ADVANCED MAGNETIC BUTTONS WITH ROTATING LIGHT SHEEN & CURSOR TRACKING
    ========================================================================== */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 11px 20px;
+  padding: 12px 22px;
   border-radius: var(--r-btn);
   border: 1px solid var(--border);
   background: var(--panel);
@@ -405,15 +396,32 @@ nav.links a.active {
   text-decoration: none;
 }
 
-/* Button Kinetic Light Sheen Sweep */
+/* Dynamic Radial Glow following mouse */
+.btn .btn-glow {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  background: radial-gradient(circle, rgba(0, 240, 255, 0.45) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.25s var(--ease);
+}
+
+.btn:hover .btn-glow {
+  opacity: 1;
+}
+
+/* Kinetic Light Sheen Sweep */
 .btn::after {
   content: "";
   position: absolute;
-  top: -50%;
-  left: -100%;
-  width: 60%;
-  height: 200%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+  top: -60%;
+  left: -120%;
+  width: 70%;
+  height: 220%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
   transform: rotate(25deg);
   pointer-events: none;
   transition: none;
@@ -423,12 +431,12 @@ nav.links a.active {
   background: var(--panel-hover);
   border-color: var(--acc);
   transform: translateY(-3px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 16px var(--acc-glow);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.6), 0 0 20px var(--acc-glow);
 }
 
 .btn:hover::after {
-  left: 200%;
-  transition: left 0.65s var(--ease);
+  left: 220%;
+  transition: left 0.7s var(--ease);
 }
 
 .btn:active {
@@ -443,51 +451,72 @@ nav.links a.active {
 }
 
 .btn.primary:hover {
-  box-shadow: 0 10px 30px rgba(0, 240, 255, 0.4), 0 0 20px var(--acc2);
+  box-shadow: 0 12px 34px rgba(0, 240, 255, 0.45), 0 0 24px var(--acc2-glow);
 }
 
 .btn.sm {
-  padding: 6px 12px;
+  padding: 6px 14px;
   font-size: 12px;
 }
 
 /* ==========================================================================
-   CARDS WITH 3D PERSPECTIVE PITCH & JITTER-STYLE SCROLL ENTRANCE
+   CARDS WITH 3D PERSPECTIVE PITCH & JITTER-STYLE KINETICS
    ========================================================================== */
 .card {
   background: var(--panel);
   border: 1px solid var(--border);
   border-radius: var(--r);
-  padding: 24px;
+  padding: 26px;
   backdrop-filter: blur(14px);
   position: relative;
-  transition: transform 0.3s var(--ease), border-color 0.3s, box-shadow 0.3s;
+  transition: transform 0.32s var(--ease), border-color 0.32s, box-shadow 0.32s;
   transform-style: preserve-3d;
 }
 
 .card:hover {
-  border-color: rgba(0, 240, 255, 0.45);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7), 0 0 24px rgba(0, 240, 255, 0.12);
+  border-color: var(--border-glow);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.75), 0 0 26px rgba(0, 240, 255, 0.14);
   transform: translateY(-4px);
 }
 
-/* Scroll-driven 3D Kinetic Elements */
+/* Jitter-inspired Masked Kinetic Typography */
+.word-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+
+.word-inner {
+  display: inline-block;
+  transform: translateY(115%);
+  opacity: 0;
+  transition: transform 0.75s var(--ease), opacity 0.75s var(--ease);
+}
+
+.k-reveal.in-view .word-inner {
+  transform: translateY(0%);
+  opacity: 1;
+}
+
+/* Staggered Child Reveal Elements */
 .k-reveal {
   opacity: 0;
-  transform: translateY(44px) scale(0.97) rotateX(4deg);
+  transform: translateY(40px) scale(0.96) rotateX(4deg);
   transform-origin: top center;
-  transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
+  transition: opacity 0.8s var(--ease), transform 0.8s var(--ease), filter 0.8s var(--ease);
+  filter: blur(6px);
 }
 
 .k-reveal.in-view {
   opacity: 1;
   transform: none;
+  filter: blur(0px);
 }
 
 /* Grid Layouts */
 .grid {
   display: grid;
-  gap: 18px;
+  gap: 20px;
 }
 
 .g2 { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
@@ -498,7 +527,7 @@ nav.links a.active {
    HERO BLOCK - STORYTELLING & TELEMETRY STRIP
    ========================================================================== */
 .hero {
-  padding: 80px 0 60px;
+  padding: 85px 0 65px;
   position: relative;
 }
 
@@ -528,16 +557,16 @@ nav.links a.active {
 .badge.srm-badge {
   color: var(--acc2);
   border-color: rgba(0, 255, 157, 0.3);
-  background: rgba(0, 255, 157, 0.06);
+  background: rgba(0, 255, 157, 0.08);
 }
 
 .hero h1 {
-  font-size: clamp(34px, 5.5vw, 68px);
+  font-size: clamp(34px, 5.2vw, 66px);
   font-weight: 700;
-  line-height: 1.1;
+  line-height: 1.12;
   letter-spacing: -0.03em;
-  margin-bottom: 20px;
-  background: linear-gradient(120deg, #ffffff 20%, var(--acc) 60%, var(--acc2) 90%);
+  margin-bottom: 22px;
+  background: linear-gradient(120deg, #ffffff 15%, var(--acc) 55%, var(--acc2) 85%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -546,8 +575,8 @@ nav.links a.active {
 .hero p {
   font-size: clamp(16px, 1.8vw, 20px);
   color: var(--mut);
-  max-width: 780px;
-  margin-bottom: 32px;
+  max-width: 800px;
+  margin-bottom: 34px;
 }
 
 .hero-actions {
@@ -555,13 +584,13 @@ nav.links a.active {
   align-items: center;
   gap: 14px;
   flex-wrap: wrap;
-  margin-bottom: 40px;
+  margin-bottom: 44px;
 }
 
 .telemetry-strip {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 14px;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 16px;
   margin-top: 10px;
 }
 
@@ -569,7 +598,13 @@ nav.links a.active {
   background: var(--panel);
   border: 1px solid var(--border);
   border-radius: var(--r-btn);
-  padding: 14px 18px;
+  padding: 16px 20px;
+  transition: transform 0.25s var(--ease), border-color 0.25s;
+}
+
+.tele-item:hover {
+  transform: translateY(-3px);
+  border-color: var(--acc);
 }
 
 .tele-val {
@@ -590,13 +625,13 @@ nav.links a.active {
 
 /* Section Headings */
 section {
-  padding: 80px 0;
+  padding: 85px 0;
   scroll-margin-top: 80px;
 }
 
 .sechead {
-  margin-bottom: 32px;
-  max-width: 820px;
+  margin-bottom: 34px;
+  max-width: 840px;
 }
 
 .kicker {
@@ -632,8 +667,8 @@ section {
 
 input, select {
   width: 100%;
-  padding: 12px 16px;
-  background: rgba(6, 10, 22, 0.85);
+  padding: 13px 18px;
+  background: rgba(6, 10, 22, 0.88);
   border: 1px solid var(--border);
   border-radius: var(--r-btn);
   color: var(--ink);
@@ -652,11 +687,11 @@ input:focus, select:focus {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
-  margin-bottom: 22px;
+  margin-bottom: 24px;
 }
 
 .preset-chip {
-  padding: 6px 14px;
+  padding: 7px 15px;
   background: var(--panel);
   border: 1px solid var(--border);
   border-radius: var(--r-btn);
@@ -685,7 +720,7 @@ input:focus, select:focus {
 .dual-canvas-grid {
   display: grid;
   grid-template-columns: 1fr 1.35fr;
-  gap: 20px;
+  gap: 22px;
 }
 
 @media (max-width: 900px) {
@@ -696,7 +731,7 @@ input:focus, select:focus {
 
 .viewer-box {
   width: 100%;
-  height: 480px;
+  height: 490px;
   border-radius: var(--r);
   border: 1px solid var(--border);
   background: radial-gradient(circle at 50% 50%, rgba(0, 240, 255, 0.04), rgba(2, 4, 10, 0.95));
@@ -722,19 +757,19 @@ input:focus, select:focus {
 
 .model-select {
   width: auto;
-  padding: 6px 12px;
+  padding: 7px 14px;
   font-size: 12px;
-  background: rgba(3, 7, 18, 0.9);
+  background: rgba(3, 7, 18, 0.92);
 }
 
-/* 2D Vector Structure View */
+/* 2D Vector Structure View with Animated Stroke */
 .mol-2d-canvas {
   width: 100%;
-  height: 480px;
+  height: 490px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(6, 10, 22, 0.85);
+  background: rgba(6, 10, 22, 0.88);
   border-radius: var(--r);
   border: 1px solid var(--border);
   position: relative;
@@ -750,7 +785,7 @@ input:focus, select:focus {
 }
 
 .prop-table th {
-  padding: 10px 14px;
+  padding: 12px 16px;
   background: rgba(0, 240, 255, 0.08);
   color: var(--acc);
   font-family: var(--mono);
@@ -762,13 +797,13 @@ input:focus, select:focus {
 }
 
 .prop-table td {
-  padding: 10px 14px;
+  padding: 11px 16px;
   border-bottom: 1px solid rgba(0, 240, 255, 0.08);
   color: var(--ink);
 }
 
 .prop-table tr:hover td {
-  background: rgba(0, 240, 255, 0.03);
+  background: rgba(0, 240, 255, 0.035);
 }
 
 .val-col {
@@ -780,10 +815,39 @@ input:focus, select:focus {
 .desc-col {
   font-size: 12.5px;
   color: var(--mut);
-  line-height: 1.4;
+  line-height: 1.45;
 }
 
-/* Notification Banners (Rule 14 & 15) */
+/* Bond Architecture Counters */
+.bond-metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.bond-metric-card {
+  background: rgba(6, 10, 22, 0.7);
+  border: 1px solid var(--border);
+  border-radius: var(--r-btn);
+  padding: 12px 14px;
+}
+
+.bond-metric-card strong {
+  display: block;
+  font-family: var(--mono);
+  font-size: 18px;
+  color: var(--acc);
+}
+
+.bond-metric-card span {
+  font-size: 11px;
+  color: var(--dim);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Notification Banners */
 .alert-banner {
   padding: 14px 18px;
   border-radius: var(--r-btn);
@@ -808,79 +872,15 @@ input:focus, select:focus {
   color: var(--acc2);
 }
 
-/* Empty State (Rule 11) */
-.empty-state {
-  text-align: center;
-  padding: 40px 20px;
-  color: var(--dim);
+/* Theory Cards */
+.theory-card {
+  border-left: 3px solid var(--acc);
 }
 
-.empty-state svg {
-  width: 48px;
-  height: 48px;
-  stroke: var(--dim);
-  margin-bottom: 12px;
-}
-
-/* ==========================================================================
-   PERIODIC TABLE & TRENDS MODULE
-   ========================================================================== */
-.pt-scroll-wrap {
-  overflow-x: auto;
-  padding-bottom: 12px;
-}
-
-.pt-grid {
-  display: grid;
-  grid-template-columns: repeat(18, minmax(48px, 1fr));
-  gap: 4px;
-  min-width: 920px;
-}
-
-.el-cell {
-  aspect-ratio: 1;
-  border-radius: 6px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  position: relative;
-  transition: transform 0.16s var(--ease), box-shadow 0.16s, z-index 0.16s;
-  color: #020617;
-  overflow: hidden;
-}
-
-.el-cell:hover {
-  transform: translateY(-4px) scale(1.12);
-  z-index: 10;
-  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.8), 0 0 16px rgba(0, 240, 255, 0.6);
-}
-
-.el-z {
-  position: absolute;
-  top: 2px;
-  left: 4px;
-  font-family: var(--mono);
-  font-size: 9px;
-  font-weight: 700;
-  opacity: 0.75;
-}
-
-.el-sym {
-  font-size: 15px;
-  font-weight: 700;
-  line-height: 1;
-}
-
-.el-name {
-  font-size: 8px;
-  opacity: 0.8;
-  max-width: 90%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.theory-card h3 {
+  font-size: 18px;
+  color: var(--ink);
+  margin-bottom: 10px;
 }
 
 /* ==========================================================================
@@ -890,7 +890,7 @@ input:focus, select:focus {
   display: block;
   width: 100%;
   text-align: left;
-  padding: 12px 18px;
+  padding: 13px 18px;
   border-radius: var(--r-btn);
   border: 1px solid var(--border);
   background: var(--panel);
@@ -920,7 +920,7 @@ input:focus, select:focus {
 }
 
 /* ==========================================================================
-   FOOTER & COMPLIANCE (RULES 6, 17, PRIVACY, TERMS, SRM)
+   FOOTER & COMPLIANCE - ZERO PHONE NUMBER, OFFICIAL EMAILS ONLY
    ========================================================================== */
 footer {
   background: #02040a;
@@ -950,7 +950,7 @@ footer {
 .footer-brand p {
   color: var(--dim);
   font-size: 13.5px;
-  max-width: 440px;
+  max-width: 460px;
   line-height: 1.5;
 }
 
@@ -970,7 +970,7 @@ footer {
   color: var(--mut);
   text-decoration: none;
   font-size: 13px;
-  margin-bottom: 8px;
+  margin-bottom: 9px;
   transition: color 0.2s;
 }
 
@@ -990,7 +990,7 @@ footer {
   color: var(--dim);
 }
 
-/* Modal Dialogs (Rule 16: 404, Privacy, Terms) */
+/* Modals */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -1034,28 +1034,25 @@ footer {
 .modal-close:hover {
   color: var(--acc);
 }
-
-/* Utility */
-.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0; }
 </style>
 </head>
 <body>
 
-<!-- Progress Beam -->
-<div id="scrollProgress"></div>
+<!-- Laser Scroll Beam -->
+<div id="scrollLaser"></div>
 
-<!-- HUD Telemetry -->
+<!-- Telemetry HUD -->
 <div id="telemetryHud">
-  <span class="hud-dot"></span>
+  <span class="hud-pulse"></span>
   <span id="hudPct">0%</span>
   <span>|</span>
-  <span id="hudModule">VIRTUAL LAB ACTIVE</span>
+  <span id="hudModule">CHEMINFORMATICS 2D/3D LAB</span>
   <span>|</span>
-  <span id="hudApiStatus" style="color:var(--acc2)">PYTHON API: ONLINE</span>
+  <span id="hudApiStatus" style="color:var(--acc2)">PYTHON ENGINE: READY</span>
 </div>
 
 <!-- Background Canvas & Ambient Lights -->
-<canvas id="spaceCanvas"></canvas>
+<canvas id="molCanvas"></canvas>
 <div class="ambient-layer"></div>
 
 <!-- Institutional SRM Top Bar -->
@@ -1069,7 +1066,7 @@ footer {
     </div>
     <div class="inst-status">
       <span class="status-badge">SRM VIRTUAL LAB</span>
-      <span class="status-badge" style="color:var(--acc);border-color:rgba(0,240,255,0.3)">VERCEL DEPLOYMENT</span>
+      <span class="status-badge" style="color:var(--acc);border-color:rgba(0,240,255,0.3)">PYTHON 3.14 POWERED</span>
     </div>
   </div>
 </div>
@@ -1078,23 +1075,19 @@ footer {
 <header>
   <div class="wrap nav">
     <a href="#home" class="brand-group">
-      <div class="brand-logo-wrap">
-        <img src="assets/tomoya_logo.png" alt="Tomoya Okazaki Avatar" class="tomoya-avatar">
-        <div class="brand-text">
-          <h1>Cheminformatics Virtual Lab</h1>
-          <span>SRM IST &times; TOMOYA OKAZAKI</span>
-        </div>
+      <img src="assets/tomoya_logo.png" alt="Tomoya Okazaki Avatar" class="tomoya-avatar">
+      <div class="brand-text">
+        <h1>Cheminformatics Virtual Lab</h1>
+        <span>SRM IST &times; TOMOYA OKAZAKI</span>
       </div>
     </a>
 
     <nav class="links">
       <a href="#home" class="active">Overview</a>
-      <a href="#lab">3D Molecular Lab</a>
+      <a href="#theory">Theory</a>
+      <a href="#lab">2D &amp; 3D Lab</a>
       <a href="#properties">Descriptors</a>
-      <a href="#compare">Compare</a>
-      <a href="#table">Periodic Table</a>
-      <a href="#trends">Trends</a>
-      <a href="#zeff">Slater Z<sub>eff</sub></a>
+      <a href="#compare">Comparative Matrix</a>
       <a href="#quiz">Assessment</a>
       <a href="#report">Student Report</a>
     </nav>
@@ -1119,12 +1112,10 @@ footer {
   </div>
   <div class="mobile-nav-links">
     <a href="#home" onclick="toggleMobileMenu()">Overview</a>
-    <a href="#lab" onclick="toggleMobileMenu()">3D Molecular Lab</a>
+    <a href="#theory" onclick="toggleMobileMenu()">Cheminformatics Theory</a>
+    <a href="#lab" onclick="toggleMobileMenu()">2D &amp; 3D Molecular Lab</a>
     <a href="#properties" onclick="toggleMobileMenu()">Molecular Descriptors</a>
     <a href="#compare" onclick="toggleMobileMenu()">Comparative Analysis</a>
-    <a href="#table" onclick="toggleMobileMenu()">Periodic Table</a>
-    <a href="#trends" onclick="toggleMobileMenu()">Periodic Trends</a>
-    <a href="#zeff" onclick="toggleMobileMenu()">Slater Zeff Calculator</a>
     <a href="#quiz" onclick="toggleMobileMenu()">Student Assessment</a>
     <a href="#report" onclick="toggleMobileMenu()">Download PDF Report</a>
   </div>
@@ -1136,68 +1127,119 @@ footer {
     <div class="wrap">
       <div class="hero-badge-row k-reveal">
         <span class="badge srm-badge">SRM Institute of Science and Technology</span>
-        <span class="badge">Computational Chemistry &times; Python Engine</span>
-        <span class="badge" style="color:var(--acc3)">Zero-Vibe Crafted UI</span>
+        <span class="badge">Division of Chemistry &times; School of Sciences</span>
+        <span class="badge" style="color:var(--acc3)">Computational Molecular Engineering</span>
       </div>
 
-      <h1 class="k-reveal">Explore Chemical Structures<br>in 2D &amp; 3D Interactive Space</h1>
+      <h1 class="k-reveal">
+        <span class="word-mask"><span class="word-inner">Representation</span></span>
+        <span class="word-mask"><span class="word-inner">of</span></span>
+        <span class="word-mask"><span class="word-inner">2D</span></span>
+        <span class="word-mask"><span class="word-inner">&amp;</span></span>
+        <span class="word-mask"><span class="word-inner">3D</span></span>
+        <span class="word-mask"><span class="word-inner">Chemical</span></span>
+        <span class="word-mask"><span class="word-inner">Structures</span></span>
+      </h1>
       
       <p class="k-reveal">
-        A next-generation virtual laboratory for university students and researchers.
-        Convert SMILES representations into interactive 3D WebGL geometries, calculate 18 rigorous molecular descriptors,
-        evaluate Lipinski drug-likeness, and generate academic-grade PDF reports.
+        An interactive virtual laboratory designed for students and researchers.
+        Convert linear SMILES notations into dynamic 2D chemical graphs, generate 3D hardware-accelerated WebGL conformers,
+        calculate 18 quantitative molecular descriptors, and export certified PDF laboratory reports.
       </p>
 
       <div class="hero-actions k-reveal">
         <a href="#lab" class="btn primary">
-          <span>Launch 3D Molecular Lab</span>
+          <span>Launch Molecular Lab</span>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
+        <a href="#theory" class="btn">
+          <span>Read Laboratory Theory</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        </a>
         <a href="#report" class="btn">
-          <span>Generate Student Report</span>
+          <span>Download PDF Report</span>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
         </a>
-        <button class="btn" onclick="openLegalModal('faculty')">
-          <span>Academic Credits &amp; Faculty</span>
-        </button>
       </div>
 
       <!-- Telemetry Strip -->
       <div class="telemetry-strip k-reveal">
         <div class="tele-item">
-          <div class="tele-val" id="statElements">118</div>
-          <div class="tele-lbl">Elements Mapped</div>
-        </div>
-        <div class="tele-item">
-          <div class="tele-val" id="statDescriptors">18</div>
+          <div class="tele-val">18 Metrics</div>
           <div class="tele-lbl">Descriptors Evaluated</div>
         </div>
         <div class="tele-item">
-          <div class="tele-val">WebGL + 3Dmol</div>
-          <div class="tele-lbl">Hardware Accelerated</div>
+          <div class="tele-val">2D &amp; 3D</div>
+          <div class="tele-lbl">Dual Visualizer Sync</div>
+        </div>
+        <div class="tele-item">
+          <div class="tele-val">5 Models</div>
+          <div class="tele-lbl">Ball, Stick, CPK, Wire, Cartoon</div>
         </div>
         <div class="tele-item">
           <div class="tele-val">Python 3.14</div>
-          <div class="tele-lbl">Vercel Serverless API</div>
+          <div class="tele-lbl">Serverless Backend Engine</div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- BLOCK 2: 3D MOLECULAR LAB & 2D STRUCTURE WORKSPACE -->
+  <!-- BLOCK 2: CHEMINFORMATICS THEORY & FOUNDATIONS -->
+  <section id="theory">
+    <div class="wrap">
+      <div class="sechead k-reveal">
+        <div class="kicker">Curriculum Foundations</div>
+        <h2>Introduction to Cheminformatics</h2>
+        <p>
+          Cheminformatics combines chemistry, computer science, and information technology to represent,
+          simulate, and analyze molecular structures and their physicochemical behaviors computationally.
+        </p>
+      </div>
+
+      <div class="grid g2">
+        <div class="card theory-card k-reveal">
+          <h3>SMILES Representation</h3>
+          <p style="color:var(--mut);font-size:14px;margin-bottom:12px">
+            <strong>SMILES</strong> (Simplified Molecular Input Line Entry System) encodes molecular connectivity into a concise ASCII text string.
+          </p>
+          <ul style="color:var(--ink);font-size:13.5px;padding-left:18px;line-height:1.7">
+            <li><strong>Atoms:</strong> Elements indicated by standard symbols (C, N, O, P, S). Lowercase represents aromaticity (c, n, o).</li>
+            <li><strong>Bonds:</strong> Single bonds implicit, <code>=</code> for double bonds, <code>#</code> for triple bonds.</li>
+            <li><strong>Branches:</strong> Parentheses <code>(...)</code> specify substituent branching.</li>
+            <li><strong>Rings:</strong> Digits <code>1, 2, ...</code> designate ring-closure bond points.</li>
+          </ul>
+        </div>
+
+        <div class="card theory-card k-reveal" style="border-left-color:var(--acc2)">
+          <h3>3D Molecular Geometries</h3>
+          <p style="color:var(--mut);font-size:14px;margin-bottom:12px">
+            Computational methods predict spatial coordinates from 2D connectivity graphs using energy minimization algorithms:
+          </p>
+          <ul style="color:var(--ink);font-size:13.5px;padding-left:18px;line-height:1.7">
+            <li><strong>Ball and Stick:</strong> Atoms as spheres and covalent bonds as rigid rods to emphasize stereochemistry.</li>
+            <li><strong>Stick Model:</strong> Covalent bond network highlighting hybridization and bond angles.</li>
+            <li><strong>Space Filling (CPK):</strong> Van der Waals atomic spheres demonstrating overall steric volume.</li>
+            <li><strong>Wireframe:</strong> High-speed skeletal bond topology for large macromolecular conformations.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BLOCK 3: 2D & 3D INTERACTIVE MOLECULAR LAB -->
   <section id="lab">
     <div class="wrap">
       <div class="sechead k-reveal">
         <div class="kicker">Core Laboratory Suite</div>
         <h2>SMILES to 2D &amp; 3D Molecular Representation</h2>
         <p>
-          Input any valid SMILES string or load benchmark molecules from the chemistry curriculum.
-          The laboratory constructs the 2D connectivity diagram, resolves 3D coordinates via force-field relaxation,
+          Enter any valid SMILES notation or click an example molecule.
+          The laboratory immediately resolves the 2D bond topology, derives 3D coordinates via force-field optimization,
           and renders an interactive WebGL viewport.
         </p>
       </div>
 
-      <!-- Alerts (Rule 14 & 15) -->
+      <!-- Alerts -->
       <div id="smilesError" class="alert-banner error">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
         <span id="smilesErrorText">Invalid SMILES notation. Please inspect molecular valence or ring closures.</span>
@@ -1233,7 +1275,7 @@ footer {
         <div class="dual-canvas-grid">
           <!-- 2D Structure Canvas -->
           <div>
-            <div style="font-size:13px;font-family:var(--mono);color:var(--acc);margin-bottom:8px;font-weight:700">2D CHEMICAL CONNECTIVITY</div>
+            <div style="font-size:13px;font-family:var(--mono);color:var(--acc);margin-bottom:8px;font-weight:700">2D CHEMICAL CONNECTIVITY GRAPH</div>
             <div class="mol-2d-canvas" id="canvas2D">
               <!-- SVG generated dynamically -->
             </div>
@@ -1261,19 +1303,47 @@ footer {
             </div>
           </div>
         </div>
+
+        <!-- Bond Architecture Counters -->
+        <div class="bond-metric-grid" id="bondMetricGrid">
+          <div class="bond-metric-card">
+            <strong id="bmFormula">C2H6O</strong>
+            <span>Formula</span>
+          </div>
+          <div class="bond-metric-card">
+            <strong id="bmMw">46.069</strong>
+            <span>MW (g/mol)</span>
+          </div>
+          <div class="bond-metric-card">
+            <strong id="bmHeavyAtoms">3</strong>
+            <span>Heavy Atoms</span>
+          </div>
+          <div class="bond-metric-card">
+            <strong id="bmSigma">8</strong>
+            <span>Sigma (σ) Bonds</span>
+          </div>
+          <div class="bond-metric-card">
+            <strong id="bmPi">0</strong>
+            <span>Pi (π) Bonds</span>
+          </div>
+          <div class="bond-metric-card">
+            <strong id="bmTotalBonds">8</strong>
+            <span>Total Bonds</span>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- BLOCK 3: COMPLETE 18 MOLECULAR DESCRIPTORS -->
+  <!-- BLOCK 4: COMPLETE 18 MOLECULAR DESCRIPTORS -->
   <section id="properties">
     <div class="wrap">
       <div class="sechead k-reveal">
         <div class="kicker">Quantitative Cheminformatics</div>
         <h2>Complete 18-Descriptor Analytical Suite</h2>
         <p>
-          Derived through topological graph theory, Wildman-Crippen lipophilicity matrices, and Ertl topological polar surface calculations.
-          Each metric includes an educational interpretation explaining its physical and pharmacological consequences.
+          Derived through topological graph theory, Wildman-Crippen lipophilicity matrices, and Ertl polar surface calculations.
+          Each metric includes an educational interpretation explaining its physical and pharmacological significance.
         </p>
       </div>
 
@@ -1295,7 +1365,7 @@ footer {
               <tr>
                 <th style="width:24%">Molecular Property</th>
                 <th style="width:18%">Calculated Value</th>
-                <th style="width:58%">Student Interpretation &amp; Relevance</th>
+                <th style="width:58%">Student Interpretation &amp; Physical Relevance</th>
               </tr>
             </thead>
             <tbody id="propTableBody">
@@ -1307,7 +1377,7 @@ footer {
     </div>
   </section>
 
-  <!-- BLOCK 4: COMPARATIVE ANALYSIS MATRIX -->
+  <!-- BLOCK 5: COMPARATIVE ANALYSIS MATRIX -->
   <section id="compare">
     <div class="wrap">
       <div class="sechead k-reveal">
@@ -1342,62 +1412,7 @@ footer {
     </div>
   </section>
 
-  <!-- BLOCK 5: PERIODIC TABLE -->
-  <section id="table">
-    <div class="wrap">
-      <div class="sechead k-reveal">
-        <div class="kicker">Quantum Foundations</div>
-        <h2>Interactive 118-Element Periodic Grid</h2>
-        <p>
-          Click any element to inspect its exact atomic weight, electronegativity, ionization energy,
-          valence orbital filling, and synthesize its harmonic acoustic tone via the Web Audio API.
-        </p>
-      </div>
-
-      <div class="card k-reveal">
-        <div class="pt-scroll-wrap">
-          <div class="pt-grid" id="ptGrid"></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- BLOCK 6: PERIODIC TRENDS & SLATER ZEFF -->
-  <section id="trends">
-    <div class="wrap">
-      <div class="sechead k-reveal">
-        <div class="kicker">Atomic Physics</div>
-        <h2>Periodic Trends &amp; Slater Effective Nuclear Charge</h2>
-        <p>
-          Analyze atomic radius, first ionization energy, Pauling electronegativity, and Slater shielding rules.
-        </p>
-      </div>
-
-      <div class="grid g2">
-        <div class="card k-reveal">
-          <h3 style="color:var(--acc);margin-bottom:12px">Atomic Radius vs Ionization Energy</h3>
-          <div id="trendsSvgBox" style="width:100%;height:260px"></div>
-        </div>
-
-        <div class="card k-reveal" id="zeff">
-          <h3 style="color:var(--acc2);margin-bottom:12px">Slater Effective Nuclear Charge (Z<sub>eff</sub>)</h3>
-          <div style="display:flex;gap:12px;margin-bottom:14px">
-            <div style="flex:1">
-              <label style="font-size:11px;color:var(--dim);text-transform:uppercase;font-family:var(--mono)">Element</label>
-              <select id="zeffEl" onchange="computeZeff()"></select>
-            </div>
-            <div style="flex:1">
-              <label style="font-size:11px;color:var(--dim);text-transform:uppercase;font-family:var(--mono)">Target Electron</label>
-              <select id="zeffOrb" onchange="computeZeff()"></select>
-            </div>
-          </div>
-          <div id="zeffResult" style="font-family:var(--mono);font-size:13px;line-height:1.6;color:var(--ink)"></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- BLOCK 7: STUDENT ASSESSMENT & QUIZ -->
+  <!-- BLOCK 6: STUDENT ASSESSMENT & QUIZ -->
   <section id="quiz">
     <div class="wrap">
       <div class="sechead k-reveal">
@@ -1428,11 +1443,11 @@ footer {
     </div>
   </section>
 
-  <!-- BLOCK 8: STUDENT REPORT GENERATION -->
+  <!-- BLOCK 7: STUDENT REPORT GENERATION -->
   <section id="report">
     <div class="wrap">
       <div class="sechead k-reveal">
-        <div class="kicker">Official Documentation</div>
+        <div class="kicker">Official Certification</div>
         <h2>Generate Student Laboratory PDF Report</h2>
         <p>
           Generate a standardized, publication-ready PDF report bearing official SRM Institute of Science and Technology
@@ -1453,7 +1468,7 @@ footer {
         </div>
 
         <div style="margin-bottom:20px">
-          <label style="font-size:11px;color:var(--dim);text-transform:uppercase;font-family:var(--mono)">Report Molecule</label>
+          <label style="font-size:11px;color:var(--dim);text-transform:uppercase;font-family:var(--mono)">Report Molecule (SMILES)</label>
           <input type="text" id="repSmiles" value="CCO" readonly style="color:var(--acc);background:rgba(0,240,255,0.04)">
         </div>
 
@@ -1466,66 +1481,56 @@ footer {
   </section>
 </main>
 
-<!-- FOOTER & ACADEMIC CREDITS -->
+<!-- FOOTER & ACADEMIC CREDITS - OFFICIAL EMAILS ONLY, NO PHONE NUMBER -->
 <footer>
   <div class="wrap">
     <div class="footer-top">
       <div class="footer-brand">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
-          <img src="assets/tomoya_logo.png" alt="Tomoya Logo" style="width:32px;height:32px;border-radius:4px;border:1px solid var(--acc)">
-          <img src="assets/srm_logo.jpeg" alt="SRM Logo" style="height:28px;border-radius:2px">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+          <img src="assets/tomoya_logo.png" alt="Tomoya Logo" style="width:36px;height:36px;border-radius:4px;border:1px solid var(--acc)">
+          <img src="assets/srm_logo.jpeg" alt="SRM Logo" style="height:32px;border-radius:2px">
         </div>
         <h3>Cheminformatics Virtual Laboratory</h3>
         <p>
           Division of Chemistry, School of Sciences, Faculty of Engineering and Technology<br>
           <strong>SRM Institute of Science and Technology</strong>, Tiruchirappalli, Tamil Nadu, India.
         </p>
-        <p style="margin-top:8px;font-size:12px;color:var(--dim)">
-          Curriculum developed by <strong>Dr. R. Subramanian</strong> (Assistant Professor, Chemistry).<br>
-          Software architecture and kinetic systems by <strong>Tomoya Okazaki</strong> (Purple Team Systems).
+        <p style="margin-top:10px;font-size:12.5px;color:var(--dim)">
+          Curriculum direction &amp; academic supervision by <strong>Dr. R. Subramanian</strong> (Assistant Professor, Chemistry).<br>
+          Kinetic engineering &amp; systems architecture by <strong>Tomoya Okazaki</strong> (Purple Team Systems).
         </p>
       </div>
 
       <div class="footer-links">
-        <h4>Direct Lab Contacts</h4>
+        <h4>Direct Faculty &amp; Technical Contacts</h4>
         <a href="mailto:rsmani84@gmail.com">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          <span>rsmani84@gmail.com</span>
+          <span>Dr. R. Subramanian (rsmani84@gmail.com)</span>
         </a>
         <a href="mailto:khalidnawaz7y@gmail.com">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          <span>khalidnawaz7y@gmail.com</span>
-        </a>
-        <a href="tel:+914312258000">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-          <span>+91 431 2258000 (Desk)</span>
+          <span>Tomoya Okazaki (khalidnawaz7y@gmail.com)</span>
         </a>
       </div>
 
       <div class="footer-links">
-        <h4>Ethics &amp; Governance</h4>
-        <a href="javascript:void(0)" onclick="openLegalModal('privacy')">Privacy &amp; Data Ethics</a>
-        <a href="javascript:void(0)" onclick="openLegalModal('terms')">Academic License &amp; Terms</a>
-        <a href="javascript:void(0)" onclick="openLegalModal('404')">Simulate 404 Recovery</a>
+        <h4>Ethics &amp; Verified Identity</h4>
+        <a href="https://tryhackme.com/p/Tomoya.okazaki" target="_blank" rel="noopener">TryHackMe: Tomoya.okazaki</a>
+        <a href="https://profile.hackthebox.com/profile/01a0be6e-b00a-7335-9ff0-5864ad467519" target="_blank" rel="noopener">HackTheBox: Profile</a>
+        <a href="https://www.linkedin.com/in/khalidnawaz-sec" target="_blank" rel="noopener">LinkedIn: khalidnawaz-sec</a>
+        <a href="javascript:void(0)" onclick="openLegalModal('privacy')">Privacy Policy &amp; Data Ethics</a>
+        <a href="javascript:void(0)" onclick="openLegalModal('terms')">Academic License &amp; Fair Use</a>
       </div>
     </div>
 
     <div class="footer-bottom">
       <div>&copy; 2026 SRM Institute of Science and Technology &amp; Tomoya Okazaki. All rights reserved. Zero tracking cookies.</div>
-      <div style="font-family:var(--mono);color:var(--acc)">PYTHON SERVERLESS ENGINE v3.5 &times; VERCEL EDGE</div>
+      <div style="font-family:var(--mono);color:var(--acc)">PYTHON SERVERLESS ENGINE v3.6 &times; VERCEL EDGE</div>
     </div>
   </div>
 </footer>
 
-<!-- Element Modal -->
-<div class="modal-overlay" id="elModal">
-  <div class="modal-box">
-    <button class="modal-close" onclick="closeModal('elModal')">&times;</button>
-    <div id="elModalContent"></div>
-  </div>
-</div>
-
-<!-- Legal & Academic Modal (Rules 6, 16, Privacy, Terms) -->
+<!-- Legal & Academic Modal -->
 <div class="modal-overlay" id="legalModal">
   <div class="modal-box">
     <button class="modal-close" onclick="closeModal('legalModal')">&times;</button>
@@ -1533,7 +1538,10 @@ footer {
   </div>
 </div>
 
-<!-- Scripts -->
+<!-- Scripts: GSAP 3.12.5, ScrollTrigger, 3Dmol, jsPDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/3Dmol/2.4.2/3Dmol-min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
@@ -1542,41 +1550,14 @@ footer {
    1. DATA DEFINITIONS & PRESET BENCHMARKS
    ========================================================================== */
 var BENCHMARK_MOLECULES = [
-  { name: "Ethanol", smiles: "CCO", formula: "C2H6O", mw: 46.069, logp: -0.4, tpsa: 30.23, hbd: 1, hba: 1, rot: 0 },
-  { name: "Benzene", smiles: "c1ccccc1", formula: "C6H6", mw: 78.114, logp: 1.5, tpsa: 0.0, hbd: 0, hba: 0, rot: 0 },
-  { name: "Phenol", smiles: "Oc1ccccc1", formula: "C6H6O", mw: 94.113, logp: 1.1, tpsa: 20.23, hbd: 1, hba: 1, rot: 0 },
-  { name: "Acetic Acid", smiles: "CC(=O)O", formula: "C2H4O2", mw: 60.052, logp: -0.4, tpsa: 40.46, hbd: 1, hba: 2, rot: 0 },
-  { name: "Aspirin", smiles: "CC(=O)Oc1ccccc1C(=O)O", formula: "C9H8O4", mw: 180.159, logp: -0.7, tpsa: 90.69, hbd: 1, hba: 4, rot: 2 },
-  { name: "Caffeine", smiles: "CN1C=NC2=C1C(=O)N(C(=O)N2C)C", formula: "C8H10N4O2", mw: 194.194, logp: -1.0, tpsa: 114.46, hbd: 0, hba: 6, rot: 0 },
-  { name: "Paracetamol", smiles: "CC(=O)Nc1ccc(O)cc1", formula: "C8H9NO2", mw: 151.165, logp: 0.8, tpsa: 49.33, hbd: 2, hba: 2, rot: 1 },
-  { name: "Ibuprofen", smiles: "CC(C)Cc1ccc(C(C)C(=O)O)cc1", formula: "C13H18O2", mw: 206.285, logp: 2.8, tpsa: 40.46, hbd: 1, hba: 2, rot: 4 }
-];
-
-var ELEMENTS = [
-  {z:1,s:"H",n:"Hydrogen",g:1,p:1,w:1.008,c:"#22d3ee",en:2.2,ie:13.6,r:37,cfg:"1s¹"},
-  {z:2,s:"He",n:"Helium",g:18,p:1,w:4.003,c:"#38bdf8",en:null,ie:24.59,r:32,cfg:"1s²"},
-  {z:3,s:"Li",n:"Lithium",g:1,p:2,w:6.94,c:"#f87171",en:0.98,ie:5.39,r:152,cfg:"[He] 2s¹"},
-  {z:4,s:"Be",n:"Beryllium",g:2,p:2,w:9.012,c:"#fb923c",en:1.57,ie:9.32,r:112,cfg:"[He] 2s²"},
-  {z:5,s:"B",n:"Boron",g:13,p:2,w:10.81,c:"#fbbf24",en:2.04,ie:8.3,r:85,cfg:"[He] 2s² 2p¹"},
-  {z:6,s:"C",n:"Carbon",g:14,p:2,w:12.011,c:"#22d3ee",en:2.55,ie:11.26,r:77,cfg:"[He] 2s² 2p²"},
-  {z:7,s:"N",n:"Nitrogen",g:15,p:2,w:14.007,c:"#22d3ee",en:3.04,ie:14.53,r:75,cfg:"[He] 2s² 2p³"},
-  {z:8,s:"O",n:"Oxygen",g:16,p:2,w:15.999,c:"#22d3ee",en:3.44,ie:13.62,r:73,cfg:"[He] 2s² 2p⁴"},
-  {z:9,s:"F",n:"Fluorine",g:17,p:2,w:18.998,c:"#4ade80",en:3.98,ie:17.42,r:71,cfg:"[He] 2s² 2p⁵"},
-  {z:10,s:"Ne",n:"Neon",g:18,p:2,w:20.18,c:"#38bdf8",en:null,ie:21.56,r:69,cfg:"[He] 2s² 2p⁶"},
-  {z:11,s:"Na",n:"Sodium",g:1,p:3,w:22.99,c:"#f87171",en:0.93,ie:5.14,r:186,cfg:"[Ne] 3s¹"},
-  {z:12,s:"Mg",n:"Magnesium",g:2,p:3,w:24.305,c:"#fb923c",en:1.31,ie:7.65,r:160,cfg:"[Ne] 3s²"},
-  {z:13,s:"Al",n:"Aluminium",g:13,p:3,w:26.982,c:"#fbbf24",en:1.61,ie:5.99,r:143,cfg:"[Ne] 3s² 3p¹"},
-  {z:14,s:"Si",n:"Silicon",g:14,p:3,w:28.085,c:"#fbbf24",en:1.9,ie:8.15,r:118,cfg:"[Ne] 3s² 3p²"},
-  {z:15,s:"P",n:"Phosphorus",g:15,p:3,w:30.974,c:"#22d3ee",en:2.19,ie:10.49,r:110,cfg:"[Ne] 3s² 3p³"},
-  {z:16,s:"S",n:"Sulfur",g:16,p:3,w:32.06,c:"#22d3ee",en:2.58,ie:10.36,r:103,cfg:"[Ne] 3s² 3p⁴"},
-  {z:17,s:"Cl",n:"Chlorine",g:17,p:3,w:35.45,c:"#4ade80",en:3.16,ie:12.97,r:99,cfg:"[Ne] 3s² 3p⁵"},
-  {z:18,s:"Ar",n:"Argon",g:18,p:3,w:39.95,c:"#38bdf8",en:null,ie:15.76,r:97,cfg:"[Ne] 3s² 3p⁶"},
-  {z:19,s:"K",n:"Potassium",g:1,p:4,w:39.098,c:"#f87171",en:0.82,ie:4.34,r:227,cfg:"[Ar] 4s¹"},
-  {z:20,s:"Ca",n:"Calcium",g:2,p:4,w:40.078,c:"#fb923c",en:1.0,ie:6.11,r:197,cfg:"[Ar] 4s²"},
-  {z:26,s:"Fe",n:"Iron",g:8,p:4,w:55.845,c:"#a78bfa",en:1.83,ie:7.9,r:126,cfg:"[Ar] 3d⁶ 4s²"},
-  {z:29,s:"Cu",n:"Copper",g:11,p:4,w:63.546,c:"#a78bfa",en:1.9,ie:7.73,r:128,cfg:"[Ar] 3d¹⁰ 4s¹"},
-  {z:35,s:"Br",n:"Bromine",g:17,p:4,w:79.904,c:"#4ade80",en:2.96,ie:11.81,r:114,cfg:"[Ar] 3d¹⁰ 4s² 4p⁵"},
-  {z:53,s:"I",n:"Iodine",g:17,p:5,w:126.9,c:"#4ade80",en:2.66,ie:10.45,r:133,cfg:"[Kr] 4d¹⁰ 5s² 5p⁵"}
+  { name: "Ethanol", smiles: "CCO", formula: "C2H6O", mw: 46.069, logp: -0.4, tpsa: 30.23, hbd: 1, hba: 1, rot: 0, desc: "Primary aliphatic alcohol used as a solvent and antiseptic." },
+  { name: "Benzene", smiles: "c1ccccc1", formula: "C6H6", mw: 78.114, logp: 1.5, tpsa: 0.0, hbd: 0, hba: 0, rot: 0, desc: "Fundamental aromatic hydrocarbon with planar delocalized pi electrons." },
+  { name: "Phenol", smiles: "Oc1ccccc1", formula: "C6H6O", mw: 94.113, logp: 1.1, tpsa: 20.23, hbd: 1, hba: 1, rot: 0, desc: "Aromatic alcohol exhibiting resonance-stabilized phenoxide formation." },
+  { name: "Acetic Acid", smiles: "CC(=O)O", formula: "C2H4O2", mw: 60.052, logp: -0.4, tpsa: 40.46, hbd: 1, hba: 2, rot: 0, desc: "Carboxylic acid exhibiting strong intermolecular hydrogen bonding." },
+  { name: "Aspirin", smiles: "CC(=O)Oc1ccccc1C(=O)O", formula: "C9H8O4", mw: 180.159, logp: -0.7, tpsa: 90.69, hbd: 1, hba: 4, rot: 2, desc: "Acetylsalicylic acid, standard NSAID analgesic and antipyretic." },
+  { name: "Caffeine", smiles: "CN1C=NC2=C1C(=O)N(C(=O)N2C)C", formula: "C8H10N4O2", mw: 194.194, logp: -1.0, tpsa: 114.46, hbd: 0, hba: 6, rot: 0, desc: "Methylxanthine central nervous system stimulant." },
+  { name: "Paracetamol", smiles: "CC(=O)Nc1ccc(O)cc1", formula: "C8H9NO2", mw: 151.165, logp: 0.8, tpsa: 49.33, hbd: 2, hba: 2, rot: 1, desc: "Widely used antipyretic and analgesic." },
+  { name: "Ibuprofen", smiles: "CC(C)Cc1ccc(C(C)C(=O)O)cc1", formula: "C13H18O2", mw: 206.285, logp: 2.8, tpsa: 40.46, hbd: 1, hba: 2, rot: 4, desc: "Non-steroidal anti-inflammatory drug with chiral propionic acid core." }
 ];
 
 var QUIZ_DATA = [
@@ -1589,13 +1570,13 @@ var QUIZ_DATA = [
       "Substituent Mapping & Isomer Linear Evaluation Syntax"
     ],
     ans: 0,
-    exp: "SMILES stands for Simplified Molecular Input Line Entry System, a specification in form of a line notation for describing the structure of chemical species."
+    exp: "SMILES stands for Simplified Molecular Input Line Entry System, a specification in form of a line notation for describing chemical species."
   },
   {
     q: "Under Lipinski's Rule of 5 for drug-likeness, what is the maximum recommended molecular weight?",
     opts: ["250 g/mol", "500 g/mol", "750 g/mol", "1000 g/mol"],
     ans: 1,
-    exp: "Lipinski's Rule of 5 states that poor absorption or permeation is more likely when Molecular Weight exceeds 500 g/mol."
+    exp: "Lipinski's Rule of 5 states that poor oral bioavailability is significantly more likely when Molecular Weight exceeds 500 g/mol."
   },
   {
     q: "How does high Topological Polar Surface Area (TPSA > 140 Å²) typically affect a pharmaceutical candidate?",
@@ -1633,7 +1614,7 @@ var QUIZ_DATA = [
 ];
 
 /* ==========================================================================
-   2. MOMENTUM SMOOTH SCROLLER & VELOCITY KINETIC ENGINE
+   2. MOMENTUM SMOOTH SCROLLER WITH BUTTERY VELOCITY DAMPING
    ========================================================================== */
 var ScrollEngine = (function(){
   var currentY = 0, targetY = 0, ease = 0.082, isRunning = false;
@@ -1644,7 +1625,6 @@ var ScrollEngine = (function(){
     targetY = currentY;
 
     window.addEventListener('wheel', function(e){
-      // Don't intercept scroll if within 3D canvas or scrollable modals
       if(e.target.closest('#viewer3D') || e.target.closest('.modal-box')) return;
       targetY += e.deltaY;
       targetY = Math.max(0, Math.min(targetY, document.documentElement.scrollHeight - window.innerHeight));
@@ -1659,18 +1639,66 @@ var ScrollEngine = (function(){
       }
     });
 
-    // Kinetic Reveal Observer
-    var observer = new IntersectionObserver(function(entries){
-      entries.forEach(function(entry){
-        if(entry.isIntersecting){
-          entry.target.classList.add('in-view');
-        }
-      });
-    }, { threshold: 0.12 });
+    // GSAP 3.12 & ScrollTrigger Integration
+    if(window.gsap && window.ScrollTrigger){
+      gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
-    document.querySelectorAll('.k-reveal').forEach(function(el){
-      observer.observe(el);
-    });
+      // Kinetic Staggered Card Entrance
+      gsap.utils.toArray('.k-reveal').forEach(function(el){
+        gsap.fromTo(el,
+          { y: 50, opacity: 0, scale: 0.96, rotateX: 5 },
+          {
+            y: 0, opacity: 1, scale: 1, rotateX: 0,
+            duration: 0.9,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: el,
+              start: "top 88%",
+              toggleActions: "play none none reverse"
+            }
+          }
+        );
+      });
+
+      // Typographic Word Reveal
+      gsap.utils.toArray('.word-inner').forEach(function(word, idx){
+        gsap.to(word, {
+          yPercent: 0,
+          opacity: 1,
+          duration: 0.75,
+          delay: idx * 0.07,
+          ease: "power4.out",
+          scrollTrigger: {
+            trigger: word,
+            start: "top 92%"
+          }
+        });
+      });
+
+      // Smooth Navigation Links
+      document.querySelectorAll('nav.links a, .mobile-nav-links a').forEach(function(link){
+        link.addEventListener('click', function(e){
+          var targetId = link.getAttribute('href');
+          if(targetId && targetId.startsWith('#')){
+            e.preventDefault();
+            var targetEl = document.querySelector(targetId);
+            if(targetEl){
+              gsap.to(window, {
+                duration: 0.85,
+                scrollTo: { y: targetEl, offsetY: 70 },
+                ease: "power3.inOut"
+              });
+              if(document.getElementById('mobileDrawer').classList.contains('open')){
+                toggleMobileMenu();
+              }
+            }
+          }
+        });
+      });
+    }
+
+    // Initialize GSAP Magnetic Buttons
+    initMagneticButtons();
   }
 
   function update(){
@@ -1681,7 +1709,6 @@ var ScrollEngine = (function(){
     window.scrollTo(0, currentY);
     onScrollUpdate();
 
-    // Check if motion has stabilized
     if(Math.abs(targetY - currentY) > 0.5){
       requestAnimationFrame(update);
     } else {
@@ -1696,17 +1723,48 @@ var ScrollEngine = (function(){
     var docHeight = document.documentElement.scrollHeight - window.innerHeight;
     var pct = docHeight > 0 ? Math.min(100, Math.max(0, Math.round((currentY / docHeight) * 100))) : 0;
     
-    var beam = document.getElementById('scrollProgress');
+    var beam = document.getElementById('scrollLaser');
     if(beam) beam.style.width = pct + '%';
     
     var hud = document.getElementById('hudPct');
     if(hud) hud.innerText = pct + '%';
 
-    // Tilt cards slightly with velocity
-    var tilt = Math.max(-2.5, Math.min(2.5, velocity * 0.04));
+    // Velocity-driven 3D card tilt
+    var tilt = Math.max(-2.5, Math.min(2.5, velocity * 0.045));
     document.querySelectorAll('.card').forEach(function(card){
       if(!card.matches(':hover')){
-        card.style.transform = 'skewY(' + (tilt * 0.4) + 'deg)';
+        card.style.transform = 'perspective(1000px) rotateX(' + (-tilt * 0.5) + 'deg) skewY(' + (tilt * 0.3) + 'deg)';
+      }
+    });
+  }
+
+  function initMagneticButtons(){
+    document.querySelectorAll('.btn').forEach(function(btn){
+      var glow = document.createElement('span');
+      glow.className = 'btn-glow';
+      btn.appendChild(glow);
+
+      if(window.gsap){
+        var xTo = gsap.quickTo(btn, "x", { duration: 0.3, ease: "power3.out" });
+        var yTo = gsap.quickTo(btn, "y", { duration: 0.3, ease: "power3.out" });
+
+        btn.addEventListener('mousemove', function(e){
+          var rect = btn.getBoundingClientRect();
+          var x = e.clientX - rect.left;
+          var y = e.clientY - rect.top;
+          glow.style.left = x + 'px';
+          glow.style.top = y + 'px';
+
+          var moveX = (x - rect.width / 2) * 0.38;
+          var moveY = (y - rect.height / 2) * 0.38;
+          xTo(moveX);
+          yTo(moveY);
+        });
+
+        btn.addEventListener('mouseleave', function(){
+          xTo(0);
+          yTo(0);
+        });
       }
     });
   }
@@ -1764,7 +1822,7 @@ var AudioEngine = (function(){
 function toggleAudio(){ AudioEngine.toggle(); }
 
 /* ==========================================================================
-   4. MOLECULAR VISUALIZER & CHEMINFORMATICS SUITE
+   4. MOLECULAR VISUALIZER & CHEMINFORMATICS ENGINE
    ========================================================================== */
 var glViewer = null;
 var isSpinning = false;
@@ -1836,13 +1894,13 @@ function analyzeMolecule(){
         renderProperties(data.properties, data.interpretations);
         render2DDiagram(input);
         render3DModel(input);
+        updateBondMetrics(data.properties);
         showSmilesSuccess("Structure validated via Python Cheminformatics Engine.");
       } else {
         throw new Error(data.error || "Invalid structure");
       }
     })
     .catch(function(err){
-      // Client-side fallback matching Python engine exactly
       computeClientProperties(input);
     });
 }
@@ -1895,7 +1953,17 @@ function computeClientProperties(s){
   renderProperties(props);
   render2DDiagram(s);
   render3DModel(s);
+  updateBondMetrics(props);
   showSmilesSuccess("Structure parsed via local mathematical engine.");
+}
+
+function updateBondMetrics(p){
+  document.getElementById('bmFormula').innerText = p["Molecular Formula"] || "-";
+  document.getElementById('bmMw').innerText = p["Molecular Weight"] || "-";
+  document.getElementById('bmHeavyAtoms').innerText = p["Heavy Atoms"] || "-";
+  document.getElementById('bmSigma').innerText = p["Sigma (σ) Bonds"] || "-";
+  document.getElementById('bmPi').innerText = p["Pi (π) Bonds"] || "-";
+  document.getElementById('bmTotalBonds').innerText = p["Total Bonds (σ + π)"] || "-";
 }
 
 function renderProperties(props, interp){
@@ -1939,7 +2007,7 @@ function render2DDiagram(smiles){
   var container = document.getElementById('canvas2D');
   if(!container) return;
 
-  // Generate vector SVG diagram for the molecular structure
+  // Animated vector SVG diagram for the molecular structure
   var svg = '<svg width="100%" height="100%" viewBox="-150 -150 300 300" xmlns="http://www.w3.org/2000/svg">';
   svg += '<defs><filter id="glow"><feGaussianBlur stdDeviation="3" result="c"/><feMerge><feMergeNode in="c"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>';
 
@@ -1974,13 +2042,23 @@ function render2DDiagram(smiles){
 
   svg += '</svg>';
   container.innerHTML = svg;
+
+  if(window.gsap){
+    gsap.fromTo("#canvas2D line, #canvas2D path, #canvas2D polygon",
+      { strokeDasharray: 300, strokeDashoffset: 300, opacity: 0 },
+      { strokeDashoffset: 0, opacity: 1, duration: 0.75, stagger: 0.08, ease: "power2.out" }
+    );
+    gsap.fromTo("#canvas2D circle, #canvas2D text",
+      { scale: 0, opacity: 0, transformOrigin: "center" },
+      { scale: 1, opacity: 1, duration: 0.5, stagger: 0.05, delay: 0.25, ease: "back.out(1.7)" }
+    );
+  }
 }
 
 function render3DModel(smiles){
   if(!glViewer) return;
   glViewer.clear();
 
-  // Fetch standard coordinates from PubChem or synthesize ball-and-stick coordinates
   var url = 'https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/smiles/' + encodeURIComponent(smiles) + '/SDF?record_type=3d';
 
   fetch(url)
@@ -1993,7 +2071,6 @@ function render3DModel(smiles){
       update3DStyle();
     })
     .catch(function(){
-      // Fallback synthetic 3D coordinates for common structures
       var fallbackPdb = generateSyntheticPdb(smiles);
       glViewer.addModel(fallbackPdb, "pdb");
       update3DStyle();
@@ -2029,7 +2106,6 @@ function update3DStyle(){
 }
 
 function generateSyntheticPdb(smiles){
-  // Generates a valid minimal PDB record for fallback rendering
   return "HETATM    1  C1  MOL     1      -1.200   0.000   0.000  1.00 20.00           C  \n" +
          "HETATM    2  C2  MOL     1       0.000   0.800   0.000  1.00 20.00           C  \n" +
          "HETATM    3  O1  MOL     1       1.200   0.000   0.000  1.00 20.00           O  \n" +
@@ -2073,7 +2149,7 @@ function exportDescriptorsCSV(){
 }
 
 /* ==========================================================================
-   5. COMPARATIVE TABLE & PERIODIC TABLE
+   5. COMPARATIVE TABLE
    ========================================================================== */
 function initComparativeTable(){
   var body = document.getElementById('compareTableBody');
@@ -2091,107 +2167,6 @@ function initComparativeTable(){
       '<td><button class="btn sm" onclick="selectPreset(\'' + m.smiles + '\', \'' + m.name + '\')">Load in 3D</button></td>' +
     '</tr>';
   }).join('');
-}
-
-function initPeriodicTable(){
-  var grid = document.getElementById('ptGrid');
-  if(!grid) return;
-
-  var lookup = {};
-  ELEMENTS.forEach(function(e){ lookup[e.p + '-' + e.g] = e; });
-
-  var html = '';
-  for(var period = 1; period <= 5; period++){
-    for(var group = 1; group <= 18; group++){
-      var el = lookup[period + '-' + group];
-      if(el){
-        html += '<div class="el-cell" style="background:' + el.c + '" onclick="openElementModal(' + el.z + ')">' +
-          '<span class="el-z">' + el.z + '</span>' +
-          '<span class="el-sym">' + el.s + '</span>' +
-          '<span class="el-name">' + el.n + '</span>' +
-        '</div>';
-      } else {
-        html += '<div style="background:transparent"></div>';
-      }
-    }
-  }
-  grid.innerHTML = html;
-
-  // Populate Slater Zeff select
-  var sel = document.getElementById('zeffEl');
-  if(sel){
-    sel.innerHTML = ELEMENTS.map(function(e){
-      return '<option value="' + e.z + '">' + e.z + ' - ' + e.n + ' (' + e.s + ')</option>';
-    }).join('');
-    updateZeffOrbitals();
-  }
-}
-
-function openElementModal(z){
-  var el = ELEMENTS.find(function(e){ return e.z === z; });
-  if(!el) return;
-  AudioEngine.tone(160 + (z * 8), 0.2);
-
-  var modal = document.getElementById('elModal');
-  var content = document.getElementById('elModalContent');
-  if(!content || !modal) return;
-
-  content.innerHTML = '<div style="display:flex;align-items:center;gap:16px;margin-bottom:18px">' +
-    '<div style="width:60px;height:60px;border-radius:6px;background:' + el.c + ';color:#020617;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:700">' +
-      '<span style="font-size:11px">' + el.z + '</span>' +
-      '<span style="font-size:24px;line-height:1">' + el.s + '</span>' +
-    '</div>' +
-    '<div>' +
-      '<h2 style="font-size:24px;margin:0;color:var(--ink)">' + el.n + '</h2>' +
-      '<span style="font-family:var(--mono);color:var(--acc);font-size:13px">' + el.cfg + '</span>' +
-    '</div>' +
-  '</div>' +
-  '<table class="prop-table">' +
-    '<tr><td>Atomic Number (Z)</td><td class="val-col">' + el.z + '</td></tr>' +
-    '<tr><td>Standard Atomic Weight</td><td class="val-col">' + el.w + ' u</td></tr>' +
-    '<tr><td>Pauling Electronegativity</td><td class="val-col">' + (el.en || 'N/A') + '</td></tr>' +
-    '<tr><td>First Ionization Energy</td><td class="val-col">' + el.ie + ' eV</td></tr>' +
-    '<tr><td>Covalent Radius</td><td class="val-col">' + el.r + ' pm</td></tr>' +
-  '</table>';
-
-  modal.classList.add('active');
-}
-
-function updateZeffOrbitals(){
-  var orbSel = document.getElementById('zeffOrb');
-  if(!orbSel) return;
-  orbSel.innerHTML = '<option value="1s">1s orbital electron</option>' +
-                     '<option value="2s">2s orbital electron</option>' +
-                     '<option value="2p" selected>2p orbital electron</option>' +
-                     '<option value="3s">3s orbital electron</option>' +
-                     '<option value="3p">3p orbital electron</option>';
-  computeZeff();
-}
-
-function computeZeff(){
-  var z = parseInt(document.getElementById('zeffEl').value, 10);
-  var orb = document.getElementById('zeffOrb').value;
-  var el = ELEMENTS.find(function(e){ return e.z === z; }) || ELEMENTS[0];
-
-  // Slater Rule calculation
-  var shielding = 0.0;
-  if(orb === '1s'){
-    shielding = (z > 1 ? 0.30 : 0);
-  } else if(orb === '2s' || orb === '2p'){
-    var sameShell = Math.max(0, Math.min(7, z - 3));
-    shielding = (sameShell * 0.35) + (2 * 0.85);
-  } else {
-    shielding = Math.max(0, z - 3) * 0.35 + 8 * 0.85 + 2 * 1.0;
-  }
-
-  var zeff = Math.max(1, z - shielding).toFixed(2);
-  var res = document.getElementById('zeffResult');
-  if(res){
-    res.innerHTML = '<strong>Nuclear Charge (Z):</strong> ' + z + '<br>' +
-      '<strong>Slater Shielding Constant (S):</strong> ' + shielding.toFixed(2) + '<br>' +
-      '<strong>Effective Nuclear Charge (Z<sub>eff</sub>):</strong> <span style="color:var(--acc2);font-size:18px">' + zeff + '</span><br>' +
-      '<small style="color:var(--dim)">Formula: Z<sub>eff</sub> = Z - S (Slater 1930 rules)</small>';
-  }
 }
 
 /* ==========================================================================
@@ -2249,7 +2224,7 @@ function nextQuestion(){
     opts.innerHTML = '<div style="text-align:center;padding:24px">' +
       '<h3 style="color:var(--acc2);font-size:24px;margin-bottom:8px">Assessment Complete!</h3>' +
       '<p style="color:var(--ink);font-size:16px">Final Certified Score: <strong>' + quizScore + ' / 100</strong></p>' +
-      '<p style="color:var(--dim);font-size:13px;margin-top:8px">Your assessment result has been recorded and will be stamped onto your student laboratory report.</p>' +
+      '<p style="color:var(--dim);font-size:13px;margin-top:8px">Your assessment result has been recorded and will be certified on your downloadable report.</p>' +
       '<button class="btn primary" onclick="currentQ=0;quizScore=0;renderQuizQuestion()" style="margin-top:16px">Retake Assessment</button>' +
     '</div>';
     document.getElementById('btnNextQuiz').style.display = 'none';
@@ -2315,7 +2290,7 @@ function generatePdfReport(){
   doc.setFont("helvetica", "normal");
 
   var keys = Object.keys(props);
-  for(var i = 0; i < Math.min(12, keys.length); i++){
+  for(var i = 0; i < Math.min(14, keys.length); i++){
     var k = keys[i];
     doc.text(k + ":", 16, y);
     doc.setFont("helvetica", "bold");
@@ -2375,7 +2350,7 @@ function openLegalModal(type){
         '<li><strong>Local Processing:</strong> Chemical descriptors and SMILES strings are processed in memory and never sold to data brokers.</li>' +
         '<li><strong>Academic Purpose:</strong> All calculations are dedicated solely to higher educational simulations at SRM IST.</li>' +
       '</ul>' +
-      '<p style="color:var(--dim);font-size:12px">Compliance Contact: <a href="mailto:support@srmist.edu.in" style="color:var(--acc)">support@srmist.edu.in</a></p>';
+      '<p style="color:var(--dim);font-size:12px">Compliance Contact: <a href="mailto:rsmani84@gmail.com" style="color:var(--acc)">rsmani84@gmail.com</a></p>';
   } else if(type === 'terms'){
     content.innerHTML = '<h2 style="color:var(--acc2);margin-bottom:14px">Terms of Academic License</h2>' +
       '<p style="color:var(--mut);margin-bottom:12px">Open access provided under educational fair-use principles.</p>' +
@@ -2384,24 +2359,6 @@ function openLegalModal(type){
         '<li>Commercial pharmacological synthesis or clinical trials require verified experimental assays.</li>' +
         '<li>Attribution to SRM Institute of Science and Technology and Dr. R. Subramanian must be maintained in derivative works.</li>' +
       '</ul>';
-  } else if(type === 'faculty'){
-    content.innerHTML = '<h2 style="color:var(--acc);margin-bottom:14px">Academic Credits &amp; Leadership</h2>' +
-      '<div style="margin-bottom:16px">' +
-        '<strong style="color:var(--ink);font-size:16px">Dr. R. Subramanian</strong><br>' +
-        '<span style="color:var(--mut)">Assistant Professor, Division of Chemistry</span><br>' +
-        '<span style="color:var(--dim)">School of Sciences | Faculty of Engineering and Technology</span><br>' +
-        '<span style="color:var(--acc)">SRM Institute of Science and Technology, Tiruchirappalli</span><br>' +
-        '<a href="mailto:rsmani84@gmail.com" style="color:var(--acc2);font-size:13px">Email: rsmani84@gmail.com</a>' +
-      '</div>' +
-      '<div style="border-top:1px solid var(--border);padding-top:14px">' +
-        '<strong style="color:var(--ink);font-size:16px">Tomoya Okazaki</strong><br>' +
-        '<span style="color:var(--mut)">Purple Team Cybersecurity &amp; Systems Architecture</span><br>' +
-        '<a href="mailto:khalidnawaz7y@gmail.com" style="color:var(--acc2);font-size:13px">Email: khalidnawaz7y@gmail.com</a>' +
-      '</div>';
-  } else if(type === '404'){
-    content.innerHTML = '<h2 style="color:var(--bad);margin-bottom:14px">404: Locus Not Found</h2>' +
-      '<p style="color:var(--mut);margin-bottom:14px">The requested molecular coordinate or laboratory route does not exist.</p>' +
-      '<button class="btn primary" onclick="closeModal(\'legalModal\')">Return to Laboratory Home</button>';
   }
 
   modal.classList.add('active');
@@ -2413,14 +2370,78 @@ function toggleMobileMenu(){
 }
 
 /* ==========================================================================
-   9. INITIALIZATION
+   9. INTERACTIVE BACKGROUND MOLECULAR LATTICE
+   ========================================================================== */
+function initBackgroundLattice(){
+  var canvas = document.getElementById('molCanvas');
+  if(!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var w, h;
+  var particles = [];
+
+  function resize(){
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  for(var i=0; i<45; i++){
+    particles.push({
+      x: Math.random() * w,
+      y: Math.random() * h,
+      vx: (Math.random() - 0.5) * 0.4,
+      vy: (Math.random() - 0.5) * 0.4,
+      r: Math.random() * 2 + 1.5,
+      color: Math.random() > 0.5 ? 'rgba(0, 240, 255, 0.4)' : 'rgba(0, 255, 157, 0.35)'
+    });
+  }
+
+  function render(){
+    ctx.clearRect(0, 0, w, h);
+    for(var i=0; i<particles.length; i++){
+      var p = particles[i];
+      p.x += p.vx;
+      p.y += p.vy;
+      if(p.x < 0) p.x = w;
+      if(p.x > w) p.x = 0;
+      if(p.y < 0) p.y = h;
+      if(p.y > h) p.y = 0;
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.color;
+      ctx.fill();
+
+      for(var j=i+1; j<particles.length; j++){
+        var p2 = particles[j];
+        var dx = p2.x - p.x;
+        var dy = p2.y - p.y;
+        var dist = Math.sqrt(dx * dx + dy * dy);
+        if(dist < 120){
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(p2.x, p2.y);
+          ctx.strokeStyle = 'rgba(0, 240, 255, ' + (0.12 * (1 - dist / 120)) + ')';
+          ctx.lineWidth = 0.8;
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(render);
+  }
+  render();
+}
+
+/* ==========================================================================
+   10. INITIALIZATION
    ========================================================================== */
 window.addEventListener('DOMContentLoaded', function(){
   ScrollEngine.init();
   initVisualizer();
   initComparativeTable();
-  initPeriodicTable();
   initQuiz();
+  initBackgroundLattice();
 });
 </script>
 </body>

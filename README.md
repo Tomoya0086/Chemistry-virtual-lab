@@ -59,9 +59,10 @@ Evaluates comprehensive physicochemical and structural descriptors:
 * **Interactive 5-Question Evaluator:** Evaluates knowledge on SMILES grammar, Lipinski's Rule of 5, TPSA, and bonding theory with instant feedback.
 * **Certified Laboratory Report:** One-click client-side export to downloadable PDF with student name, registration number, evaluation metrics, and institutional verification block.
 
-### 4. Quantum Foundations & Periodic Intelligence
-* **118-Element Dynamic Grid:** Complete periodic table with acoustic resonant tones synthesized via the Web Audio API.
-* **Slater's Effective Nuclear Charge ($Z_{\text{eff}}$):** Step-by-step screening constant calculation for any element and subshell.
+### 4. GSAP 3.12 & ScrollTrigger Kinetic Dynamics
+* **GSAP ScrollTrigger:** Smooth scrubbed viewport reveals, 3D card perspective pitch, and masked typographic reveals inspired by Jitter video website animations.
+* **Liquid Magnetic Buttons:** Interactive cursor tracking (`gsap.quickTo`) with dynamic neon glow beacons and tactile click compression.
+* **Vector Bond Stroke Animation:** 2D chemical bonds draw stroke-by-stroke when a molecule loads into memory.
 
 ---
 
