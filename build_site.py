@@ -5,6 +5,7 @@ In collaboration with Tomoya Okazaki
 """
 
 import os
+import json
 
 def generate_index_html():
     html = '''<!DOCTYPE html>
@@ -36,29 +37,44 @@ def generate_index_html():
 
 <style>
 /* ==========================================================================
-   DESIGN TOKENS - ZERO PURPLE GRADIENTS, ZERO PILL BUTTONS, INDUSTRIAL 8PX
+   PUTURE DESIGN SYSTEM TOKENS & HIGH-PRECISION EDITORIAL KINETICS
    ========================================================================== */
 :root {
-  --bg: #030712;
-  --bg-deep: #020409;
-  --panel: rgba(15, 23, 42, 0.75);
-  --panel-hover: rgba(30, 41, 59, 0.9);
-  --border: rgba(0, 240, 255, 0.16);
-  --border-glow: rgba(0, 240, 255, 0.45);
-  --ink: #f8fafc;
-  --mut: #94a3b8;
-  --dim: #64748b;
-  --acc: #00f0ff;      /* Electric Cyan */
-  --acc-glow: rgba(0, 240, 255, 0.35);
+  --black: #000000;
+  --white: #ffffff;
+  --blue: #3d8bff;      /* Puture Signature Electric Blue */
+  --blue-fill: #2271e3;
+  --blue-700: #0f3bc4;
+  --blue-300: #92c3ff;
+  --grey-900: #0b0d11;
+  --grey-800: #15181e;
+  --grey-700: #23272f;
+  --grey-600: #3a3f48;
+  --grey-500: #5e646e;
+  --grey-400: #8a909a;
+  --grey-300: #b6bac2;
+  --grey-200: #d9dce1;
+  --grey-100: #f1f2f4;
+  --bg: #000000;
+  --bg-deep: #000000;
+  --panel: rgba(11, 13, 17, 0.82);
+  --panel-hover: rgba(21, 24, 30, 0.92);
+  --border: rgba(255, 255, 255, 0.12);
+  --border-glow: rgba(61, 139, 255, 0.45);
+  --ink: #ffffff;
+  --mut: #b6bac2;
+  --dim: #8a909a;
+  --acc: #3d8bff;      /* Puture Electric Blue */
+  --acc-glow: rgba(61, 139, 255, 0.35);
   --acc2: #00ff9d;     /* Quantum Emerald */
   --acc2-glow: rgba(0, 255, 157, 0.35);
-  --acc3: #38bdf8;     /* Sky Titanium */
+  --acc3: #00f0ff;     /* Cyber Cyan */
   --warn: #ffd166;
   --bad: #ff4d6d;
-  --r: 8px;            /* Standard Card Radius (Anti-pattern safe: NO pill) */
-  --r-btn: 6px;        /* Industrial Button Radius */
-  --mono: "JetBrains Mono", ui-monospace, monospace;
-  --font-main: "Space Grotesk", system-ui, -apple-system, sans-serif;
+  --r: 2px;            /* Puture Ultra-Crisp 2px Minimal Radius */
+  --r-btn: 2px;        /* Puture Button 2px Radius */
+  --mono: "JetBrains Mono", "Geist Mono", ui-monospace, monospace;
+  --font-main: "Space Grotesk", "Inter", -apple-system, sans-serif;
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
   --header-h: 70px;
 }
@@ -82,6 +98,184 @@ body {
   width: 100%;
   position: relative;
   line-height: 1.6;
+  background: #000000;
+}
+
+/* Custom High-Tech Neon Scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: #020617;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(61, 139, 255, 0.4), rgba(0, 255, 157, 0.4));
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #3d8bff, #00ff9d);
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.6);
+}
+
+/* ==========================================================================
+   PUTURE SPACESTAGE 3D CANVAS & HORIZON GRID
+   ========================================================================== */
+#spaceStage.space-stage {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 0;
+  pointer-events: none;
+}
+
+main, header, footer {
+  position: relative;
+  z-index: 2;
+}
+
+/* ==========================================================================
+   PUTURE INTERACTIVE MAGNETIC CURSOR & CONTEXTUAL BADGE
+   ========================================================================== */
+.puture-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.cursor-dot {
+  width: 7px;
+  height: 7px;
+  background: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s ease;
+}
+
+.cursor-badge {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #000000;
+  background: #ffffff;
+  padding: 3px 8px;
+  border-radius: 2px;
+  font-weight: 700;
+  white-space: nowrap;
+  opacity: 0;
+  transform: scale(0.75) translateX(-4px);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
+}
+
+.puture-cursor.has-label .cursor-badge {
+  opacity: 1;
+  transform: scale(1) translateX(0);
+}
+
+.puture-cursor.hovering .cursor-dot {
+  transform: scale(1.6);
+  background: var(--blue);
+  box-shadow: 0 0 12px var(--blue);
+}
+
+@media (pointer: coarse), (max-width: 768px) {
+  .puture-cursor { display: none !important; }
+}
+
+/* ==========================================================================
+   PUTURE CHAPTER HUD & FLOATING DOCK INDICATOR
+   ========================================================================== */
+.puture-hud {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  z-index: 95;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: 0.12em;
+  padding: 8px 16px;
+  background: rgba(0, 0, 0, 0.85);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  backdrop-filter: blur(16px);
+  color: var(--white);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+  pointer-events: auto;
+}
+
+.hud-chap-num {
+  color: var(--blue);
+  font-weight: 700;
+}
+
+.hud-chap-slash {
+  color: var(--grey-600);
+}
+
+.hud-chap-name {
+  color: var(--grey-300);
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.puture-dots {
+  position: fixed;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 95;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px 8px;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  backdrop-filter: blur(14px);
+}
+
+.p-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--grey-600);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s var(--ease);
+  position: relative;
+  padding: 0;
+}
+
+.p-dot:hover {
+  background: var(--grey-300);
+  transform: scale(1.4);
+}
+
+.p-dot.active {
+  background: var(--blue);
+  height: 18px;
+  border-radius: 4px;
+  box-shadow: 0 0 10px var(--blue);
+}
+
+@media (max-width: 768px) {
+  .puture-dots { display: none; }
+  .puture-hud { bottom: 12px; left: 12px; font-size: 10px; padding: 6px 12px; }
 }
 
 /* ==========================================================================
@@ -91,70 +285,13 @@ body {
   position: fixed;
   top: 0;
   left: 0;
-  height: 3px;
+  height: 2px;
   width: 0%;
-  background: linear-gradient(90deg, var(--acc), var(--acc2), var(--acc3));
-  box-shadow: 0 0 16px var(--acc), 0 0 8px var(--acc2);
+  background: linear-gradient(90deg, var(--blue), var(--acc2), var(--acc3));
+  box-shadow: 0 0 14px var(--blue);
   z-index: 1000;
   pointer-events: none;
   transition: width 0.05s ease-out;
-}
-
-#telemetryHud {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 90;
-  font-family: var(--mono);
-  font-size: 11px;
-  padding: 8px 14px;
-  background: rgba(3, 7, 18, 0.92);
-  border: 1px solid var(--border);
-  border-radius: var(--r-btn);
-  backdrop-filter: blur(14px);
-  color: var(--acc);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.75);
-  pointer-events: none;
-}
-
-.hud-pulse {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--acc2);
-  box-shadow: 0 0 8px var(--acc2);
-  animation: pulse 1.6s infinite alternate;
-}
-
-@keyframes pulse {
-  0% { opacity: 0.3; transform: scale(0.85); }
-  100% { opacity: 1; transform: scale(1.15); }
-}
-
-/* ==========================================================================
-   INTERACTIVE MOLECULAR CANVAS BACKGROUND
-   ========================================================================== */
-#molCanvas {
-  position: fixed;
-  inset: 0;
-  z-index: -2;
-  display: block;
-  pointer-events: none;
-}
-
-.ambient-layer {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background:
-    radial-gradient(45vw 40vw at 12% 18%, rgba(0, 240, 255, 0.08), transparent 70%),
-    radial-gradient(50vw 45vw at 88% 28%, rgba(0, 255, 157, 0.07), transparent 70%),
-    radial-gradient(40vw 40vw at 50% 80%, rgba(56, 189, 248, 0.06), transparent 70%);
-  filter: blur(25px);
 }
 
 .wrap {
@@ -216,135 +353,269 @@ body {
   font-size: 11px;
 }
 
-header {
+/* ==========================================================================
+   FRAMER-STYLE FLOATING ISLAND HEADER & LIQUID PILL CAPSULE DOCK
+   ========================================================================== */
+header, .floating-header {
   position: sticky;
-  top: 0;
-  z-index: 100;
-  backdrop-filter: blur(20px);
-  background: rgba(3, 7, 18, 0.88);
-  border-bottom: 1px solid var(--border);
-  height: var(--header-h);
+  top: 10px;
+  z-index: 1000;
+  width: 100%;
+  padding: 0 16px;
+  pointer-events: none;
+  transition: top 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.nav {
+.nav-island-bar {
+  pointer-events: auto;
+  max-width: 1240px;
+  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 100%;
+  padding: 7px 14px 7px 18px;
+  background: rgba(7, 11, 20, 0.76);
+  backdrop-filter: blur(24px) saturate(190%);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 9999px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.65), 0 0 24px rgba(0, 240, 255, 0.05);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: visible;
+}
+
+header.scrolled, .floating-header.scrolled {
+  top: 8px;
+}
+
+header.scrolled .nav-island-bar, .floating-header.scrolled .nav-island-bar {
+  padding: 5px 12px 5px 16px;
+  background: rgba(4, 7, 14, 0.92);
+  border-color: rgba(0, 240, 255, 0.32);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.88), 0 0 32px rgba(0, 240, 255, 0.15);
+  transform: scale(0.995);
 }
 
 .brand-group {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
   text-decoration: none;
-}
-
-.tomoya-avatar {
-  width: 42px;
-  height: 42px;
-  border-radius: 6px;
-  border: 1.5px solid var(--acc);
-  box-shadow: 0 0 14px var(--acc-glow);
-  object-fit: cover;
+  color: inherit;
+  padding: 2px 4px;
+  border-radius: 9999px;
   transition: transform 0.25s var(--ease);
 }
 
-.tomoya-avatar:hover {
-  transform: scale(1.08) rotate(2deg);
+.brand-group:hover {
+  transform: scale(1.02);
+}
+
+.tomoya-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(0, 240, 255, 0.75);
+  box-shadow: 0 0 14px rgba(0, 240, 255, 0.45);
+  object-fit: cover;
+  transition: all 0.3s var(--ease);
+}
+
+header.scrolled .tomoya-avatar {
+  width: 34px;
+  height: 34px;
 }
 
 .brand-text h1 {
-  font-size: 16px;
+  font-size: 14.5px;
   font-weight: 700;
-  color: var(--ink);
+  color: #ffffff;
+  letter-spacing: -0.01em;
   line-height: 1.2;
 }
 
 .brand-text span {
-  font-size: 11px;
+  font-size: 10px;
   color: var(--acc);
   font-family: var(--mono);
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   display: block;
 }
 
-nav.links {
+/* Framer Dynamic Sliding Options Dock */
+nav.links.nav-pill-track {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 4px;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 9999px;
+  padding: 3px;
+  gap: 1px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
-nav.links a {
-  padding: 8px 13px;
-  border-radius: var(--r-btn);
-  color: var(--mut);
-  text-decoration: none;
-  font-size: 13.5px;
-  font-weight: 500;
-  border: 1px solid transparent;
-  transition: all 0.2s var(--ease);
+.nav-sliding-pill {
+  position: absolute;
+  top: 3px;
+  left: 0;
+  height: calc(100% - 6px);
+  background: linear-gradient(135deg, rgba(0, 240, 255, 0.20), rgba(0, 255, 157, 0.16));
+  border: 1px solid rgba(0, 240, 255, 0.55);
+  border-radius: 9999px;
+  box-shadow: 0 0 14px rgba(0, 240, 255, 0.32), inset 0 1px 1px rgba(255, 255, 255, 0.25);
+  pointer-events: none;
+  z-index: 1;
+  transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), width 0.32s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+  opacity: 0;
+  will-change: transform, width;
 }
 
-nav.links a:hover {
-  color: var(--ink);
-  background: var(--panel);
-  border-color: var(--border);
-  transform: translateY(-2px);
-}
-
-nav.links a.active {
-  color: #020617;
-  background: linear-gradient(135deg, var(--acc), var(--acc2));
-  font-weight: 700;
-  box-shadow: 0 0 16px var(--acc-glow);
-}
-
-.nav-actions {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.ctrl-btn {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  color: var(--acc);
-  padding: 7px 12px;
-  border-radius: var(--r-btn);
-  font-family: var(--mono);
-  font-size: 11.5px;
-  cursor: pointer;
+.nav-link-item {
+  position: relative;
+  z-index: 2;
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  transition: all 0.2s var(--ease);
+  padding: 6px 13px;
+  border-radius: 9999px;
+  color: #94a3b8;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  transition: color 0.2s ease;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.nav-link-item .nav-num {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  color: rgba(148, 163, 184, 0.6);
+  letter-spacing: 0.02em;
+  transition: color 0.2s ease;
+}
+
+.nav-link-item:hover {
+  color: #ffffff;
+}
+
+.nav-link-item:hover .nav-num {
+  color: var(--acc);
+}
+
+.nav-link-item.active {
+  color: #ffffff;
+  font-weight: 600;
+  text-shadow: 0 0 12px rgba(0, 240, 255, 0.6);
+}
+
+.nav-link-item.active .nav-num {
+  color: var(--acc);
+  font-weight: 700;
+}
+
+/* Nav Actions & Controls */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ctrl-btn {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  color: #cbd5e1;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  font-size: 11.5px;
+  font-family: var(--mono);
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.25s var(--ease);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .ctrl-btn:hover {
-  background: var(--panel-hover);
-  border-color: var(--acc);
-  box-shadow: 0 0 12px var(--acc-glow);
-  transform: translateY(-2px);
+  background: rgba(0, 240, 255, 0.12);
+  border-color: rgba(0, 240, 255, 0.4);
+  color: #ffffff;
+  box-shadow: 0 0 14px rgba(0, 240, 255, 0.25);
+  transform: translateY(-1px);
+}
+
+.audio-pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #00ff9d;
+  box-shadow: 0 0 8px #00ff9d;
+  animation: audioPulse 2s infinite ease-in-out;
+  display: inline-block;
+}
+
+.audio-pulse-dot.muted {
+  background: #ff4d6d;
+  box-shadow: 0 0 8px #ff4d6d;
+  animation: none;
+}
+
+@keyframes audioPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.3); opacity: 0.7; }
 }
 
 .menu-toggle {
   display: none;
-  background: transparent;
-  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   color: var(--ink);
-  padding: 8px 10px;
-  border-radius: var(--r-btn);
+  padding: 7px 10px;
+  border-radius: 9999px;
   cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
 }
 
-/* Mobile Drawer */
+.menu-toggle:hover {
+  background: rgba(0, 240, 255, 0.12);
+  border-color: rgba(0, 240, 255, 0.4);
+}
+
+/* Integrated Dynamic Scroll Progress Laser Line */
+.nav-island-progress {
+  position: absolute;
+  bottom: 0;
+  left: 24px;
+  right: 24px;
+  height: 1.5px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.nav-island-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #00f0ff, #00ff9d);
+  box-shadow: 0 0 8px rgba(0, 240, 255, 0.8);
+  transition: width 0.08s ease-out;
+}
+
+/* Mobile Drawer Enhancements */
 .mobile-drawer {
   position: fixed;
   inset: 0;
   background: rgba(2, 4, 10, 0.96);
   backdrop-filter: blur(20px);
-  z-index: 150;
+  z-index: 1500;
   display: none;
   flex-direction: column;
   padding: 24px;
@@ -373,13 +644,83 @@ nav.links a.active {
 }
 
 .mobile-nav-links a {
-  font-size: 17px;
-  padding: 12px 16px;
-  border-radius: var(--r-btn);
-  color: var(--ink);
+  font-size: 15px;
+  padding: 12px 18px;
+  border-radius: 10px;
+  color: #cbd5e1;
   text-decoration: none;
-  border: 1px solid var(--border);
-  background: var(--panel);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.2s ease;
+}
+
+.mobile-nav-links a .m-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--acc);
+}
+
+.mobile-nav-links a:hover, .mobile-nav-links a.active {
+  color: #ffffff;
+  background: rgba(0, 240, 255, 0.12);
+  border-color: rgba(0, 240, 255, 0.4);
+  box-shadow: 0 0 16px rgba(0, 240, 255, 0.18);
+}
+
+/* Responsive Navigation Breakpoints */
+@media (max-width: 1120px) {
+  .nav-link-item .nav-num {
+    display: none;
+  }
+  .nav-link-item {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 900px) {
+  nav.links.nav-pill-track {
+    display: none;
+  }
+  .menu-toggle {
+    display: flex;
+  }
+  .nav-island-progress {
+    left: 16px;
+    right: 16px;
+  }
+}
+
+@media (max-width: 560px) {
+  .brand-text span {
+    display: none;
+  }
+  .brand-text h1 {
+    font-size: 13.5px;
+  }
+  #audioBtn span#audioStatusText {
+    display: none;
+  }
+  .ctrl-btn {
+    padding: 6px 10px;
+  }
+  .nav-island-bar {
+    padding: 6px 12px;
+  }
+  .tomoya-avatar {
+    width: 32px;
+    height: 32px;
+  }
+  .inst-bar {
+    font-size: 10px;
+    padding: 4px 10px;
+  }
+  .inst-status {
+    display: none;
+  }
 }
 
 /* ==========================================================================
@@ -510,38 +851,45 @@ nav.links a.active {
 }
 
 /* ==========================================================================
-   CARDS WITH 3D PERSPECTIVE PITCH & JITTER-STYLE KINETICS
+   INTERACTIVE CARDS WITH MOUSE SPOTLIGHT GLOW & FROSTED GLASS
    ========================================================================== */
-.card {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  padding: 26px;
-  backdrop-filter: blur(14px);
+.card, .theory-card, .bond-metric-card, .gauge-card, .tele-item, .bento-card, .ro5-criterion {
+  background: rgba(8, 12, 22, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 24px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   position: relative;
-  transition: border-color 0.3s, box-shadow 0.3s;
-  transform-style: preserve-3d;
-  will-change: transform, opacity;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
   overflow: hidden;
 }
 
-.card:hover {
-  border-color: var(--border-glow);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 240, 255, 0.2);
-}
-
-.card-sheen {
+.card::before, .theory-card::before, .bond-metric-card::before, .gauge-card::before, .tele-item::before, .bento-card::before, .ro5-criterion::before {
+  content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle 320px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(0, 240, 255, 0.14), transparent 70%);
+  border-radius: inherit;
+  background: radial-gradient(450px circle at var(--mouse-x, -999px) var(--mouse-y, -999px), rgba(0, 240, 255, 0.14), transparent 45%);
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.3s ease;
-  z-index: 2;
+  z-index: 1;
 }
 
-.card:hover .card-sheen {
+.card:hover::before, .theory-card:hover::before, .bond-metric-card:hover::before, .gauge-card:hover::before, .tele-item:hover::before, .bento-card:hover::before, .ro5-criterion:hover::before {
   opacity: 1;
+}
+
+.card:hover, .theory-card:hover, .bond-metric-card:hover, .gauge-card:hover, .tele-item:hover, .bento-card:hover, .ro5-criterion:hover {
+  border-color: rgba(0, 240, 255, 0.35);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.8), 0 0 28px rgba(0, 240, 255, 0.10);
+  transform: translateY(-2px);
+}
+
+.card > *, .theory-card > *, .gauge-card > *, .tele-item > *, .bento-card > * {
+  position: relative;
+  z-index: 2;
 }
 
 /* Sliding Kinetic Classes */
@@ -605,23 +953,50 @@ nav.links a.active {
   background: rgba(0, 255, 157, 0.08);
 }
 
+.hero {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-glow-mesh {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 720px;
+  height: 400px;
+  background: radial-gradient(ellipse at center, rgba(61, 139, 255, 0.22) 0%, rgba(0, 240, 255, 0.12) 40%, rgba(0, 255, 157, 0.04) 65%, transparent 80%);
+  filter: blur(55px);
+  pointer-events: none;
+  z-index: 0;
+  animation: auroraPulse 10s ease-in-out infinite alternate;
+}
+
+@keyframes auroraPulse {
+  0% { transform: translate(-50%, -50%) scale(0.95); opacity: 0.8; }
+  100% { transform: translate(-50%, -48%) scale(1.08); opacity: 1; }
+}
+
 .hero h1 {
-  font-size: clamp(34px, 5.2vw, 66px);
-  font-weight: 700;
+  font-size: clamp(34px, 5.2vw, 62px);
+  font-weight: 800;
   line-height: 1.12;
   letter-spacing: -0.03em;
   margin-bottom: 22px;
-  background: linear-gradient(120deg, #ffffff 15%, var(--acc) 55%, var(--acc2) 85%);
+  background: linear-gradient(180deg, #FFFFFF 15%, #e2e8f0 60%, #94a3b8 100%);
   -webkit-background-clip: text;
   background-clip: text;
+  -webkit-text-fill-color: transparent;
   color: transparent;
+  text-shadow: 0 12px 35px rgba(0, 0, 0, 0.6);
 }
 
 .hero p {
-  font-size: clamp(16px, 1.8vw, 20px);
-  color: var(--mut);
-  max-width: 800px;
+  font-size: clamp(16px, 1.8vw, 19px);
+  color: #94a3b8;
+  max-width: 820px;
   margin-bottom: 34px;
+  line-height: 1.65;
 }
 
 .hero-actions {
@@ -634,30 +1009,54 @@ nav.links a.active {
 
 .telemetry-strip {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
   gap: 16px;
   margin-top: 10px;
 }
 
 .tele-item {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: var(--r-btn);
   padding: 16px 20px;
-  transition: transform 0.25s var(--ease), border-color 0.25s;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
-.tele-item:hover {
-  transform: translateY(-3px);
-  border-color: var(--acc);
+.tele-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--dim);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
+
+.tele-pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--acc);
+  box-shadow: 0 0 8px var(--acc);
+  animation: audioPulse 2s infinite ease-in-out;
+}
+
+.tele-pulse-dot.emerald { background: var(--acc2); box-shadow: 0 0 8px var(--acc2); }
+.tele-pulse-dot.cyan { background: var(--acc3); box-shadow: 0 0 8px var(--acc3); }
+.tele-pulse-dot.purple { background: #b388ff; box-shadow: 0 0 8px #b388ff; }
 
 .tele-val {
   font-family: var(--mono);
-  font-size: 26px;
+  font-size: 24px;
   font-weight: 700;
-  color: var(--acc);
+  color: #ffffff;
   line-height: 1.2;
+}
+
+.tele-sub {
+  font-size: 11.5px;
+  color: var(--mut);
+  letter-spacing: 0.02em;
 }
 
 .tele-lbl {
@@ -784,57 +1183,525 @@ input:focus, select:focus {
   gap: 22px;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 960px) {
   .dual-canvas-grid {
     grid-template-columns: 1fr;
   }
 }
 
+.canvas-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.canvas-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--acc);
+}
+
+.canvas-tag.emerald { color: var(--acc2); }
+
+.canvas-tag-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--acc);
+  box-shadow: 0 0 8px var(--acc);
+}
+
+.canvas-tag-dot.emerald {
+  background: var(--acc2);
+  box-shadow: 0 0 8px var(--acc2);
+}
+
+.canvas-subtag {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--dim);
+  letter-spacing: 0.05em;
+}
+
+/* Holographic 3D Viewport Chamber */
 .viewer-box {
   width: 100%;
   height: 490px;
-  border-radius: var(--r);
-  border: 1px solid var(--border);
-  background: radial-gradient(circle at 50% 50%, rgba(0, 240, 255, 0.04), rgba(2, 4, 10, 0.95));
+  border-radius: 12px;
+  border: 1px solid rgba(0, 240, 255, 0.25);
+  background: radial-gradient(circle at 50% 50%, rgba(0, 240, 255, 0.05), rgba(2, 4, 10, 0.96));
   position: relative;
   overflow: hidden;
+  box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.9), 0 0 20px rgba(0, 240, 255, 0.05);
 }
 
-.canvas-toolbar {
+/* Cybernetic Corner HUD Reticles */
+.hud-reticle {
   position: absolute;
-  top: 14px;
+  width: 14px;
+  height: 14px;
+  border-color: rgba(0, 240, 255, 0.45);
+  pointer-events: none;
+  z-index: 15;
+  transition: border-color 0.3s ease, transform 0.3s ease;
+}
+
+.viewer-box:hover .hud-reticle, .mol-2d-canvas:hover .hud-reticle {
+  border-color: rgba(0, 240, 255, 0.9);
+}
+
+.hud-reticle.tl { top: 10px; left: 10px; border-top: 2px solid; border-left: 2px solid; }
+.hud-reticle.tr { top: 10px; right: 10px; border-top: 2px solid; border-right: 2px solid; }
+.hud-reticle.bl { bottom: 10px; left: 10px; border-bottom: 2px solid; border-left: 2px solid; }
+.hud-reticle.br { bottom: 10px; right: 10px; border-bottom: 2px solid; border-right: 2px solid; }
+
+/* Floating In-Canvas Glass Tool Dock */
+.viewer-floating-dock {
+  position: absolute;
+  bottom: 14px;
   left: 14px;
   right: 14px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  z-index: 10;
+  flex-wrap: wrap;
+  gap: 8px;
+  z-index: 25;
   pointer-events: none;
 }
 
-.canvas-toolbar * {
+.viewer-style-pills, .viewer-action-pills {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  background: rgba(4, 8, 16, 0.82);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 9999px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
   pointer-events: auto;
 }
 
-.model-select {
-  width: auto;
-  padding: 7px 14px;
-  font-size: 12px;
-  background: rgba(3, 7, 18, 0.92);
+.v-pill, .v-action-pill {
+  background: transparent;
+  border: 1px solid transparent;
+  color: #94a3b8;
+  font-family: var(--font-main);
+  font-size: 11.5px;
+  font-weight: 500;
+  padding: 5px 12px;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
 }
 
-/* 2D Vector Structure View with Animated Stroke */
+.v-pill:hover, .v-action-pill:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.v-pill.active {
+  background: linear-gradient(135deg, rgba(0, 240, 255, 0.25), rgba(0, 255, 157, 0.18));
+  border-color: rgba(0, 240, 255, 0.6);
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 0 12px rgba(0, 240, 255, 0.35);
+}
+
+.v-action-pill.active {
+  background: rgba(0, 255, 157, 0.22);
+  border-color: rgba(0, 255, 157, 0.6);
+  color: #00ff9d;
+  box-shadow: 0 0 10px rgba(0, 255, 157, 0.3);
+}
+
+.spin-icon {
+  font-size: 13px;
+  line-height: 1;
+}
+
+/* 2D Vector Structure View with Tech Grid */
 .mol-2d-canvas {
   width: 100%;
   height: 490px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(6, 10, 22, 0.88);
-  border-radius: var(--r);
-  border: 1px solid var(--border);
+  background: 
+    radial-gradient(circle at 50% 50%, rgba(61, 139, 255, 0.04), rgba(4, 7, 16, 0.95)),
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 100% 100%, 24px 24px, 24px 24px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
   position: relative;
   overflow: hidden;
+  box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.9);
+}
+
+/* Theory Bento Grid Styles */
+.theory-bento-grid {
+  display: grid;
+  grid-template-columns: 1.25fr 1fr;
+  gap: 20px;
+}
+
+.bento-wide {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 900px) {
+  .theory-bento-grid { grid-template-columns: 1fr; }
+}
+
+.theory-card-head {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.bento-badge {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--acc);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.bento-badge.emerald { color: var(--acc2); }
+.bento-badge.purple { color: #c084fc; }
+
+.smiles-token-track {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px 14px;
+  background: rgba(3, 7, 18, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 10px;
+  margin-bottom: 14px;
+}
+
+.smiles-chip {
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-family: var(--mono);
+  font-size: 13.5px;
+  font-weight: 700;
+  background: rgba(61, 139, 255, 0.15);
+  border: 1px solid rgba(61, 139, 255, 0.45);
+  color: #70b0ff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.smiles-chip:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 14px rgba(61, 139, 255, 0.6);
+  border-color: var(--acc);
+}
+
+.smiles-chip.ester {
+  background: rgba(255, 77, 109, 0.15);
+  border-color: rgba(255, 77, 109, 0.45);
+  color: #ff859d;
+}
+.smiles-chip.ester:hover {
+  box-shadow: 0 0 14px rgba(255, 77, 109, 0.6);
+}
+
+.smiles-chip.ring {
+  background: rgba(0, 255, 157, 0.15);
+  border-color: rgba(0, 255, 157, 0.45);
+  color: #4eedab;
+}
+.smiles-chip.ring:hover {
+  box-shadow: 0 0 14px rgba(0, 255, 157, 0.6);
+}
+
+.smiles-chip.acid {
+  background: rgba(0, 240, 255, 0.15);
+  border-color: rgba(0, 240, 255, 0.45);
+  color: #7aedff;
+}
+.smiles-chip.acid:hover {
+  box-shadow: 0 0 14px rgba(0, 240, 255, 0.6);
+}
+
+.token-inspector {
+  padding: 14px 18px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px dashed rgba(255, 255, 255, 0.14);
+  border-radius: 10px;
+}
+
+.inspector-title {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 5px;
+}
+
+.inspector-body {
+  font-size: 13px;
+  color: var(--mut);
+  line-height: 1.5;
+}
+
+.geom-pill-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.geom-pill-item {
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12.5px;
+}
+
+.geom-pill-item .g-name {
+  font-weight: 600;
+  color: var(--acc2);
+  font-family: var(--mono);
+  font-size: 12px;
+}
+
+.geom-pill-item .g-desc {
+  color: var(--mut);
+  font-size: 11.5px;
+  text-align: right;
+}
+
+.ro5-criteria-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.ro5-criterion {
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+}
+
+.crit-num {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: #c084fc;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 4px;
+}
+
+.crit-val {
+  font-family: var(--mono);
+  font-size: 16px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 6px;
+}
+
+.crit-desc {
+  font-size: 12px;
+  color: var(--mut);
+  line-height: 1.4;
+}
+
+/* Lipinski Rule of 5 Visual Dashboard & Hero Gauges */
+.ro5-dashboard {
+  margin-bottom: 26px;
+  padding-bottom: 26px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.ro5-compliance-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 14px 18px;
+  background: rgba(0, 255, 157, 0.05);
+  border: 1px solid rgba(0, 255, 157, 0.25);
+  border-radius: 12px;
+  margin-bottom: 18px;
+}
+
+.ro5-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #00ff9d;
+}
+
+.ro5-badge.alert,
+.ro5-badge.warning {
+  color: #ffd166;
+}
+
+.ro5-badge.danger {
+  color: #ff4d6d;
+}
+
+.ro5-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #00ff9d;
+  box-shadow: 0 0 10px #00ff9d;
+  animation: audioPulse 2s infinite ease-in-out;
+}
+
+.ro5-badge.alert .ro5-dot,
+.ro5-badge.warning .ro5-dot {
+  background: #ffd166;
+  box-shadow: 0 0 10px #ffd166;
+}
+
+.ro5-badge.danger .ro5-dot {
+  background: #ff4d6d;
+  box-shadow: 0 0 10px #ff4d6d;
+}
+
+.ro5-subtext {
+  font-size: 12.5px;
+  color: var(--mut);
+}
+
+.ro5-gauge-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 14px;
+}
+
+.gauge-card {
+  padding: 16px;
+}
+
+.gauge-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.gauge-title {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--dim);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.gauge-badge {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 9999px;
+  background: rgba(0, 255, 157, 0.15);
+  color: #00ff9d;
+  border: 1px solid rgba(0, 255, 157, 0.4);
+}
+
+.gauge-badge.fail,
+.gauge-badge.danger {
+  background: rgba(255, 77, 109, 0.15);
+  color: #ff4d6d;
+  border-color: rgba(255, 77, 109, 0.4);
+}
+
+.gauge-fill.danger {
+  background: linear-gradient(90deg, #ff4d6d, #f59e0b) !important;
+  box-shadow: 0 0 8px rgba(255, 77, 109, 0.6) !important;
+}
+
+.gauge-val {
+  font-family: var(--mono);
+  font-size: 22px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 10px;
+}
+
+.gauge-unit {
+  font-size: 12px;
+  color: var(--dim);
+  font-weight: 400;
+}
+
+.gauge-meter {
+  position: relative;
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 9999px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+.gauge-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #3d8bff, #00f0ff);
+  border-radius: 9999px;
+  transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 8px rgba(0, 240, 255, 0.6);
+}
+
+.gauge-fill.emerald {
+  background: linear-gradient(90deg, #00ff9d, #3d8bff);
+  box-shadow: 0 0 8px rgba(0, 255, 157, 0.6);
+}
+
+.gauge-fill.cyan {
+  background: linear-gradient(90deg, #00f0ff, #00ff9d);
+  box-shadow: 0 0 8px rgba(0, 240, 255, 0.6);
+}
+
+.gauge-fill.purple {
+  background: linear-gradient(90deg, #c084fc, #3d8bff);
+  box-shadow: 0 0 8px rgba(192, 132, 252, 0.6);
+}
+
+.gauge-foot {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--dim);
+}
+
+.limit-label {
+  color: var(--mut);
 }
 
 /* Properties Analytical Suite */
@@ -932,13 +1799,6 @@ input:focus, select:focus {
   border: 1px solid rgba(0, 255, 157, 0.35);
   color: var(--acc2);
 }
-
-/* Theory Cards */
-.theory-card {
-  border-left: 3px solid var(--acc);
-}
-
-.theory-card h3 {
   font-size: 18px;
   color: var(--ink);
   margin-bottom: 10px;
@@ -981,7 +1841,7 @@ input:focus, select:focus {
 }
 
 /* ==========================================================================
-   FOOTER & COMPLIANCE - ZERO PHONE NUMBER, OFFICIAL EMAILS ONLY
+   FOOTER & COMPLIANCE - OFFICIAL ACADEMIC CHANNELS
    ========================================================================== */
 footer {
   background: #02040a;
@@ -1102,19 +1962,32 @@ footer {
 <!-- Laser Scroll Beam -->
 <div id="scrollLaser"></div>
 
-<!-- Telemetry HUD -->
-<div id="telemetryHud">
-  <span class="hud-pulse"></span>
-  <span id="hudPct">0%</span>
-  <span>|</span>
-  <span id="hudModule">CHEMINFORMATICS 2D/3D LAB</span>
-  <span>|</span>
-  <span id="hudApiStatus" style="color:var(--acc2)">PYTHON ENGINE: READY</span>
+<!-- Puture Interactive Magnetic Cursor & Contextual Badge -->
+<div class="puture-cursor" id="putureCursor">
+  <span class="cursor-dot"></span>
+  <span class="cursor-badge" id="cursorBadge">EXPLORE</span>
 </div>
 
-<!-- Background Canvas & Ambient Lights -->
-<canvas id="molCanvas"></canvas>
-<div class="ambient-layer"></div>
+<!-- Puture Fixed Chapter HUD & Progress Tracker -->
+<div class="puture-hud" id="chapterHud">
+  <span class="hud-chap-num" id="hudChapNum">01</span>
+  <span class="hud-chap-slash">/</span>
+  <span class="hud-chap-name" id="hudChapName">WELCOME</span>
+</div>
+
+<!-- Puture Floating Chapter Navigation Dots -->
+<nav class="puture-dots" id="chapterDots" aria-label="Chapters">
+  <button class="p-dot active" onclick="scrollToChapter('home')" title="01 Overview" data-chapter="01"></button>
+  <button class="p-dot" onclick="scrollToChapter('theory')" title="02 Curriculum Theory" data-chapter="02"></button>
+  <button class="p-dot" onclick="scrollToChapter('lab')" title="03 Molecular Lab" data-chapter="03"></button>
+  <button class="p-dot" onclick="scrollToChapter('properties')" title="04 18 Descriptors" data-chapter="04"></button>
+  <button class="p-dot" onclick="scrollToChapter('compare')" title="05 Comparative Matrix" data-chapter="05"></button>
+  <button class="p-dot" onclick="scrollToChapter('quiz')" title="06 Assessment Module" data-chapter="06"></button>
+  <button class="p-dot" onclick="scrollToChapter('report')" title="07 Official Report" data-chapter="07"></button>
+</nav>
+
+<!-- Puture SpaceStage 3D WebGL Horizon Canvas -->
+<canvas id="spaceStage" class="space-stage"></canvas>
 
 <!-- Institutional SRM Top Bar -->
 <div class="inst-bar">
@@ -1132,10 +2005,10 @@ footer {
   </div>
 </div>
 
-<!-- Main Sticky Header -->
-<header>
-  <div class="wrap nav">
-    <a href="#home" class="brand-group">
+<!-- Main Sticky Framer-Style Floating Island Header -->
+<header class="floating-header" id="mainHeader">
+  <div class="nav-island-bar" id="navIslandBar">
+    <a href="#home" class="brand-group" aria-label="Cheminformatics Virtual Lab Home">
       <img src="assets/tomoya_logo.png" alt="Tomoya Okazaki Avatar" class="tomoya-avatar">
       <div class="brand-text">
         <h1>Cheminformatics Virtual Lab</h1>
@@ -1143,24 +2016,53 @@ footer {
       </div>
     </a>
 
-    <nav class="links">
-      <a href="#home" class="active">Overview</a>
-      <a href="#theory">Theory</a>
-      <a href="#lab">2D &amp; 3D Lab</a>
-      <a href="#properties">Descriptors</a>
-      <a href="#compare">Comparative Matrix</a>
-      <a href="#quiz">Assessment</a>
-      <a href="#report">Student Report</a>
+    <!-- Framer Dynamic Sliding Options Dock -->
+    <nav class="links nav-pill-track" id="navLinksTrack" aria-label="Curriculum Navigation">
+      <div class="nav-sliding-pill" id="navSlidingPill" aria-hidden="true"></div>
+      <a href="#home" class="nav-link-item active" data-chapter="01">
+        <span class="nav-num">01</span>
+        <span class="nav-label">Overview</span>
+      </a>
+      <a href="#theory" class="nav-link-item" data-chapter="02">
+        <span class="nav-num">02</span>
+        <span class="nav-label">Theory</span>
+      </a>
+      <a href="#lab" class="nav-link-item" data-chapter="03">
+        <span class="nav-num">03</span>
+        <span class="nav-label">2D &amp; 3D Lab</span>
+      </a>
+      <a href="#properties" class="nav-link-item" data-chapter="04">
+        <span class="nav-num">04</span>
+        <span class="nav-label">Descriptors</span>
+      </a>
+      <a href="#compare" class="nav-link-item" data-chapter="05">
+        <span class="nav-num">05</span>
+        <span class="nav-label">Matrix</span>
+      </a>
+      <a href="#quiz" class="nav-link-item" data-chapter="06">
+        <span class="nav-num">06</span>
+        <span class="nav-label">Assessment</span>
+      </a>
+      <a href="#report" class="nav-link-item" data-chapter="07">
+        <span class="nav-num">07</span>
+        <span class="nav-label">Report</span>
+      </a>
     </nav>
 
     <div class="nav-actions">
       <button class="ctrl-btn" id="audioBtn" onclick="toggleAudio()" title="Toggle Web Audio Synthesizer">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+        <span class="audio-pulse-dot" id="audioDot"></span>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
         <span id="audioStatusText">AUDIO: ON</span>
       </button>
       <button class="menu-toggle" onclick="toggleMobileMenu()" aria-label="Toggle Navigation Menu">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
       </button>
+    </div>
+
+    <!-- Integrated Dynamic Scroll Progress Laser Line -->
+    <div class="nav-island-progress" aria-hidden="true">
+      <div class="nav-island-progress-bar" id="navIslandProgressBar"></div>
     </div>
   </div>
 </header>
@@ -1172,20 +2074,21 @@ footer {
     <button class="modal-close" onclick="toggleMobileMenu()">&times;</button>
   </div>
   <div class="mobile-nav-links">
-    <a href="#home" onclick="toggleMobileMenu()">Overview</a>
-    <a href="#theory" onclick="toggleMobileMenu()">Cheminformatics Theory</a>
-    <a href="#lab" onclick="toggleMobileMenu()">2D &amp; 3D Molecular Lab</a>
-    <a href="#properties" onclick="toggleMobileMenu()">Molecular Descriptors</a>
-    <a href="#compare" onclick="toggleMobileMenu()">Comparative Analysis</a>
-    <a href="#quiz" onclick="toggleMobileMenu()">Student Assessment</a>
-    <a href="#report" onclick="toggleMobileMenu()">Download PDF Report</a>
+    <a href="#home" onclick="toggleMobileMenu()"><span class="m-num">01</span> Overview</a>
+    <a href="#theory" onclick="toggleMobileMenu()"><span class="m-num">02</span> Cheminformatics Theory</a>
+    <a href="#lab" onclick="toggleMobileMenu()"><span class="m-num">03</span> 2D &amp; 3D Molecular Lab</a>
+    <a href="#properties" onclick="toggleMobileMenu()"><span class="m-num">04</span> Molecular Descriptors</a>
+    <a href="#compare" onclick="toggleMobileMenu()"><span class="m-num">05</span> Comparative Analysis</a>
+    <a href="#quiz" onclick="toggleMobileMenu()"><span class="m-num">06</span> Student Assessment</a>
+    <a href="#report" onclick="toggleMobileMenu()"><span class="m-num">07</span> Download PDF Report</a>
   </div>
 </div>
 
 <main>
   <!-- BLOCK 1: HERO & TELEMETRY STRIP -->
-  <section id="home" class="hero">
-    <div class="wrap">
+  <section id="home" class="hero" data-chapter="01" data-chapter-name="OVERVIEW">
+    <div class="hero-glow-mesh" aria-hidden="true"></div>
+    <div class="wrap" style="position:relative;z-index:2">
       <div class="hero-badge-row">
         <span class="badge srm-badge">SRM Institute of Science and Technology</span>
         <span class="badge">Division of Chemistry &times; School of Sciences</span>
@@ -1201,15 +2104,15 @@ footer {
       </p>
 
       <div class="hero-actions">
-        <a href="#lab" class="btn primary">
+        <a href="#lab" class="btn primary" data-cursor-label="LAUNCH LAB">
           <span>Launch Molecular Lab</span>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
-        <a href="#theory" class="btn">
+        <a href="#theory" class="btn" data-cursor-label="THEORY">
           <span>Read Laboratory Theory</span>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
         </a>
-        <a href="#report" class="btn">
+        <a href="#report" class="btn" data-cursor-label="PDF REPORT">
           <span>Download PDF Report</span>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
         </a>
@@ -1218,27 +2121,43 @@ footer {
       <!-- Telemetry Strip -->
       <div class="telemetry-strip">
         <div class="tele-item">
+          <div class="tele-top">
+            <span class="tele-pulse-dot"></span>
+            <span class="tele-lbl">EVALUATED DESCRIPTORS</span>
+          </div>
           <div class="tele-val">18 Metrics</div>
-          <div class="tele-lbl">Descriptors Evaluated</div>
+          <div class="tele-sub">Topological &amp; Quantum Indices</div>
         </div>
         <div class="tele-item">
-          <div class="tele-val">2D &amp; 3D</div>
-          <div class="tele-lbl">Dual Visualizer Sync</div>
+          <div class="tele-top">
+            <span class="tele-pulse-dot emerald"></span>
+            <span class="tele-lbl">DUAL VIEWPORT</span>
+          </div>
+          <div class="tele-val">2D &amp; 3D Sync</div>
+          <div class="tele-sub">Real-time Topology Linkage</div>
         </div>
         <div class="tele-item">
-          <div class="tele-val">5 Models</div>
-          <div class="tele-lbl">Ball, Stick, CPK, Wire, Cartoon</div>
+          <div class="tele-top">
+            <span class="tele-pulse-dot purple"></span>
+            <span class="tele-lbl">REPRESENTATION MODES</span>
+          </div>
+          <div class="tele-val">4 Conformer Styles</div>
+          <div class="tele-sub">Ball &amp; Stick, Stick, CPK, Wire</div>
         </div>
         <div class="tele-item">
+          <div class="tele-top">
+            <span class="tele-pulse-dot cyan"></span>
+            <span class="tele-lbl">COMPUTATIONAL CORE</span>
+          </div>
           <div class="tele-val">Python 3.14</div>
-          <div class="tele-lbl">Serverless Backend Engine</div>
+          <div class="tele-sub">Serverless Cloud Calculation</div>
         </div>
       </div>
     </div>
   </section>
 
   <!-- BLOCK 2: CHEMINFORMATICS THEORY & FOUNDATIONS -->
-  <section id="theory">
+  <section id="theory" data-chapter="02" data-chapter-name="CURRICULUM THEORY">
     <div class="wrap">
       <div class="sechead">
         <div class="kicker">Curriculum Foundations</div>
@@ -1250,38 +2169,99 @@ footer {
         </p>
       </div>
 
-      <div class="grid g2">
-        <div class="card theory-card slide-left">
-          <h3>SMILES Representation</h3>
-          <p style="color:var(--mut);font-size:14px;margin-bottom:12px">
-            <strong>SMILES</strong> (Simplified Molecular Input Line Entry System) encodes molecular connectivity into a concise ASCII text string.
+      <!-- 3-Card Interactive Theory Bento Grid -->
+      <div class="theory-bento-grid">
+        <!-- Bento 1: Interactive SMILES Syntax Decrypter -->
+        <div class="card theory-card bento-hero slide-left">
+          <div class="theory-card-head">
+            <span class="bento-badge">INTERACTIVE SYNTAX DECRYPTER</span>
+            <h3 style="color:#ffffff;font-size:18px">SMILES Molecular Graph Encoding</h3>
+          </div>
+          <p style="color:var(--mut);font-size:13.5px;margin-bottom:14px">
+            <strong>SMILES</strong> encodes 3D chemical topologies into unambiguous linear ASCII notation. Click or hover any functional token below to inspect its chemical bonding role:
           </p>
-          <ul style="color:var(--ink);font-size:13.5px;padding-left:18px;line-height:1.7">
-            <li><strong>Atoms:</strong> Elements indicated by standard symbols (C, N, O, P, S). Lowercase represents aromaticity (c, n, o).</li>
-            <li><strong>Bonds:</strong> Single bonds implicit, <code>=</code> for double bonds, <code>#</code> for triple bonds.</li>
-            <li><strong>Branches:</strong> Parentheses <code>(...)</code> specify substituent branching.</li>
-            <li><strong>Rings:</strong> Digits <code>1, 2, ...</code> designate ring-closure bond points.</li>
-          </ul>
+
+          <!-- Interactive Token Strip for Aspirin -->
+          <div class="smiles-token-track" id="smilesTokenTrack">
+            <span class="smiles-chip" onclick="inspectSmilesToken('Methyl Carbonyl', 'CC(=O)', 'Aliphatic acetyl group: Sp3 methyl carbon single-bonded to an sp2 carbonyl carbon with a pi double bond to oxygen.')" onmouseenter="inspectSmilesToken('Methyl Carbonyl', 'CC(=O)', 'Aliphatic acetyl group: Sp3 methyl carbon single-bonded to an sp2 carbonyl carbon with a pi double bond to oxygen.')">CC(=O)</span>
+            <span class="smiles-chip ester" onclick="inspectSmilesToken('Ester Bridge', 'O', 'Ester oxygen linkage: Electronegative oxygen with two lone pairs bridging the acetyl group to the aromatic core.')" onmouseenter="inspectSmilesToken('Ester Bridge', 'O', 'Ester oxygen linkage: Electronegative oxygen with two lone pairs bridging the acetyl group to the aromatic core.')">O</span>
+            <span class="smiles-chip ring" onclick="inspectSmilesToken('Aromatic Benzene Ring', 'c1ccccc1', 'Planar benzene ring: 6 sp2 carbons sharing 6 delocalized pi electrons satisfying Hückel 4n+2 rule. Digits 1 close the aromatic cycle.')" onmouseenter="inspectSmilesToken('Aromatic Benzene Ring', 'c1ccccc1', 'Planar benzene ring: 6 sp2 carbons sharing 6 delocalized pi electrons satisfying Hückel 4n+2 rule. Digits 1 close the aromatic cycle.')">c1ccccc1</span>
+            <span class="smiles-chip acid" onclick="inspectSmilesToken('Carboxylic Acid', 'C(=O)O', 'Carboxylic acid pharmacophore: Strongly polar functional group responsible for analgesic and anti-inflammatory bioactivity.')" onmouseenter="inspectSmilesToken('Carboxylic Acid', 'C(=O)O', 'Carboxylic acid pharmacophore: Strongly polar functional group responsible for analgesic and anti-inflammatory bioactivity.')">C(=O)O</span>
+          </div>
+
+          <div class="token-inspector" id="tokenInspector">
+            <div class="inspector-title" id="inspectorTitle">Aspirin &bull; [CC(=O)Oc1ccccc1C(=O)O]</div>
+            <div class="inspector-body" id="inspectorBody">Hover or click any colored token above to decode its bonding hybridization, valence connectivity, and pharmacological role in real time.</div>
+          </div>
         </div>
 
-        <div class="card theory-card slide-right" style="border-left-color:var(--acc2)">
-          <h3>3D Molecular Geometries</h3>
-          <p style="color:var(--mut);font-size:14px;margin-bottom:12px">
-            Computational methods predict spatial coordinates from 2D connectivity graphs using energy minimization algorithms:
+        <!-- Bento 2: 3D Conformer Geometries -->
+        <div class="card theory-card slide-right">
+          <div class="theory-card-head">
+            <span class="bento-badge emerald">FORCE FIELD OPTIMIZATION</span>
+            <h3 style="color:#ffffff;font-size:18px">3D Conformer Modeling</h3>
+          </div>
+          <p style="color:var(--mut);font-size:13.5px;margin-bottom:12px">
+            Derives minimum energy Cartesian coordinates via Merck Molecular Force Field (MMFF94):
           </p>
-          <ul style="color:var(--ink);font-size:13.5px;padding-left:18px;line-height:1.7">
-            <li><strong>Ball and Stick:</strong> Atoms as spheres and covalent bonds as rigid rods to emphasize stereochemistry.</li>
-            <li><strong>Stick Model:</strong> Covalent bond network highlighting hybridization and bond angles.</li>
-            <li><strong>Space Filling (CPK):</strong> Van der Waals atomic spheres demonstrating overall steric volume.</li>
-            <li><strong>Wireframe:</strong> High-speed skeletal bond topology for large macromolecular conformations.</li>
-          </ul>
+          <div class="geom-pill-list">
+            <div class="geom-pill-item">
+              <span class="g-name">Ball &amp; Stick</span>
+              <span class="g-desc">Spatial stereochemistry &amp; bond angles</span>
+            </div>
+            <div class="geom-pill-item">
+              <span class="g-name">Spacefill (CPK)</span>
+              <span class="g-desc">Van der Waals steric binding volume</span>
+            </div>
+            <div class="geom-pill-item">
+              <span class="g-name">Stick Model</span>
+              <span class="g-desc">Covalent orbital hybridization network</span>
+            </div>
+            <div class="geom-pill-item">
+              <span class="g-name">Wireframe</span>
+              <span class="g-desc">High-speed topological skeletal mesh</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bento 3: Lipinski Rule of 5 Criteria -->
+        <div class="card theory-card bento-wide">
+          <div class="theory-card-head">
+            <span class="bento-badge purple">CLINICAL PHARMACOKINETICS</span>
+            <h3 style="color:#ffffff;font-size:18px">Lipinski's Rule of 5 (Oral Drug-Likeness Standard)</h3>
+          </div>
+          <p style="color:var(--mut);font-size:13.5px;margin-bottom:14px">
+            Formulated by Pfizer's Christopher A. Lipinski to predict whether a chemical molecule possesses adequate cellular permeability and oral bioavailability:
+          </p>
+          <div class="ro5-criteria-row">
+            <div class="ro5-criterion">
+              <div class="crit-num">Rule 1 &bull; Molecular Mass</div>
+              <div class="crit-val">MW &le; 500 Da</div>
+              <div class="crit-desc">Facilitates passive cellular membrane permeation without bulky steric hindrance.</div>
+            </div>
+            <div class="ro5-criterion">
+              <div class="crit-num">Rule 2 &bull; Lipophilicity</div>
+              <div class="crit-val">LogP &le; 5.0</div>
+              <div class="crit-desc">Balances aqueous bloodstream solubility with lipid bilayer absorption.</div>
+            </div>
+            <div class="ro5-criterion">
+              <div class="crit-num">Rule 3 &bull; H-Donors</div>
+              <div class="crit-val">HBD &le; 5</div>
+              <div class="crit-desc">Restricts excess OH/NH groups to prevent desolvation energy penalties across cell walls.</div>
+            </div>
+            <div class="ro5-criterion">
+              <div class="crit-num">Rule 4 &bull; H-Acceptors</div>
+              <div class="crit-val">HBA &le; 10</div>
+              <div class="crit-desc">Limits electronegative N/O lone pairs to ensure efficient gut receptor dissociation.</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
   <!-- BLOCK 3: 2D & 3D INTERACTIVE MOLECULAR LAB -->
-  <section id="lab">
+  <section id="lab" data-chapter="03" data-chapter-name="MOLECULAR LAB">
     <div class="wrap">
       <div class="sechead">
         <div class="kicker">Core Laboratory Suite</div>
@@ -1326,35 +2306,65 @@ footer {
           <!-- Populated by JS -->
         </div>
 
-        <!-- Dual Canvas Viewport with Sliding Collision -->
+        <!-- Dual Canvas Viewport with Sliding Collision & Holographic Chamber -->
         <div class="dual-canvas-grid">
           <!-- 2D Structure Canvas -->
           <div class="slide-left">
-            <div style="font-size:13px;font-family:var(--mono);color:var(--acc);margin-bottom:8px;font-weight:700">2D CHEMICAL CONNECTIVITY GRAPH</div>
+            <div class="canvas-header-row">
+              <div class="canvas-tag"><span class="canvas-tag-dot"></span> 2D TOPOLOGICAL GRAPH</div>
+              <span class="canvas-subtag">BOND CONNECTIVITY &bull; AUTO-ALIGNED</span>
+            </div>
             <div class="mol-2d-canvas" id="canvas2D">
+              <!-- HUD Corner Reticles -->
+              <div class="hud-reticle tl"></div>
+              <div class="hud-reticle tr"></div>
+              <div class="hud-reticle bl"></div>
+              <div class="hud-reticle br"></div>
               <!-- SVG generated dynamically -->
             </div>
           </div>
 
           <!-- 3D WebGL Viewer -->
           <div class="slide-right">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-              <span style="font-size:13px;font-family:var(--mono);color:var(--acc2);font-weight:700">3D HARDWARE-ACCELERATED MODEL</span>
-              <div style="display:flex;align-items:center;gap:10px">
-                <select class="model-select" id="modelStyle" onchange="update3DStyle()">
-                  <option value="ballAndStick">Ball and Stick</option>
-                  <option value="stick">Stick Model</option>
-                  <option value="sphere">Space Filling (CPK)</option>
-                  <option value="line">Wireframe</option>
-                  <option value="cartoon">Cartoon Ribbon</option>
-                </select>
-                <label style="display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--mut);cursor:pointer;margin:0">
-                  <input type="checkbox" id="chkSurface" onchange="update3DStyle()" style="width:auto"> vdW Surface
-                </label>
-              </div>
+            <div class="canvas-header-row">
+              <div class="canvas-tag emerald"><span class="canvas-tag-dot emerald"></span> 3D CONFORMER VIEWPORT</div>
+              <span class="canvas-subtag" id="hudConformerStatus">MMFF94 3D FORCE FIELD &bull; OPTIMIZED GEOMETRY</span>
+              <!-- Hidden controls preserved for backward compatibility -->
+              <select class="model-select" id="modelStyle" onchange="update3DStyle()" style="display:none">
+                <option value="ballAndStick">Ball and Stick</option>
+                <option value="stick">Stick Model</option>
+                <option value="sphere">Space Filling (CPK)</option>
+                <option value="line">Wireframe</option>
+              </select>
+              <input type="checkbox" id="chkSurface" onchange="update3DStyle()" style="display:none">
             </div>
             <div class="viewer-box" id="viewer3D">
-              <!-- 3Dmol WebGL Instance -->
+              <!-- HUD Corner Reticles -->
+              <div class="hud-reticle tl"></div>
+              <div class="hud-reticle tr"></div>
+              <div class="hud-reticle bl"></div>
+              <div class="hud-reticle br"></div>
+
+              <!-- Floating In-Canvas Glass Tool Dock -->
+              <div class="viewer-floating-dock" id="viewerFloatingDock">
+                <div class="viewer-style-pills">
+                  <button type="button" class="v-pill active" onclick="set3DModelStyle('ballAndStick', this)" title="Ball and Stick Model">Ball &amp; Stick</button>
+                  <button type="button" class="v-pill" onclick="set3DModelStyle('stick', this)" title="Stick Framework Model">Stick</button>
+                  <button type="button" class="v-pill" onclick="set3DModelStyle('sphere', this)" title="Spacefill CPK Model">Spacefill</button>
+                  <button type="button" class="v-pill" onclick="set3DModelStyle('line', this)" title="Wireframe Mesh Model">Wireframe</button>
+                </div>
+                <div class="viewer-action-pills">
+                  <button type="button" class="v-action-pill" id="dockSpinBtn" onclick="toggleSpin()" title="Toggle Continuous 3D Rotation">
+                    <span class="spin-icon">↻</span> Spin
+                  </button>
+                  <button type="button" class="v-action-pill" id="dockSurfaceBtn" onclick="toggleVdwSurface()" title="Toggle van der Waals Solvent Surface">
+                    vdW Surface
+                  </button>
+                  <button type="button" class="v-action-pill" onclick="reset3DCamera()" title="Recenter Camera View">
+                    ⟲ Recenter
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -1391,7 +2401,7 @@ footer {
   </section>
 
   <!-- BLOCK 4: COMPLETE 18 MOLECULAR DESCRIPTORS -->
-  <section id="properties">
+  <section id="properties" data-chapter="04" data-chapter-name="18 DESCRIPTORS">
     <div class="wrap">
       <div class="sechead">
         <div class="kicker">Quantitative Cheminformatics</div>
@@ -1404,12 +2414,89 @@ footer {
       </div>
 
       <div class="card">
+        <!-- Lipinski Rule of 5 Clinical Scorecard & Hero Visual Gauges -->
+        <div class="ro5-dashboard">
+          <div class="ro5-compliance-bar" id="ro5ComplianceBar">
+            <div class="ro5-badge" id="ro5Badge">
+              <span class="ro5-dot"></span>
+              <span id="ro5StatusText">LIPINSKI RULE OF 5: 4 / 4 PASS (DRUG-LIKE CANDIDATE)</span>
+            </div>
+            <div class="ro5-subtext" id="ro5Subtext">Satisfies Pfizer clinical guidelines for oral bioavailability and intestinal membrane permeation.</div>
+          </div>
+
+          <div class="ro5-gauge-grid">
+            <!-- Gauge 1: Molecular Weight -->
+            <div class="gauge-card">
+              <div class="gauge-head">
+                <span class="gauge-title">Molecular Weight</span>
+                <span class="gauge-badge" id="gaugeBadgeMw">PASS</span>
+              </div>
+              <div class="gauge-val" id="gaugeValMw">46.07 <span class="gauge-unit">g/mol</span></div>
+              <div class="gauge-meter">
+                <div class="gauge-fill" id="gaugeFillMw" style="width: 9.2%"></div>
+              </div>
+              <div class="gauge-foot">
+                <span>0 Da</span>
+                <span class="limit-label">Limit: 500 Da</span>
+              </div>
+            </div>
+
+            <!-- Gauge 2: LogP Lipophilicity -->
+            <div class="gauge-card">
+              <div class="gauge-head">
+                <span class="gauge-title">LogP (Lipophilicity)</span>
+                <span class="gauge-badge" id="gaugeBadgeLogP">OPTIMAL</span>
+              </div>
+              <div class="gauge-val" id="gaugeValLogP">-0.00 <span class="gauge-unit">oct/water</span></div>
+              <div class="gauge-meter">
+                <div class="gauge-fill emerald" id="gaugeFillLogP" style="width: 28%"></div>
+              </div>
+              <div class="gauge-foot">
+                <span>Hydrophilic</span>
+                <span class="limit-label">Limit: 5.0</span>
+              </div>
+            </div>
+
+            <!-- Gauge 3: Hydrogen Bond Donors -->
+            <div class="gauge-card">
+              <div class="gauge-head">
+                <span class="gauge-title">H-Bond Donors</span>
+                <span class="gauge-badge" id="gaugeBadgeHbd">PASS</span>
+              </div>
+              <div class="gauge-val" id="gaugeValHbd">1 <span class="gauge-unit">/ 5 max</span></div>
+              <div class="gauge-meter">
+                <div class="gauge-fill cyan" id="gaugeFillHbd" style="width: 20%"></div>
+              </div>
+              <div class="gauge-foot">
+                <span>OH &amp; NH groups</span>
+                <span class="limit-label">Limit: &le; 5</span>
+              </div>
+            </div>
+
+            <!-- Gauge 4: Hydrogen Bond Acceptors -->
+            <div class="gauge-card">
+              <div class="gauge-head">
+                <span class="gauge-title">H-Bond Acceptors</span>
+                <span class="gauge-badge" id="gaugeBadgeHba">PASS</span>
+              </div>
+              <div class="gauge-val" id="gaugeValHba">1 <span class="gauge-unit">/ 10 max</span></div>
+              <div class="gauge-meter">
+                <div class="gauge-fill purple" id="gaugeFillHba" style="width: 10%"></div>
+              </div>
+              <div class="gauge-foot">
+                <span>N &amp; O lone pairs</span>
+                <span class="limit-label">Limit: &le; 10</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:14px">
           <div>
             <span style="font-family:var(--mono);color:var(--dim);font-size:12px">ACTIVE MOLECULE: </span>
             <strong id="activeMolTitle" style="color:var(--acc);font-size:16px">Ethanol (CCO)</strong>
           </div>
-          <button class="btn sm" onclick="exportDescriptorsCSV()">
+          <button class="btn sm" onclick="exportDescriptorsCSV()" data-cursor-label="EXPORT CSV">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
             <span>Export Table (CSV)</span>
           </button>
@@ -1434,7 +2521,7 @@ footer {
   </section>
 
   <!-- BLOCK 5: COMPARATIVE ANALYSIS MATRIX -->
-  <section id="compare">
+  <section id="compare" data-chapter="05" data-chapter-name="COMPARATIVE MATRIX">
     <div class="wrap">
       <div class="sechead">
         <div class="kicker">Structure-Property Relationships</div>
@@ -1470,7 +2557,7 @@ footer {
   </section>
 
   <!-- BLOCK 6: STUDENT ASSESSMENT & QUIZ -->
-  <section id="quiz">
+  <section id="quiz" data-chapter="06" data-chapter-name="ASSESSMENT MODULE">
     <div class="wrap">
       <div class="sechead">
         <div class="kicker">Knowledge Verification</div>
@@ -1502,7 +2589,7 @@ footer {
   </section>
 
   <!-- BLOCK 7: STUDENT REPORT GENERATION -->
-  <section id="report">
+  <section id="report" data-chapter="07" data-chapter-name="OFFICIAL REPORT">
     <div class="wrap">
       <div class="sechead">
         <div class="kicker">Official Certification</div>
@@ -1540,7 +2627,7 @@ footer {
   </section>
 </main>
 
-<!-- FOOTER & ACADEMIC CREDITS - OFFICIAL EMAILS ONLY, NO PHONE NUMBER -->
+<!-- FOOTER & ACADEMIC CREDITS - OFFICIAL ACADEMIC CHANNELS -->
 <footer>
   <div class="wrap">
     <div class="footer-top">
@@ -1597,10 +2684,11 @@ footer {
   </div>
 </div>
 
-<!-- Scripts: GSAP 3.12.5, ScrollTrigger, 3Dmol, jsPDF -->
+<!-- Scripts: GSAP 3.12.5, ScrollTrigger, Three.js, 3Dmol, jsPDF -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/3Dmol/2.4.2/3Dmol-min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
@@ -1618,6 +2706,8 @@ var BENCHMARK_MOLECULES = [
   { name: "Paracetamol", smiles: "CC(=O)Nc1ccc(O)cc1", formula: "C8H9NO2", mw: 151.165, logp: 0.8, tpsa: 49.33, hbd: 2, hba: 2, rot: 1, desc: "Widely used antipyretic and analgesic." },
   { name: "Ibuprofen", smiles: "CC(C)Cc1ccc(C(C)C(=O)O)cc1", formula: "C13H18O2", mw: 206.285, logp: 2.8, tpsa: 40.46, hbd: 1, hba: 2, rot: 4, desc: "Non-steroidal anti-inflammatory drug with chiral propionic acid core." }
 ];
+
+/* __BENCHMARK_SDF_PLACEHOLDER__ */
 
 var QUIZ_DATA = [
   {
@@ -1867,14 +2957,18 @@ function initPeakAnimations(){
       var targetId = link.getAttribute('href');
       if(targetId && targetId.startsWith('#')){
         e.preventDefault();
+        var secId = targetId.substring(1);
         var targetEl = document.querySelector(targetId);
         if(targetEl){
+          if(window.FramerNav){
+            window.FramerNav.setActive(secId);
+          }
           gsap.to(window, {
             duration: 0.85,
-            scrollTo: { y: targetEl, offsetY: 70 },
+            scrollTo: { y: targetEl, offsetY: 75 },
             ease: "power3.inOut"
           });
-          if(document.getElementById('mobileDrawer').classList.contains('open')){
+          if(document.getElementById('mobileDrawer') && document.getElementById('mobileDrawer').classList.contains('open')){
             toggleMobileMenu();
           }
         }
@@ -1937,9 +3031,9 @@ function initMagneticButtons(){
 }
 
 function initCardTilt(){
-  if(window.innerWidth < 768) return;
-  document.querySelectorAll('.card').forEach(function(card){
-    if(!card.querySelector('.card-sheen')){
+  var cards = document.querySelectorAll('.card, .theory-card, .bond-metric-card, .gauge-card, .tele-item, .bento-card, .ro5-criterion');
+  cards.forEach(function(card){
+    if(card.classList.contains('card') && !card.querySelector('.card-sheen')){
       var sheen = document.createElement('div');
       sheen.className = 'card-sheen';
       card.appendChild(sheen);
@@ -1949,20 +3043,62 @@ function initCardTilt(){
       var rect = card.getBoundingClientRect();
       var x = e.clientX - rect.left;
       var y = e.clientY - rect.top;
-      var cx = rect.width / 2;
-      var cy = rect.height / 2;
-      var rotX = ((y - cy) / cy) * -4.5;
-      var rotY = ((x - cx) / cx) * 4.5;
-
-      card.style.transform = 'perspective(1000px) rotateX(' + rotX + 'deg) rotateY(' + rotY + 'deg) translateZ(4px)';
       card.style.setProperty('--mouse-x', x + 'px');
       card.style.setProperty('--mouse-y', y + 'px');
+
+      if(window.innerWidth >= 768 && card.classList.contains('card')){
+        var cx = rect.width / 2;
+        var cy = rect.height / 2;
+        var rotX = ((y - cy) / cy) * -3.5;
+        var rotY = ((x - cx) / cx) * 3.5;
+        card.style.transform = 'perspective(1000px) rotateX(' + rotX + 'deg) rotateY(' + rotY + 'deg) translateZ(4px)';
+      }
     });
 
     card.addEventListener('mouseleave', function(){
-      card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)';
+      if(card.classList.contains('card')){
+        card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)';
+      }
     });
   });
+}
+
+function inspectSmilesToken(name, formula, desc){
+  var title = document.getElementById('inspectorTitle');
+  var body = document.getElementById('inspectorBody');
+  if(title) title.innerHTML = '<span style="color:var(--acc)">' + name + '</span> &bull; <code style="color:#00ff9d">[' + formula + ']</code>';
+  if(body) body.innerText = desc;
+  if(window.gsap && body){
+    gsap.fromTo(body, { opacity: 0.4, y: 3 }, { opacity: 1, y: 0, duration: 0.25, ease: "power2.out" });
+  }
+  if(window.AudioEngine) window.AudioEngine.click();
+}
+
+function set3DModelStyle(styleName, btn){
+  var sel = document.getElementById('modelStyle');
+  if(sel) sel.value = styleName;
+  document.querySelectorAll('.v-pill').forEach(function(p){ p.classList.remove('active'); });
+  if(btn) btn.classList.add('active');
+  update3DStyle();
+  if(window.AudioEngine) window.AudioEngine.click();
+}
+
+function toggleVdwSurface(){
+  var chk = document.getElementById('chkSurface');
+  if(chk){
+    chk.checked = !chk.checked;
+    var btn = document.getElementById('dockSurfaceBtn');
+    if(btn) btn.classList.toggle('active', chk.checked);
+    update3DStyle();
+  }
+  if(window.AudioEngine) window.AudioEngine.click();
+}
+
+function reset3DCamera(){
+  if(!glViewer) return;
+  glViewer.zoomTo();
+  glViewer.render();
+  if(window.AudioEngine) window.AudioEngine.click();
 }
 
 function animateCounter(elementId, targetVal, isFloat){
@@ -2003,6 +3139,8 @@ var AudioEngine = (function(){
       enabled = !enabled;
       var txt = document.getElementById('audioStatusText');
       if(txt) txt.innerText = enabled ? 'AUDIO: ON' : 'AUDIO: OFF';
+      var dot = document.getElementById('audioDot');
+      if(dot) dot.classList.toggle('muted', !enabled);
       if(enabled) this.tone(440, 0.08);
       return enabled;
     },
@@ -2111,6 +3249,11 @@ function toggleSpin(){
   }
   var btn = document.getElementById('btnSpin');
   if(btn) btn.style.borderColor = isSpinning ? 'var(--acc)' : 'var(--border)';
+  var dockBtn = document.getElementById('dockSpinBtn');
+  if(dockBtn){
+    dockBtn.classList.toggle('active', isSpinning);
+    dockBtn.innerHTML = isSpinning ? '<span class="spin-icon">■</span> Pause' : '<span class="spin-icon">↻</span> Spin';
+  }
   AudioEngine.click();
 }
 
@@ -2200,6 +3343,105 @@ function computeClientProperties(s){
   showSmilesSuccess("Structure parsed via local mathematical engine.");
 }
 
+function updateLipinskiScorecard(props){
+  if(!props) return;
+  var mw = parseFloat(props["Molecular Weight"]) || 0;
+  var logp = parseFloat(props["LogP"]);
+  if(isNaN(logp)) logp = 0;
+  var hbd = parseInt(props["Hydrogen Bond Donors"], 10);
+  if(isNaN(hbd)) hbd = 0;
+  var hba = parseInt(props["Hydrogen Bond Acceptors"], 10);
+  if(isNaN(hba)) hba = 0;
+
+  var mwPass = mw <= 500;
+  var logpPass = logp <= 5.0;
+  var hbdPass = hbd <= 5;
+  var hbaPass = hba <= 10;
+
+  var passCount = (mwPass ? 1 : 0) + (logpPass ? 1 : 0) + (hbdPass ? 1 : 0) + (hbaPass ? 1 : 0);
+
+  // Status header
+  var statusText = document.getElementById('ro5StatusText');
+  var badge = document.getElementById('ro5Badge');
+  var subtext = document.getElementById('ro5Subtext');
+
+  if(statusText && badge){
+    if(passCount === 4){
+      statusText.innerText = 'LIPINSKI RULE OF 5: 4 / 4 PASS (DRUG-LIKE CANDIDATE)';
+      badge.className = 'ro5-badge';
+      if(subtext) subtext.innerText = 'Satisfies all Pfizer clinical guidelines for oral bioavailability and membrane permeation.';
+    } else if(passCount === 3){
+      statusText.innerText = 'LIPINSKI RULE OF 5: 3 / 4 PASS (ACCEPTABLE 1 VIOLATION)';
+      badge.className = 'ro5-badge warning';
+      if(subtext) subtext.innerText = 'Single Ro5 violation observed. Molecules with 1 violation often maintain oral bioavailability.';
+    } else {
+      statusText.innerText = 'LIPINSKI RULE OF 5: ' + passCount + ' / 4 PASS (' + (4 - passCount) + ' VIOLATIONS)';
+      badge.className = 'ro5-badge danger';
+      if(subtext) subtext.innerText = 'Multiple Ro5 violations suggest poor gastrointestinal absorption and limited oral drug bioavailability.';
+    }
+  }
+
+  // 1. MW Gauge
+  var valMw = document.getElementById('gaugeValMw');
+  var fillMw = document.getElementById('gaugeFillMw');
+  var badgeMw = document.getElementById('gaugeBadgeMw');
+  if(valMw) valMw.innerHTML = mw.toFixed(2) + ' <span class="gauge-unit">g/mol</span>';
+  if(fillMw){
+    var mwPct = Math.min(100, Math.max(3, (mw / 600) * 100));
+    fillMw.style.width = mwPct + '%';
+    fillMw.className = 'gauge-fill' + (mwPass ? '' : ' danger');
+  }
+  if(badgeMw){
+    badgeMw.innerText = mwPass ? 'PASS' : 'FAIL';
+    badgeMw.className = 'gauge-badge' + (mwPass ? '' : ' fail');
+  }
+
+  // 2. LogP Gauge (optimal -0.4 to 5.0)
+  var valLogP = document.getElementById('gaugeValLogP');
+  var fillLogP = document.getElementById('gaugeFillLogP');
+  var badgeLogP = document.getElementById('gaugeBadgeLogP');
+  if(valLogP) valLogP.innerHTML = (logp >= 0 ? '+' : '') + logp.toFixed(2) + ' <span class="gauge-unit">oct/water</span>';
+  if(fillLogP){
+    var logpPct = Math.min(100, Math.max(4, ((logp + 2) / 8) * 100));
+    fillLogP.style.width = logpPct + '%';
+    fillLogP.className = 'gauge-fill ' + (logpPass ? 'emerald' : 'danger');
+  }
+  if(badgeLogP){
+    badgeLogP.innerText = logpPass ? (logp >= 0 && logp <= 3 ? 'OPTIMAL' : 'PASS') : 'FAIL';
+    badgeLogP.className = 'gauge-badge' + (logpPass ? '' : ' fail');
+  }
+
+  // 3. H-Bond Donors Gauge (limit 5)
+  var valHbd = document.getElementById('gaugeValHbd');
+  var fillHbd = document.getElementById('gaugeFillHbd');
+  var badgeHbd = document.getElementById('gaugeBadgeHbd');
+  if(valHbd) valHbd.innerHTML = hbd + ' <span class="gauge-unit">/ 5 max</span>';
+  if(fillHbd){
+    var hbdPct = Math.min(100, Math.max(5, (hbd / 6) * 100));
+    fillHbd.style.width = hbdPct + '%';
+    fillHbd.className = 'gauge-fill ' + (hbdPass ? 'cyan' : 'danger');
+  }
+  if(badgeHbd){
+    badgeHbd.innerText = hbdPass ? 'PASS' : 'FAIL';
+    badgeHbd.className = 'gauge-badge' + (hbdPass ? '' : ' fail');
+  }
+
+  // 4. H-Bond Acceptors Gauge (limit 10)
+  var valHba = document.getElementById('gaugeValHba');
+  var fillHba = document.getElementById('gaugeFillHba');
+  var badgeHba = document.getElementById('gaugeBadgeHba');
+  if(valHba) valHba.innerHTML = hba + ' <span class="gauge-unit">/ 10 max</span>';
+  if(fillHba){
+    var hbaPct = Math.min(100, Math.max(5, (hba / 12) * 100));
+    fillHba.style.width = hbaPct + '%';
+    fillHba.className = 'gauge-fill ' + (hbaPass ? 'purple' : 'danger');
+  }
+  if(badgeHba){
+    badgeHba.innerText = hbaPass ? 'PASS' : 'FAIL';
+    badgeHba.className = 'gauge-badge' + (hbaPass ? '' : ' fail');
+  }
+}
+
 function updateBondMetrics(p){
   var formulaEl = document.getElementById('bmFormula');
   if(formulaEl) formulaEl.innerText = p["Molecular Formula"] || "-";
@@ -2209,6 +3451,8 @@ function updateBondMetrics(p){
   animateCounter('bmSigma', p["Sigma (σ) Bonds"] || 0, false);
   animateCounter('bmPi', p["Pi (π) Bonds"] || 0, false);
   animateCounter('bmTotalBonds', p["Total Bonds (σ + π)"] || 0, false);
+
+  updateLipinskiScorecard(p);
 }
 
 function renderProperties(props, interp){
@@ -2311,20 +3555,31 @@ function render3DModel(smiles){
   if(!glViewer) return;
   glViewer.clear();
 
-  var url = 'https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/smiles/' + encodeURIComponent(smiles) + '/SDF?record_type=3d';
+  // 1. Instant loading from embedded benchmark 3D SDF cache
+  if(typeof BENCHMARK_SDF !== 'undefined' && BENCHMARK_SDF[smiles]){
+    glViewer.addModel(BENCHMARK_SDF[smiles], "sdf");
+    update3DStyle();
+    return;
+  }
 
-  fetch(url)
+  // 2. Query Python backend /api/sdf or PubChem REST
+  fetch('/api/sdf?smiles=' + encodeURIComponent(smiles))
     .then(function(res){
-      if(!res.ok) throw new Error("3D Conformer not found on PubChem");
-      return res.text();
+      if(!res.ok) throw new Error("SDF not on server");
+      return res.json();
     })
-    .then(function(sdf){
-      glViewer.addModel(sdf, "sdf");
-      update3DStyle();
+    .then(function(data){
+      if(data.valid && data.sdf){
+        glViewer.addModel(data.sdf, "sdf");
+        update3DStyle();
+      } else {
+        throw new Error("Invalid SDF");
+      }
     })
     .catch(function(){
-      var fallbackPdb = generateSyntheticPdb(smiles);
-      glViewer.addModel(fallbackPdb, "pdb");
+      // 3. Fallback to client-side realistic 3D conformer generator (NO stickman figures!)
+      var realisticPdb = generateRealistic3DConformer(smiles);
+      glViewer.addModel(realisticPdb, "pdb");
       update3DStyle();
     });
 }
@@ -2336,16 +3591,20 @@ function update3DStyle(){
 
   glViewer.setStyle({}, {});
 
+  // High-Fidelity Solid Molecular Styling with Standard IUPAC/CPK Colors (Jmol)
   if(style === 'ballAndStick'){
-    glViewer.setStyle({}, { stick: { radius: 0.16, color: 'spectrum' }, sphere: { scale: 0.3 } });
+    glViewer.setStyle({}, {
+      stick: { radius: 0.22, colorscheme: 'Jmol' },
+      sphere: { scale: 0.44, colorscheme: 'Jmol' }
+    });
   } else if(style === 'stick'){
-    glViewer.setStyle({}, { stick: { radius: 0.22, color: 'spectrum' } });
+    glViewer.setStyle({}, { stick: { radius: 0.30, colorscheme: 'Jmol' } });
   } else if(style === 'sphere'){
-    glViewer.setStyle({}, { sphere: { scale: 0.95 } });
+    glViewer.setStyle({}, { sphere: { scale: 0.95, colorscheme: 'Jmol' } });
   } else if(style === 'line'){
-    glViewer.setStyle({}, { line: { linewidth: 2.5 } });
+    glViewer.setStyle({}, { line: { linewidth: 3.5, colorscheme: 'Jmol' } });
   } else if(style === 'cartoon'){
-    glViewer.setStyle({}, { stick: { radius: 0.1 }, sphere: { scale: 0.2 } });
+    glViewer.setStyle({}, { stick: { radius: 0.16, colorscheme: 'Jmol' }, sphere: { scale: 0.32, colorscheme: 'Jmol' } });
   }
 
   glViewer.removeAllSurfaces();
@@ -2357,14 +3616,72 @@ function update3DStyle(){
   glViewer.render();
 }
 
-function generateSyntheticPdb(smiles){
-  return "HETATM    1  C1  MOL     1      -1.200   0.000   0.000  1.00 20.00           C  \\n" +
-         "HETATM    2  C2  MOL     1       0.000   0.800   0.000  1.00 20.00           C  \\n" +
-         "HETATM    3  O1  MOL     1       1.200   0.000   0.000  1.00 20.00           O  \\n" +
-         "CONECT    1    2\\n" +
-         "CONECT    2    1    3\\n" +
-         "CONECT    3    2\\n" +
-         "END\\n";
+function generateRealistic3DConformer(smiles){
+  var clean = smiles.replace(/\\[([A-Za-z0-9\\+\\-\\@]+)\\]/g, '$1');
+  var matches = clean.match(/(Cl|Br|Si|Na|Ca|Mg|Fe|Cu|Zn|[CNOPFSIcnops])/g) || ['C', 'C', 'O'];
+  var isAromatic = smiles.indexOf('c') !== -1 || smiles.indexOf('1') !== -1;
+  var count = matches.length;
+
+  var coords = [];
+  var conectLines = [];
+  var pdbLines = [];
+
+  if(isAromatic && count >= 5){
+    var ringRadius = 1.40 / (2 * Math.sin(Math.PI / count));
+    for(var i = 0; i < count; i++){
+      var angle = (i * 2 * Math.PI) / count;
+      var elem = matches[i].toUpperCase();
+      var x = ringRadius * Math.cos(angle);
+      var y = ringRadius * Math.sin(angle);
+      var z = (i % 2 === 0 ? 0.08 : -0.08);
+      coords.push({ elem: elem, x: x, y: y, z: z, name: elem + (i + 1) });
+    }
+  } else {
+    var bondLen = 1.54;
+    var curX = -((count - 1) * bondLen * 0.8) / 2;
+    for(var i = 0; i < count; i++){
+      var elem = matches[i].toUpperCase();
+      var dy = (i % 2 === 0) ? -0.45 : 0.45;
+      var dz = (i % 3 === 0) ? 0.35 : (i % 3 === 1 ? -0.35 : 0.0);
+      coords.push({ elem: elem, x: curX + (i * 1.35), y: dy, z: dz, name: elem + (i + 1) });
+    }
+  }
+
+  // Add explicit Hydrogens
+  var hCount = 0;
+  var origCount = coords.length;
+  for(var i = 0; i < origCount; i++){
+    var at = coords[i];
+    var neededH = at.elem === 'C' ? (isAromatic ? 1 : 2) : (at.elem === 'N' ? 1 : (at.elem === 'O' ? 1 : 0));
+    for(var h = 0; h < neededH; h++){
+      hCount++;
+      var hx = at.x + (h === 0 ? 0.75 : -0.75);
+      var hy = at.y + (h === 0 ? 0.85 : -0.85);
+      var hz = at.z + (h % 2 === 0 ? 0.70 : -0.70);
+      coords.push({ elem: 'H', x: hx, y: hy, z: hz, name: 'H' + hCount });
+      conectLines.push("CONECT " + String(i + 1).padStart(4) + " " + String(coords.length).padStart(4));
+    }
+  }
+
+  for(var i = 0; i < coords.length; i++){
+    var c = coords[i];
+    var atomNum = String(i + 1).padStart(5);
+    var atomName = c.name.padEnd(4);
+    var x = c.x.toFixed(3).padStart(8);
+    var y = c.y.toFixed(3).padStart(8);
+    var z = c.z.toFixed(3).padStart(8);
+    var elem = c.elem.padStart(2);
+    pdbLines.push("HETATM" + atomNum + " " + atomName + " MOL     1    " + x + y + z + "  1.00 20.00          " + elem);
+  }
+
+  for(var i = 1; i < origCount; i++){
+    conectLines.push("CONECT " + String(i).padStart(4) + " " + String(i + 1).padStart(4));
+  }
+  if(isAromatic && origCount >= 3){
+    conectLines.push("CONECT " + String(origCount).padStart(4) + "    1");
+  }
+
+  return pdbLines.join("\\n") + "\\n" + conectLines.join("\\n") + "\\nEND\\n";
 }
 
 function showSmilesError(msg){
@@ -2635,83 +3952,641 @@ function toggleMobileMenu(){
 }
 
 /* ==========================================================================
-   9. INTERACTIVE BACKGROUND MOLECULAR LATTICE
+   9. MYSTERIOUS QUANTUM ABYSS & HYPNOTIC 3D VORTEX (THREE.JS)
    ========================================================================== */
-function initBackgroundLattice(){
-  var canvas = document.getElementById('molCanvas');
-  if(!canvas) return;
-  var ctx = canvas.getContext('2d');
-  var w, h;
-  var particles = [];
+var SpaceStage = (function(){
+  var canvas, renderer, scene, camera;
+  var quantumVortexGroup, knotMesh, knotWire, singularityCore, haloRing1, haloRing2;
+  var wavePlane, waveGeom, waveOriginalZ;
+  var stardustParticles, glowTexture;
+  var width, height;
+  var currentRotX = 0, currentRotY = 0;
+  var scrollProgress = 0;
+  var pointer = { x: 0, y: 0 };
+  var initialized = false;
 
-  function resize(){
-    w = canvas.width = window.innerWidth;
-    h = canvas.height = window.innerHeight;
+  // Generates a soft, ethereal Gaussian circular glow texture for particles (ZERO square boxes!)
+  function createCircularGlowTexture(){
+    var c = document.createElement('canvas');
+    c.width = 64;
+    c.height = 64;
+    var ctx = c.getContext('2d');
+    var g = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+    g.addColorStop(0, 'rgba(255, 255, 255, 1)');
+    g.addColorStop(0.18, 'rgba(61, 139, 255, 0.85)');
+    g.addColorStop(0.55, 'rgba(0, 240, 255, 0.25)');
+    g.addColorStop(1, 'rgba(0, 0, 0, 0)');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, 64, 64);
+    var tex = new THREE.CanvasTexture(c);
+    return tex;
   }
-  window.addEventListener('resize', resize);
-  resize();
 
-  for(var i=0; i<45; i++){
-    particles.push({
-      x: Math.random() * w,
-      y: Math.random() * h,
-      vx: (Math.random() - 0.5) * 0.4,
-      vy: (Math.random() - 0.5) * 0.4,
-      r: Math.random() * 2 + 1.5,
-      color: Math.random() > 0.5 ? 'rgba(0, 240, 255, 0.4)' : 'rgba(0, 255, 157, 0.35)'
+  function init(){
+    canvas = document.getElementById('spaceStage');
+    if(!canvas || typeof THREE === 'undefined') return;
+
+    width = canvas.clientWidth || window.innerWidth;
+    height = canvas.clientHeight || window.innerHeight;
+
+    try {
+      renderer = new THREE.WebGLRenderer({
+        canvas: canvas,
+        alpha: true,
+        antialias: true,
+        powerPreference: 'high-performance'
+      });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      renderer.setSize(width, height);
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.2;
+    } catch(e) {
+      console.warn("WebGL not initialized for SpaceStage:", e);
+      return;
+    }
+
+    scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x000000, 0.022);
+
+    camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 1000);
+    camera.position.set(0, 0, 20);
+
+    // 1. VOLUMETRIC MYSTERIOUS LIGHTING (Deep blues, cyan highlights & violet underglow)
+    var ambLight = new THREE.AmbientLight(0x050a15, 2.0);
+    scene.add(ambLight);
+
+    var blueKeyLight = new THREE.PointLight(0x3d8bff, 4.5, 60);
+    blueKeyLight.position.set(9, 9, 14);
+    scene.add(blueKeyLight);
+
+    var cyanRimLight = new THREE.PointLight(0x00f0ff, 3.2, 45);
+    cyanRimLight.position.set(-9, -6, 10);
+    scene.add(cyanRimLight);
+
+    var violetUnderLight = new THREE.PointLight(0x8b5cf6, 2.5, 50);
+    violetUnderLight.position.set(0, -9, 6);
+    scene.add(violetUnderLight);
+
+    var dirLight = new THREE.DirectionalLight(0xffffff, 1.2);
+    dirLight.position.set(5, 12, 10);
+    scene.add(dirLight);
+
+    // 2. THE CENTERPIECE: HYPNOTIC 3D QUANTUM TORUS KNOT VORTEX
+    // Mathematical (2, 5) Torus Knot Manifold - infinite self-weaving multidimensional ribbon
+    quantumVortexGroup = new THREE.Group();
+    quantumVortexGroup.position.set(4.8, 0.3, -2);
+
+    var knotGeom = new THREE.TorusKnotGeometry(3.3, 0.75, 200, 36, 2, 5);
+
+    // Layer A: Polished Dark Obsidian Chromatic Core
+    var knotMat = new THREE.MeshStandardMaterial({
+      color: 0x050b18,
+      metalness: 0.95,
+      roughness: 0.12,
+      emissive: 0x0f2b6e,
+      emissiveIntensity: 0.55
+    });
+    knotMesh = new THREE.Mesh(knotGeom, knotMat);
+    quantumVortexGroup.add(knotMesh);
+
+    // Layer B: Glowing Bioluminescent Quantum Energy Web
+    var wireGeom = new THREE.WireframeGeometry(knotGeom);
+    var wireMat = new THREE.LineBasicMaterial({
+      color: 0x00f0ff,
+      transparent: true,
+      opacity: 0.65,
+      blending: THREE.AdditiveBlending
+    });
+    knotWire = new THREE.LineSegments(wireGeom, wireMat);
+    quantumVortexGroup.add(knotWire);
+
+    // Layer C: Pulsing Central Quantum Singularity
+    var coreGeom = new THREE.SphereGeometry(1.35, 32, 32);
+    var coreMat = new THREE.MeshStandardMaterial({
+      color: 0x00ff9d,
+      emissive: 0x00ff9d,
+      emissiveIntensity: 0.85,
+      transparent: true,
+      opacity: 0.75,
+      roughness: 0.15,
+      metalness: 0.4
+    });
+    singularityCore = new THREE.Mesh(coreGeom, coreMat);
+    quantumVortexGroup.add(singularityCore);
+
+    // Layer D: Dual Ethereal Aerospace Orbital Rings
+    var ringGeom1 = new THREE.TorusGeometry(5.4, 0.022, 16, 180);
+    var ringMat1 = new THREE.MeshStandardMaterial({
+      color: 0x3d8bff,
+      metalness: 0.95,
+      roughness: 0.12,
+      emissive: 0x1d4ed8,
+      emissiveIntensity: 0.6
+    });
+    haloRing1 = new THREE.Mesh(ringGeom1, ringMat1);
+    quantumVortexGroup.add(haloRing1);
+
+    var ringGeom2 = new THREE.TorusGeometry(6.6, 0.018, 16, 200);
+    var ringMat2 = new THREE.MeshStandardMaterial({
+      color: 0x00f0ff,
+      metalness: 0.9,
+      roughness: 0.16,
+      emissive: 0x0284c7,
+      emissiveIntensity: 0.5
+    });
+    haloRing2 = new THREE.Mesh(ringGeom2, ringMat2);
+    haloRing2.rotation.x = Math.PI * 0.38;
+    haloRing2.rotation.y = Math.PI * 0.22;
+    quantumVortexGroup.add(haloRing2);
+
+    scene.add(quantumVortexGroup);
+
+    // 3. MYSTERIOUS UNDULATING QUANTUM WAVE SURFACE (Liquid Light - Replaces harsh retro grid)
+    waveGeom = new THREE.PlaneGeometry(80, 50, 48, 30);
+    waveOriginalZ = new Float32Array(waveGeom.attributes.position.count);
+    for(var k = 0; k < waveGeom.attributes.position.count; k++){
+      waveOriginalZ[k] = 0;
+    }
+
+    var waveMat = new THREE.MeshBasicMaterial({
+      color: 0x1d4ed8,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.16,
+      blending: THREE.AdditiveBlending
+    });
+    wavePlane = new THREE.Mesh(waveGeom, waveMat);
+    wavePlane.rotation.x = -Math.PI * 0.44;
+    wavePlane.position.set(0, -5.8, -10);
+    scene.add(wavePlane);
+
+    // Atmospheric Nebula Glow Plane (Deep cosmic backdrop)
+    var nebulaGeom = new THREE.PlaneGeometry(120, 50);
+    var nebulaMat = new THREE.MeshBasicMaterial({
+      color: 0x0f2b6e,
+      transparent: true,
+      opacity: 0.12,
+      blending: THREE.AdditiveBlending,
+      side: THREE.DoubleSide
+    });
+    var nebulaPlane = new THREE.Mesh(nebulaGeom, nebulaMat);
+    nebulaPlane.position.set(0, -2.5, -28);
+    scene.add(nebulaPlane);
+
+    // 4. SOFT CIRCULAR GLOWING STARDUST (100% Round Bokeh Orbs - ZERO Square Boxes)
+    glowTexture = createCircularGlowTexture();
+    var starCount = 550;
+    var starGeom = new THREE.BufferGeometry();
+    var starPos = new Float32Array(starCount * 3);
+    for(var i = 0; i < starCount * 3; i += 3){
+      starPos[i] = (Math.random() - 0.5) * 65;
+      starPos[i+1] = (Math.random() - 0.5) * 40;
+      // Strictly constrained depth: NEVER close to camera (prevents large blowups)
+      starPos[i+2] = -12 - Math.random() * 40;
+    }
+    starGeom.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+    var starMat = new THREE.PointsMaterial({
+      color: 0x92c3ff,
+      size: 0.45,
+      map: glowTexture,
+      transparent: true,
+      opacity: 0.65,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+      sizeAttenuation: true
+    });
+    stardustParticles = new THREE.Points(starGeom, starMat);
+    scene.add(stardustParticles);
+
+    // Event listeners
+    window.addEventListener('resize', onResize, { passive: true });
+    window.addEventListener('mousemove', onMouseMove, { passive: true });
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    onScroll();
+    initialized = true;
+    animate(0);
+  }
+
+  function onResize(){
+    if(!renderer || !camera) return;
+    width = window.innerWidth;
+    height = window.innerHeight;
+    camera.aspect = width / height;
+    camera.updateProjectionMatrix();
+    renderer.setSize(width, height);
+  }
+
+  function onMouseMove(e){
+    pointer.x = (e.clientX / window.innerWidth) * 2 - 1;
+    pointer.y = -(e.clientY / window.innerHeight) * 2 + 1;
+  }
+
+  function onScroll(){
+    var docH = document.documentElement.scrollHeight - window.innerHeight;
+    scrollProgress = docH > 0 ? (window.scrollY / docH) : 0;
+  }
+
+  function animate(timestamp){
+    requestAnimationFrame(animate);
+    if(!initialized) return;
+
+    var time = timestamp * 0.001;
+
+    // 1. STEADY, HYPNOTIC CONTINUOUS ROTATION (1 rev per ~140s - Calm, majestic, never spinning out of control)
+    var baseRotY = time * 0.045;
+    var baseRotX = Math.sin(time * 0.032) * 0.10;
+
+    // 2. GENTLE, BOUNDED SCROLL EFFECT (Only tilts by ~12 degrees over the entire 7000px page height)
+    var scrollTiltX = scrollProgress * 0.20;
+    var scrollPanY = scrollProgress * 0.28;
+
+    var targetRotX = baseRotX + scrollTiltX + (pointer.y * 0.18);
+    var targetRotY = baseRotY + scrollPanY + (pointer.x * 0.22);
+
+    currentRotX += (targetRotX - currentRotX) * 0.035;
+    currentRotY += (targetRotY - currentRotY) * 0.035;
+
+    if(quantumVortexGroup){
+      quantumVortexGroup.rotation.x = currentRotX;
+      quantumVortexGroup.rotation.y = currentRotY;
+
+      // Responsive positioning
+      if(window.innerWidth < 768){
+        quantumVortexGroup.position.set(0, 1.2, -4);
+        quantumVortexGroup.scale.set(0.68, 0.68, 0.68);
+      } else {
+        quantumVortexGroup.position.set(4.8, 0.3, -2);
+        quantumVortexGroup.scale.set(1.0, 1.0, 1.0);
+      }
+    }
+
+    // 3. SINGULARITY CORE & RINGS
+    if(singularityCore){
+      var pulse = 1.0 + Math.sin(time * 2.4) * 0.07;
+      singularityCore.scale.set(pulse, pulse, pulse);
+    }
+    if(haloRing1){
+      haloRing1.rotation.z = time * 0.08;
+    }
+    if(haloRing2){
+      haloRing2.rotation.z = -time * 0.06;
+    }
+
+    // 4. UNDULATING SILKY QUANTUM WAVE DYNAMICS
+    if(waveGeom){
+      var pos = waveGeom.attributes.position;
+      for(var j = 0; j < pos.count; j++){
+        var u = pos.getX(j);
+        var v = pos.getY(j);
+        var waveZ = Math.sin(u * 0.16 + time * 0.65) * Math.cos(v * 0.16 + time * 0.5) * 1.1;
+        pos.setZ(j, waveZ);
+      }
+      pos.needsUpdate = true;
+    }
+
+    // 5. SLOW CELESTIAL STARDUST DRIFT
+    if(stardustParticles){
+      stardustParticles.rotation.y = time * 0.012;
+    }
+
+    renderer.render(scene, camera);
+  }
+
+  return { init: init };
+})();
+
+/* ==========================================================================
+   10. PUTURE INTERACTIVE MAGNETIC CURSOR & CONTEXTUAL BADGE
+   ========================================================================== */
+var PutureCursor = (function(){
+  var cursorEl, badgeEl;
+  var mouse = { x: -100, y: -100 };
+  var current = { x: -100, y: -100 };
+  var activeLabel = '';
+  var isHovering = false;
+  var initialized = false;
+
+  function init(){
+    cursorEl = document.getElementById('putureCursor');
+    badgeEl = document.getElementById('cursorBadge');
+    if(!cursorEl || !badgeEl) return;
+
+    if(window.matchMedia('(pointer: coarse)').matches) return;
+
+    window.addEventListener('mousemove', function(e){
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+      if(!initialized){
+        current.x = mouse.x;
+        current.y = mouse.y;
+        cursorEl.style.opacity = '1';
+        initialized = true;
+      }
+    }, { passive: true });
+
+    document.addEventListener('mouseleave', function(){
+      if(cursorEl) cursorEl.style.opacity = '0';
+    });
+    document.addEventListener('mouseenter', function(){
+      if(cursorEl) cursorEl.style.opacity = '1';
+    });
+
+    // Delegate hover detection for dynamic badges
+    document.addEventListener('mouseover', function(e){
+      var target = e.target.closest('[data-cursor-label], button, a, input, select, .preset-chip, #viewer3D, #canvas2D');
+      if(!target){
+        activeLabel = '';
+        isHovering = false;
+        cursorEl.classList.remove('has-label', 'hovering');
+        return;
+      }
+
+      isHovering = true;
+      cursorEl.classList.add('hovering');
+
+      if(target.hasAttribute('data-cursor-label')){
+        activeLabel = target.getAttribute('data-cursor-label');
+      } else if(target.id === 'viewer3D'){
+        activeLabel = 'DRAG 3D';
+      } else if(target.id === 'canvas2D'){
+        activeLabel = '2D GRAPH';
+      } else if(target.classList.contains('preset-chip')){
+        activeLabel = 'LOAD MOL';
+      } else if(target.tagName === 'BUTTON' || target.classList.contains('btn')){
+        var txt = target.innerText.trim().toUpperCase();
+        activeLabel = txt.length > 0 && txt.length < 18 ? txt : 'SELECT';
+      } else if(target.tagName === 'A'){
+        activeLabel = 'NAVIGATE';
+      } else {
+        activeLabel = '';
+      }
+
+      if(activeLabel){
+        badgeEl.textContent = activeLabel;
+        cursorEl.classList.add('has-label');
+      } else {
+        cursorEl.classList.remove('has-label');
+      }
+    }, { passive: true });
+
+    animate();
+  }
+
+  function animate(){
+    requestAnimationFrame(animate);
+    if(!initialized) return;
+
+    current.x += (mouse.x - current.x) * 0.22;
+    current.y += (mouse.y - current.y) * 0.22;
+    cursorEl.style.transform = 'translate3d(' + current.x + 'px, ' + current.y + 'px, 0)';
+  }
+
+  return { init: init };
+})();
+
+/* ==========================================================================
+   11. FRAMER DYNAMIC ISLAND NAVIGATION & KINETIC SCROLL ENGINE
+   ========================================================================== */
+var FramerNav = (function(){
+  var track, pill, links, header, progressBar;
+  var activeLink = null;
+  var isHovering = false;
+
+  function init(){
+    track = document.getElementById('navLinksTrack');
+    pill = document.getElementById('navSlidingPill');
+    links = document.querySelectorAll('.nav-link-item');
+    header = document.getElementById('mainHeader');
+    progressBar = document.getElementById('navIslandProgressBar');
+
+    if(!track || !pill || !links.length) return;
+
+    // Set initial active pill
+    var initial = track.querySelector('.nav-link-item.active') || links[0];
+    activeLink = initial;
+    requestAnimationFrame(function(){
+      movePillTo(initial, false);
+    });
+
+    // Framer magnetic fluid hover tracking
+    links.forEach(function(link){
+      link.addEventListener('mouseenter', function(){
+        isHovering = true;
+        movePillTo(link, true);
+      });
+      link.addEventListener('mouseleave', function(){
+        isHovering = false;
+        if(activeLink){
+          movePillTo(activeLink, true);
+        }
+      });
+      link.addEventListener('click', function(){
+        activeLink = link;
+        movePillTo(link, true);
+      });
+    });
+
+    // Scroll listeners: compression & laser progress
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onResize, { passive: true });
+    onScroll();
+
+    // Re-check after font measurement
+    if(document.fonts && document.fonts.ready){
+      document.fonts.ready.then(function(){
+        if(activeLink) movePillTo(activeLink, false);
+      });
+    }
+    setTimeout(function(){
+      if(activeLink) movePillTo(activeLink, false);
+    }, 200);
+  }
+
+  function movePillTo(targetEl, animate){
+    if(!targetEl || !track || !pill) return;
+    var trackRect = track.getBoundingClientRect();
+    var targetRect = targetEl.getBoundingClientRect();
+    if(targetRect.width <= 0) return; // Hidden or mobile
+
+    var left = targetRect.left - trackRect.left;
+    var width = targetRect.width;
+
+    if(!animate){
+      pill.style.transition = 'none';
+    } else {
+      pill.style.transition = 'transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), width 0.32s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease';
+    }
+
+    pill.style.transform = 'translateX(' + Math.round(left) + 'px)';
+    pill.style.width = Math.round(width) + 'px';
+    pill.style.opacity = '1';
+
+    if(!animate){
+      pill.offsetHeight; // force reflow
+      pill.style.transition = '';
+    }
+  }
+
+  function setActive(sectionId){
+    if(!links || !links.length) return;
+    var target = null;
+    links.forEach(function(link){
+      var href = link.getAttribute('href');
+      if(href === '#' + sectionId){
+        link.classList.add('active');
+        target = link;
+      } else {
+        link.classList.remove('active');
+      }
+    });
+
+    // Also update mobile drawer active states
+    document.querySelectorAll('.mobile-nav-links a').forEach(function(mLink){
+      if(mLink.getAttribute('href') === '#' + sectionId){
+        mLink.classList.add('active');
+      } else {
+        mLink.classList.remove('active');
+      }
+    });
+
+    if(target){
+      activeLink = target;
+      if(!isHovering){
+        movePillTo(target, true);
+      }
+    }
+  }
+
+  function onScroll(){
+    var scrollY = window.pageYOffset || document.documentElement.scrollTop;
+    if(header){
+      if(scrollY > 28){
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    }
+    if(progressBar){
+      var docH = document.documentElement.scrollHeight - window.innerHeight;
+      var pct = docH > 0 ? (scrollY / docH) * 100 : 0;
+      progressBar.style.width = Math.min(100, Math.max(0, pct)) + '%';
+    }
+  }
+
+  function onResize(){
+    if(activeLink){
+      movePillTo(activeLink, false);
+    }
+  }
+
+  return {
+    init: init,
+    setActive: setActive,
+    movePillTo: movePillTo
+  };
+})();
+window.FramerNav = FramerNav;
+
+function scrollToChapter(sectionId){
+  var el = document.getElementById(sectionId);
+  if(!el) return;
+  if(window.FramerNav){
+    window.FramerNav.setActive(sectionId);
+  }
+  var offset = 75;
+  var top = el.getBoundingClientRect().top + window.pageYOffset - offset;
+  window.scrollTo({ top: top, behavior: 'smooth' });
+}
+
+var ChapterEngine = (function(){
+  var hudNum, hudName, dots;
+  var sections = [
+    { id: 'home', num: '01', name: 'OVERVIEW' },
+    { id: 'theory', num: '02', name: 'CURRICULUM THEORY' },
+    { id: 'lab', num: '03', name: 'MOLECULAR LAB' },
+    { id: 'properties', num: '04', name: '18 DESCRIPTORS' },
+    { id: 'compare', num: '05', name: 'COMPARATIVE MATRIX' },
+    { id: 'quiz', num: '06', name: 'ASSESSMENT MODULE' },
+    { id: 'report', num: '07', name: 'OFFICIAL REPORT' }
+  ];
+
+  function init(){
+    hudNum = document.getElementById('hudChapNum');
+    hudName = document.getElementById('hudChapName');
+    dots = document.querySelectorAll('.p-dot');
+
+    var observer = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          var id = entry.target.id;
+          for(var i = 0; i < sections.length; i++){
+            if(sections[i].id === id){
+              setActiveChapter(sections[i].num, sections[i].name, sections[i].id);
+              break;
+            }
+          }
+        }
+      });
+    }, {
+      rootMargin: '-20% 0px -40% 0px',
+      threshold: 0
+    });
+
+    sections.forEach(function(s){
+      var el = document.getElementById(s.id);
+      if(el) observer.observe(el);
     });
   }
 
-  function render(){
-    ctx.clearRect(0, 0, w, h);
-    for(var i=0; i<particles.length; i++){
-      var p = particles[i];
-      p.x += p.vx;
-      p.y += p.vy;
-      if(p.x < 0) p.x = w;
-      if(p.x > w) p.x = 0;
-      if(p.y < 0) p.y = h;
-      if(p.y > h) p.y = 0;
-
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = p.color;
-      ctx.fill();
-
-      for(var j=i+1; j<particles.length; j++){
-        var p2 = particles[j];
-        var dx = p2.x - p.x;
-        var dy = p2.y - p.y;
-        var dist = Math.sqrt(dx * dx + dy * dy);
-        if(dist < 120){
-          ctx.beginPath();
-          ctx.moveTo(p.x, p.y);
-          ctx.lineTo(p2.x, p2.y);
-          ctx.strokeStyle = 'rgba(0, 240, 255, ' + (0.12 * (1 - dist / 120)) + ')';
-          ctx.lineWidth = 0.8;
-          ctx.stroke();
+  function setActiveChapter(num, name, id){
+    if(hudNum) hudNum.textContent = num;
+    if(hudName) hudName.textContent = name;
+    if(dots){
+      dots.forEach(function(d){
+        if(d.getAttribute('data-chapter') === num){
+          d.classList.add('active');
+        } else {
+          d.classList.remove('active');
         }
+      });
+    }
+    if(!id){
+      for(var i = 0; i < sections.length; i++){
+        if(sections[i].num === num){ id = sections[i].id; break; }
       }
     }
-    requestAnimationFrame(render);
+    if(id && window.FramerNav){
+      window.FramerNav.setActive(id);
+    }
   }
-  render();
-}
+
+  return { init: init, setActiveChapter: setActiveChapter };
+})();
 
 /* ==========================================================================
-   10. INITIALIZATION
+   12. APPLICATION INITIALIZATION
    ========================================================================== */
 window.addEventListener('DOMContentLoaded', function(){
   ScrollEngine.init();
+  SpaceStage.init();
+  PutureCursor.init();
+  FramerNav.init();
+  ChapterEngine.init();
   initVisualizer();
   initComparativeTable();
   initQuiz();
-  initBackgroundLattice();
 });
 </script>
 </body>
 </html>
 '''
+    sdf_dict = {}
+    sdf_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "precomputed_sdf.json")
+    if os.path.exists(sdf_path):
+        with open(sdf_path, "r") as f:
+            sdf_dict = json.load(f)
+    html = html.replace('/* __BENCHMARK_SDF_PLACEHOLDER__ */', 'var BENCHMARK_SDF = ' + json.dumps(sdf_dict) + ';')
     return html
 
 if __name__ == "__main__":

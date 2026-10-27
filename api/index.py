@@ -7,11 +7,48 @@ Provides high-precision computational chemistry descriptors, structure validatio
 and molecular interpretation powered by Python. Compatible with Vercel Serverless.
 """
 
+import os
 import json
 import re
 import math
+import urllib.request
+import urllib.parse
 from http.server import BaseHTTPRequestHandler
 from urllib.parse import urlparse, parse_qs
+
+# Load precomputed 3D SDF conformations for immediate zero-latency rendering
+PRECOMPUTED_SDF = {}
+_possible_paths = [
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "precomputed_sdf.json"),
+    os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "precomputed_sdf.json")
+]
+for _p in _possible_paths:
+    if os.path.exists(_p):
+        try:
+            with open(_p, 'r') as _f:
+                PRECOMPUTED_SDF = json.load(_f)
+            break
+        except Exception:
+            pass
+
+def get_3d_sdf(smiles: str):
+    """Retrieve 3D SDF coordinates from precomputed cache or PubChem with server-side caching."""
+    clean = smiles.strip()
+    if clean in PRECOMPUTED_SDF:
+        return PRECOMPUTED_SDF[clean]
+
+    # Query PubChem REST
+    try:
+        url = f"https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/smiles/{urllib.parse.quote(clean)}/SDF?record_type=3d"
+        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+        with urllib.request.urlopen(req, timeout=4) as resp:
+            data = resp.read().decode('utf-8')
+            if "$$$$" in data:
+                PRECOMPUTED_SDF[clean] = data
+                return data
+    except Exception:
+        pass
+    return None
 
 # Preset reference molecules
 EXAMPLE_MOLECULES = {
@@ -260,6 +297,19 @@ class handler(BaseHTTPRequestHandler):
             self.wfile.write(json.dumps(EXAMPLE_MOLECULES).encode('utf-8'))
             return
 
+        if path.endswith('/sdf'):
+            smiles = query.get('smiles', [None])[0]
+            if smiles:
+                sdf = get_3d_sdf(smiles)
+                if sdf:
+                    self._set_headers(200)
+                    self.wfile.write(json.dumps({"valid": True, "smiles": smiles, "sdf": sdf}).encode('utf-8'))
+                    return
+                else:
+                    self._set_headers(404)
+                    self.wfile.write(json.dumps({"valid": False, "error": "3D structure not available for this SMILES"}).encode('utf-8'))
+                    return
+
         # Handle calculate via query parameter
         smiles = query.get('smiles', [None])[0]
         if smiles:
@@ -272,7 +322,7 @@ class handler(BaseHTTPRequestHandler):
         self._set_headers(200)
         self.wfile.write(json.dumps({
             "name": "Cheminformatics Virtual Laboratory API",
-            "routes": ["/api/health", "/api/examples", "/api/calculate?smiles=CCO"],
+            "routes": ["/api/health", "/api/examples", "/api/calculate?smiles=CCO", "/api/sdf?smiles=CCO"],
             "institution": "SRM Institute of Science and Technology, Tiruchirappalli"
         }).encode('utf-8'))
 
