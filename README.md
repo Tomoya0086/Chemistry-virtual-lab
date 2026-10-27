@@ -1,94 +1,115 @@
-# ChemSpace: Interactive 3D Chemistry Workstation & Quantum Lab
+# 🧪 Cheminformatics Virtual Laboratory & 3D Molecular Workstation
+### SRM Institute of Science and Technology, Tiruchirappalli
+**Faculty of Engineering and Technology | School of Sciences | Division of Chemistry**
 
-[![Vercel Deployment](https://img.shields.io/badge/Deployed%20on-Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com)
-[![License: MIT](https://img.shields.io/badge/License-MIT-00F0FF?style=for-the-badge)](LICENSE)
-[![Zero Dependencies](https://img.shields.io/badge/Dependencies-Zero%20Build-00FF9D?style=for-the-badge)](index.html)
-[![Web Audio API](https://img.shields.io/badge/Sound-Web%20Audio%20Synth-38BDF8?style=for-the-badge)](index.html)
+[![Vercel Deployment](https://img.shields.io/badge/Deployed%20on-Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://chemistry-virtual-lab-xi.vercel.app)
+[![Python Engine](https://img.shields.io/badge/Engine-Python%203.14%20Serverless-38BDF8?style=for-the-badge&logo=python&logoColor=white)](api/index.py)
+[![License: Academic](https://img.shields.io/badge/License-Academic%20Fair--Use-00FF9D?style=for-the-badge)](index.html)
+[![Zero Build Pipeline](https://img.shields.io/badge/Build-Zero%20Bundler%20Static-00F0FF?style=for-the-badge)](index.html)
 
-A next-generation interactive chemistry workstation and quantum simulation environment: dynamic 3D subatomic particle reactor, real-time periodic table telemetry, Slater's rules effective nuclear charge calculations, Aufbau anomalous electron configurations, quantum wavefunctions, molecular orbitals, SMILES-to-3D distance-geometry virtual lab, cheminformatics descriptors, interactive quizzes, and instant client-side PDF report exports.
-
-Built with pure vanilla web technologies: single self-contained `index.html` with **zero build step, zero bundlers, and zero server-side tracking**.
-
----
-
-## Highlights & Features
-
-### 1. 3D Subatomic Scroll Reactor Canvas
-- **Perspective 3D Engine:** Real-time 3D rotation math projecting a central nuclear cluster of protons and neutrons connected by dynamic covalent springs.
-- **Precessing Quantum Orbitals:** 4 interlocking 3D orbital rings with high-velocity wave-packet electrons racing across tilted coordinate planes.
-- **Relativistic Scroll Warp:** High scroll velocity stretches the surrounding celestial starfield into relativistic warp streaks.
-- **Quantum Shockwaves & Laser HUD:** Expanding shockwave wavefronts trigger on section crossings, synchronized with a real-time top laser progress beam and telemetry module HUD.
-
-### 2. Synthesized Web Audio API Acoustic Engine
-- **Element Resonant Frequencies:** Every single one of the 118 elements synthesizes an acoustic harmonic tone derived from its atomic number $Z$:
-  $$f(Z) = 160 + (Z \times 7.5)\text{ Hz}$$
-- **Interactive Audio Feedback:** Acoustic click pulses and quantum warp frequency ramps accompany module navigation and chemical analyses. Can be toggled on/off instantly via the navigation bar.
-
-### 3. Comprehensive Chemistry Intelligence Modules
-
-| Module | Features & Capabilities |
-|---|---|
-| **Periodic Table** | Complete 118-element dynamic grid; color-coded by chemical family, electronegativity, atomic radius, first ionization energy, or valence block. |
-| **Periodic Trends** | Real-time SVG gradient trend curves tracking $r$, $IE$, $\chi$, and Slater $Z_{\text{eff}}$ across periods and groups. |
-| **$Z_{\text{eff}}$ Calculator** | Automated Slater's shielding rules calculation worked out step by step for any element and occupied orbital. |
-| **Electron Config** | Aufbau filling, Pauli exclusion principle, and Hund's rule orbital diagrams with all 20 real-world anomalous exceptions detailed. |
-| **3D Molecular Lab** | SMILES parser $\rightarrow$ implicit hydrogen assignment $\rightarrow$ VSEPR distance-geometry relaxation $\rightarrow$ interactive 3D viewer. |
-| **Quantum Wavefunctions** | Particle-in-a-1D-box eigenstates and hydrogen atom radial distribution $r^2 R^2(r)$ with angular spherical harmonic cross-sections. |
-| **MO & Hückel Theory** | Diatomic LCAO molecular orbital diagrams (bond order, magnetism, Hund filling) and cyclic/linear Hückel $\pi$-electron systems (Frost circle). |
-| **Cheminformatics** | SMILES grammar reference, Lipinski Rule of 5 drug-likeness evaluation, topological polar surface area (TPSA), and an in-browser logistic-regression toxicity classifier. |
-| **Practical Calculations** | EDTA complexometric water hardness and Mohr's argentometric chloride determination with burette volume inputs. |
-| **Quiz & Report Export** | 15-question chemistry evaluation that stamps your session results into a downloadable PDF report with verification metadata. |
+A next-generation interactive Cheminformatics Virtual Laboratory and 3D molecular simulation workstation developed for the Division of Chemistry at **SRM Institute of Science and Technology, Tiruchirappalli**, in technical collaboration with **Tomoya Okazaki**.
 
 ---
 
-## Architecture & Design Principles
+## 🏛️ Academic Leadership & Technical Credits
 
-- **Zero-Vibe Coding Aesthetics:** Engineered strictly adhering to modern UI craftsmanship—eliminated generic purple/pink gradients, discarded pill buttons in favor of sleek industrial 6px/8px radii, and replaced placeholder copy with rigorous scientific equations.
-- **100% Client-Side Ephemeral Security:** No external telemetry, tracking cookies, or remote databases. All Slater matrices, SMILES relaxations, and PDF documents are generated in browser memory.
-- **Instant Deployment:** Zero node modules, zero build pipelines. Served as a pure static site on Vercel or any static file host.
+* **Curriculum Design & Academic Supervision:**  
+  **Dr. R. Subramanian**, Assistant Professor  
+  Division of Chemistry, School of Sciences, Faculty of Engineering and Technology  
+  SRM Institute of Science and Technology, Tiruchirappalli  
+  📧 Email: [rsmani84@gmail.com](mailto:rsmani84@gmail.com)
+
+* **Systems Architecture & Kinetic Engineering:**  
+  **Tomoya Okazaki**  
+  Purple Team Cybersecurity & Interactive Simulation Architecture  
+  📧 Email: [khalidnawaz7y@gmail.com](mailto:khalidnawaz7y@gmail.com)  
+  🛡️ TryHackMe: [Tomoya.okazaki](https://tryhackme.com/p/Tomoya.okazaki) | HackTheBox: [01a0be6e](https://profile.hackthebox.com/profile/01a0be6e-b00a-7335-9ff0-5864ad467519) | LinkedIn: [khalidnawaz-sec](https://www.linkedin.com/in/khalidnawaz-sec)
 
 ---
 
-## Running Locally
+## 🚀 Key Modules & Capabilities
 
-Clone the repository and serve with any local HTTP server:
+### 1. Interactive 2D & 3D Molecular Simulation
+* **SMILES Parser & Coordinate Embedder:** Real-time conversion of SMILES strings (`CCO`, `c1ccccc1`, `CC(=O)Oc1ccccc1C(=O)O`, etc.) into 2D chemical connectivity vectors and 3D WebGL geometries.
+* **Hardware-Accelerated 3D Models:** Ball and Stick, Stick Model, Space Filling (CPK), Wireframe, and Cartoon Ribbon representations with van der Waals (vdW) surface mesh overlay.
+* **Interactive Controls:** Mouse rotation, mouse wheel zoom, 3D panning, and automated gyroscopic spin.
 
+### 2. Complete 18-Descriptor Analytical Suite
+Evaluates comprehensive physicochemical and structural descriptors:
+1. **Molecular Formula** (Standard Hill notation)
+2. **Molecular Weight** (Average isotopic mass)
+3. **Exact Molecular Weight** (Monoisotopic mass for high-res MS)
+4. **LogP** (Wildman-Crippen lipophilicity octanol-water partition coefficient)
+5. **TPSA** (Topological Polar Surface Area in Å²)
+6. **Hydrogen Bond Donors** (Lipinski Rule of 5 donor sites)
+7. **Hydrogen Bond Acceptors** (Electronegative N/O heteroatoms)
+8. **Rotatable Bonds** (Conformational flexibility index)
+9. **Total Ring Count**
+10. **Aromatic Rings** (Hückel $4n+2$ planar conjugated systems)
+11. **Aliphatic Rings**
+12. **Number of Atoms**
+13. **Heavy Atoms**
+14. **Heavy Atom Bonds**
+15. **Sigma ($\sigma$) Bonds** (Localized framework bonds including implicit H)
+16. **Pi ($\pi$) Bonds** (Multiple bonds and aromatic delocalization)
+17. **Fraction Csp3** (Ratio of sp³ carbons to total carbons)
+18. **Molar Refractivity** (Steric volume and electronic polarizability)
+
+### 3. Student Assessment & PDF Report Generation
+* **Interactive 5-Question Evaluator:** Evaluates knowledge on SMILES grammar, Lipinski's Rule of 5, TPSA, and bonding theory with instant feedback.
+* **Certified Laboratory Report:** One-click client-side export to downloadable PDF with student name, registration number, evaluation metrics, and institutional verification block.
+
+### 4. Quantum Foundations & Periodic Intelligence
+* **118-Element Dynamic Grid:** Complete periodic table with acoustic resonant tones synthesized via the Web Audio API.
+* **Slater's Effective Nuclear Charge ($Z_{\text{eff}}$):** Step-by-step screening constant calculation for any element and subshell.
+
+---
+
+## ⚡ Kinetic Motion & Zero-Vibe Design Principles
+
+1. **Momentum Inertial Scrolling:** Custom mathematical velocity scroller providing fluid, weighted scroll physics.
+2. **Scroll-Driven 3D Perspective:** Cards and telemetry modules enter the viewport with kinetic tilt (`rotateX`, `skewY`, `scale`) and staggered child delays (0.08s - 0.25s).
+3. **Button Hover Dynamics:** Micro-displacement (-3px), light sheen diagonal sweep, and neon electric cyan glow.
+4. **Zero-Vibe Anti-Patterns:**
+   * ❌ Zero purple/pink gradients
+   * ❌ Zero 999px pill buttons (industrial 6px/8px radii)
+   * ❌ Zero fake reviews or fake metrics
+   * ❌ Zero emoji icons (crisp inline SVG vectors)
+   * ❌ Zero em dashes
+   * ✅ Favicon, meta descriptions, mobile responsive drawer, 404 recovery modal, privacy and terms compliance.
+
+---
+
+## 💻 Running Locally
+
+### Option 1: Python Engine (Recommended)
 ```bash
 # Clone the repository
 git clone git@github.com:Tomoya0086/Chemistry-virtual-lab.git
 cd Chemistry-virtual-lab
 
-# Option 1: Python 3
-python3 -m http.server 3000
+# Run the standalone Python server
+python3 app.py
+```
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-# Option 2: Node.js (npx serve)
+### Option 2: Node.js (npx serve)
+```bash
 npx serve -l 3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+---
+
+## ☁️ Deploying to Vercel
+
+The repository is configured for instantaneous deployment to Vercel with zero build configuration:
+1. Push changes to GitHub: `git push origin main`.
+2. Connect the repository in the Vercel dashboard.
+3. Vercel automatically deploys `index.html` at the edge and routes `/api/*` to the serverless Python handler `api/index.py`.
+
+Live deployment: [chemistry-virtual-lab-xi.vercel.app](https://chemistry-virtual-lab-xi.vercel.app)
 
 ---
 
-## Deploy to Vercel
-
-### Option 1: GitHub Integration (Recommended)
-1. Push your changes to GitHub (`git push origin main`).
-2. Go to [vercel.com/new](https://vercel.com/new), select **Chemistry-virtual-lab**, and click **Deploy**.
-3. Vercel automatically deploys `index.html` as a high-speed Edge static site.
-
-### Option 2: Vercel CLI
-```bash
-npm i -g vercel
-vercel --prod
-```
-
----
-
-## Third-Party Libraries
-- [3Dmol.js](https://3dmol.csb.pitt.edu/) — WebGL molecular visualization (loaded asynchronously from CDN with automatic 2D SVG fallback).
-- [jsPDF](https://github.com/parallax/jsPDF) — Client-side vector PDF document generation.
-
----
-
-## License
-Open-source under the [MIT License](LICENSE).
+## 📜 License
+Educational and academic fair-use license. Division of Chemistry, SRM Institute of Science and Technology.

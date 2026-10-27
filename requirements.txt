@@ -1,0 +1,3 @@
+# Cheminformatics Virtual Laboratory - Python Dependencies
+# Fully compatible with Python 3.8+ and Vercel Serverless
+# Core engine utilizes Python standard library for zero cold-start latency.
