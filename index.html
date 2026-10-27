@@ -2265,12 +2265,12 @@ footer {
       </div>
 
       <!-- Alerts -->
-      <div id="smilesError" class="alert-banner error">
+      <div id="smilesError" class="alert-banner error" style="display:none">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
         <span id="smilesErrorText">Invalid SMILES notation. Please inspect molecular valence or ring closures.</span>
       </div>
 
-      <div id="smilesSuccess" class="alert-banner success">
+      <div id="smilesSuccess" class="alert-banner success" style="display:none">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
         <span id="smilesSuccessText">Valid chemical structure parsed and 3D geometry rendered successfully.</span>
       </div>
@@ -3493,51 +3493,301 @@ function render2DDiagram(smiles){
   var container = document.getElementById('canvas2D');
   if(!container) return;
 
-  // Animated vector SVG diagram for the molecular structure
-  var svg = '<svg width="100%" height="100%" viewBox="-150 -150 300 300" xmlns="http://www.w3.org/2000/svg">';
-  svg += '<defs><filter id="glow"><feGaussianBlur stdDeviation="3" result="c"/><feMerge><feMergeNode in="c"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>';
+  var clean = (smiles || '').trim();
 
-  if(smiles.indexOf('c1ccccc1') !== -1 || smiles === 'c1ccccc1'){
-    // Benzene Ring
-    svg += '<polygon points="0,-80 69,-40 69,40 0,80 -69,40 -69,-40" fill="none" stroke="#00f0ff" stroke-width="4" filter="url(#glow)"/>';
-    svg += '<circle cx="0" cy="0" r="46" fill="none" stroke="#00ff9d" stroke-dasharray="6,4" stroke-width="2.5"/>';
-    for(var i=0; i<6; i++){
-      var ang = (i * 60 - 30) * Math.PI / 180;
-      var x = 88 * Math.cos(ang), y = 88 * Math.sin(ang);
-      svg += '<circle cx="' + x + '" cy="' + y + '" r="7" fill="#030712" stroke="#38bdf8" stroke-width="2"/>';
+  // Animated vector SVG diagram for the molecular structure
+  var svg = '<svg width="100%" height="100%" viewBox="-150 -150 300 300" xmlns="http://www.w3.org/2000/svg" style="overflow:visible">';
+  svg += '<defs>';
+  svg += '  <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">';
+  svg += '    <feGaussianBlur stdDeviation="2.5" result="blur"/>';
+  svg += '    <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>';
+  svg += '  </filter>';
+  svg += '</defs>';
+
+  if(clean === 'c1ccccc1' || clean === 'C1=CC=CC=C1'){
+    // --- 1. BENZENE (C6H6): Planar D6h Hexagon with 3 Alternating Kekule Double Bonds + Pi Resonance Ring ---
+    var R = 64;
+    var pts = [];
+    var v = [];
+    for(var i = 0; i < 6; i++){
+      var ang = (-90 + i * 60) * Math.PI / 180;
+      var vx = Math.round(R * Math.cos(ang) * 10) / 10;
+      var vy = Math.round(R * Math.sin(ang) * 10) / 10;
+      pts.push(vx + ',' + vy);
+      v.push({ x: vx, y: vy, ang: ang });
     }
-  } else if(smiles === 'CCO'){
-    // Ethanol C-C-O
-    svg += '<line x1="-80" y1="20" x2="0" y2="-20" stroke="#00f0ff" stroke-width="4" stroke-linecap="round"/>';
-    svg += '<line x1="0" y1="-20" x2="80" y2="20" stroke="#00f0ff" stroke-width="4" stroke-linecap="round"/>';
-    svg += '<circle cx="-80" cy="20" r="14" fill="#1e293b" stroke="#38bdf8" stroke-width="2"/>';
-    svg += '<text x="-80" y="25" fill="#f8fafc" font-size="11" font-family="monospace" text-anchor="middle">CH₃</text>';
-    svg += '<circle cx="0" cy="-20" r="14" fill="#1e293b" stroke="#38bdf8" stroke-width="2"/>';
-    svg += '<text x="0" y="-15" fill="#f8fafc" font-size="11" font-family="monospace" text-anchor="middle">CH₂</text>';
-    svg += '<circle cx="80" cy="20" r="14" fill="#ff4d6d" stroke="#f8fafc" stroke-width="2"/>';
-    svg += '<text x="80" y="25" fill="#ffffff" font-size="11" font-family="monospace" text-anchor="middle" font-weight="bold">OH</text>';
+
+    // Outer Hexagon
+    svg += '<polygon points="' + pts.join(' ') + '" fill="rgba(0, 240, 255, 0.05)" stroke="#00f0ff" stroke-width="3.5" stroke-linejoin="round" filter="url(#glow)"/>';
+    // Delocalized pi-electron resonance circle
+    svg += '<circle cx="0" cy="0" r="38" fill="rgba(0, 255, 157, 0.03)" stroke="#00ff9d" stroke-width="2.2" stroke-dasharray="6,4" opacity="0.95"/>';
+
+    // 3 Alternating Kekule Double Bonds (sides 0-1, 2-3, 4-5)
+    var rIn = R * 0.78;
+    var kekuleSides = [0, 2, 4];
+    for(var k = 0; k < kekuleSides.length; k++){
+      var side = kekuleSides[k];
+      var a1 = (-90 + side * 60) * Math.PI / 180;
+      var a2 = (-90 + (side + 1) * 60) * Math.PI / 180;
+      var x1 = Math.round(rIn * Math.cos(a1) * 10) / 10;
+      var y1 = Math.round(rIn * Math.sin(a1) * 10) / 10;
+      var x2 = Math.round(rIn * Math.cos(a2) * 10) / 10;
+      var y2 = Math.round(rIn * Math.sin(a2) * 10) / 10;
+      svg += '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" opacity="0.95"/>';
+    }
+
+    // 6 Carbons + 6 Radiating Hydrogens
+    for(var i = 0; i < 6; i++){
+      var cv = v[i];
+      var hx = Math.round((R + 32) * Math.cos(cv.ang) * 10) / 10;
+      var hy = Math.round((R + 32) * Math.sin(cv.ang) * 10) / 10;
+      svg += '<line x1="' + cv.x + '" y1="' + cv.y + '" x2="' + hx + '" y2="' + hy + '" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" stroke-dasharray="2,2"/>';
+      svg += '<circle cx="' + cv.x + '" cy="' + cv.y + '" r="8" fill="#071026" stroke="#38bdf8" stroke-width="2"/>';
+      svg += '<text x="' + cv.x + '" y="' + (cv.y + 3.5) + '" fill="#38bdf8" font-size="9" font-family="monospace" font-weight="bold" text-anchor="middle">C</text>';
+      svg += '<circle cx="' + hx + '" cy="' + hy + '" r="6.5" fill="#020617" stroke="rgba(255,255,255,0.6)" stroke-width="1.2"/>';
+      svg += '<text x="' + hx + '" y="' + (hy + 3) + '" fill="#f8fafc" font-size="8" font-family="monospace" text-anchor="middle">H</text>';
+    }
+
+    svg += '<text x="0" y="118" fill="#38bdf8" font-size="11.5" font-family="monospace" font-weight="bold" text-anchor="middle" letter-spacing="1">BENZENE (C₆H₆)</text>';
+    svg += '<text x="0" y="134" fill="#00ff9d" font-size="9" font-family="monospace" text-anchor="middle">Planar Aromatic Ring &bull; 6 π Delocalized Electrons &bull; D₆ₕ</text>';
+
+  } else if(clean === 'CCO'){
+    // --- 2. ETHANOL (C2H6O) ---
+    svg += '<line x1="-80" y1="20" x2="-10" y2="-20" stroke="#00f0ff" stroke-width="4" stroke-linecap="round" filter="url(#glow)"/>';
+    svg += '<line x1="-10" y1="-20" x2="65" y2="20" stroke="#00f0ff" stroke-width="4" stroke-linecap="round" filter="url(#glow)"/>';
+    svg += '<line x1="65" y1="20" x2="110" y2="-5" stroke="#ff4d6d" stroke-width="3" stroke-dasharray="3,3"/>';
+
+    svg += '<circle cx="-80" cy="20" r="16" fill="#0b1736" stroke="#38bdf8" stroke-width="2"/>';
+    svg += '<text x="-80" y="24.5" fill="#f8fafc" font-size="11" font-family="monospace" font-weight="bold" text-anchor="middle">CH₃</text>';
+
+    svg += '<circle cx="-10" cy="-20" r="16" fill="#0b1736" stroke="#38bdf8" stroke-width="2"/>';
+    svg += '<text x="-10" y="-15.5" fill="#f8fafc" font-size="11" font-family="monospace" font-weight="bold" text-anchor="middle">CH₂</text>';
+
+    svg += '<circle cx="65" cy="20" r="16" fill="#ff4d6d" stroke="#fecdd3" stroke-width="2"/>';
+    svg += '<text x="65" y="24.5" fill="#ffffff" font-size="11" font-family="monospace" font-weight="bold" text-anchor="middle">OH</text>';
+
+    svg += '<text x="110" y="0" fill="#fda4af" font-size="9.5" font-family="monospace">δ⁺ [H]</text>';
+    svg += '<text x="65" y="48" fill="#ff4d6d" font-size="9.5" font-family="monospace" text-anchor="middle">δ⁻ [O]</text>';
+
+    svg += '<text x="0" y="118" fill="#38bdf8" font-size="11.5" font-family="monospace" font-weight="bold" text-anchor="middle" letter-spacing="1">ETHANOL (C₂H₆O)</text>';
+    svg += '<text x="0" y="134" fill="#00ff9d" font-size="9" font-family="monospace" text-anchor="middle">Primary Aliphatic Alcohol &bull; Polar Hydrogen Bonding</text>';
+
+  } else if(clean === 'Oc1ccccc1'){
+    // --- 3. PHENOL (C6H6O) ---
+    var R = 54;
+    var pts = [];
+    var v = [];
+    for(var i = 0; i < 6; i++){
+      var ang = (-90 + i * 60) * Math.PI / 180;
+      var vx = Math.round(R * Math.cos(ang) * 10) / 10;
+      var vy = Math.round((R * Math.sin(ang) + 20) * 10) / 10;
+      pts.push(vx + ',' + vy);
+      v.push({ x: vx, y: vy });
+    }
+
+    svg += '<polygon points="' + pts.join(' ') + '" fill="rgba(0, 240, 255, 0.05)" stroke="#00f0ff" stroke-width="3" stroke-linejoin="round" filter="url(#glow)"/>';
+    svg += '<circle cx="0" cy="20" r="32" fill="none" stroke="#00ff9d" stroke-width="2" stroke-dasharray="5,4" opacity="0.9"/>';
+
+    svg += '<line x1="0" y1="-34" x2="0" y2="-82" stroke="#ff4d6d" stroke-width="3.5" stroke-linecap="round"/>';
+    svg += '<circle cx="0" cy="-82" r="15" fill="#ff4d6d" stroke="#ffffff" stroke-width="2"/>';
+    svg += '<text x="0" y="-77.5" fill="#ffffff" font-size="11" font-family="monospace" font-weight="bold" text-anchor="middle">OH</text>';
+
+    for(var i = 0; i < 6; i++){
+      var cv = v[i];
+      svg += '<circle cx="' + cv.x + '" cy="' + cv.y + '" r="6" fill="#071026" stroke="#38bdf8" stroke-width="1.8"/>';
+    }
+
+    svg += '<text x="0" y="118" fill="#38bdf8" font-size="11.5" font-family="monospace" font-weight="bold" text-anchor="middle" letter-spacing="1">PHENOL (C₆H₆O)</text>';
+    svg += '<text x="0" y="134" fill="#00ff9d" font-size="9" font-family="monospace" text-anchor="middle">Aromatic Hydroxyl &bull; Resonance-Stabilized Phenoxide</text>';
+
+  } else if(clean === 'CC(=O)O'){
+    // --- 4. ACETIC ACID (C2H4O2) ---
+    svg += '<line x1="-70" y1="15" x2="0" y2="-10" stroke="#00f0ff" stroke-width="3.5" stroke-linecap="round"/>';
+    svg += '<line x1="-4" y1="-10" x2="-4" y2="-72" stroke="#ff4d6d" stroke-width="3" stroke-linecap="round"/>';
+    svg += '<line x1="6" y1="-10" x2="6" y2="-72" stroke="#ff4d6d" stroke-width="3" stroke-linecap="round"/>';
+    svg += '<line x1="0" y1="-10" x2="65" y2="25" stroke="#00ff9d" stroke-width="3.5" stroke-linecap="round"/>';
+
+    svg += '<circle cx="-70" cy="15" r="16" fill="#0b1736" stroke="#38bdf8" stroke-width="2"/>';
+    svg += '<text x="-70" y="19.5" fill="#f8fafc" font-size="11" font-family="monospace" font-weight="bold" text-anchor="middle">CH₃</text>';
+
+    svg += '<circle cx="1" cy="-72" r="14" fill="#ff4d6d" stroke="#fecdd3" stroke-width="2"/>';
+    svg += '<text x="1" y="-67.5" fill="#ffffff" font-size="11" font-family="monospace" font-weight="bold" text-anchor="middle">=O</text>';
+
+    svg += '<circle cx="0" cy="-10" r="7" fill="#071026" stroke="#38bdf8" stroke-width="2"/>';
+
+    svg += '<circle cx="65" cy="25" r="15" fill="#071026" stroke="#00ff9d" stroke-width="2"/>';
+    svg += '<text x="65" y="29.5" fill="#00ff9d" font-size="11" font-family="monospace" font-weight="bold" text-anchor="middle">OH</text>';
+
+    svg += '<text x="0" y="118" fill="#38bdf8" font-size="11.5" font-family="monospace" font-weight="bold" text-anchor="middle" letter-spacing="1">ACETIC ACID (C₂H₄O₂)</text>';
+    svg += '<text x="0" y="134" fill="#00ff9d" font-size="9" font-family="monospace" text-anchor="middle">Carboxylic Acid &bull; Planar sp² Carbonyl Center</text>';
+
+  } else if(clean === 'CC(=O)Oc1ccccc1C(=O)O'){
+    // --- 5. ASPIRIN (C9H8O4) ---
+    var R = 44;
+    var pts = [];
+    for(var i = 0; i < 6; i++){
+      var ang = (-90 + i * 60) * Math.PI / 180;
+      var vx = Math.round((-35 + R * Math.cos(ang)) * 10) / 10;
+      var vy = Math.round((15 + R * Math.sin(ang)) * 10) / 10;
+      pts.push(vx + ',' + vy);
+    }
+    svg += '<polygon points="' + pts.join(' ') + '" fill="rgba(0, 240, 255, 0.05)" stroke="#00f0ff" stroke-width="2.8" stroke-linejoin="round" filter="url(#glow)"/>';
+    svg += '<circle cx="-35" cy="15" r="25" fill="none" stroke="#00ff9d" stroke-width="1.8" stroke-dasharray="4,3" opacity="0.9"/>';
+
+    svg += '<line x1="3" y1="-7" x2="35" y2="-30" stroke="#f59e0b" stroke-width="2.5"/>';
+    svg += '<text x="40" y="-27" fill="#f59e0b" font-size="10" font-family="monospace" font-weight="bold">O-Ac</text>';
+    svg += '<line x1="68" y1="-30" x2="95" y2="-30" stroke="#f59e0b" stroke-width="2"/>';
+    svg += '<circle cx="102" cy="-30" r="11" fill="#0b1736" stroke="#f59e0b" stroke-width="1.5"/>';
+    svg += '<text x="102" y="-27" fill="#f8fafc" font-size="8.5" font-family="monospace" text-anchor="middle">CH₃</text>';
+
+    svg += '<line x1="3" y1="37" x2="42" y2="55" stroke="#ff4d6d" stroke-width="2.5"/>';
+    svg += '<text x="48" y="59" fill="#ff4d6d" font-size="10" font-family="monospace" font-weight="bold">COOH</text>';
+
+    svg += '<text x="0" y="118" fill="#38bdf8" font-size="11.5" font-family="monospace" font-weight="bold" text-anchor="middle" letter-spacing="1">ASPIRIN (C₉H₈O₄)</text>';
+    svg += '<text x="0" y="134" fill="#00ff9d" font-size="9" font-family="monospace" text-anchor="middle">Acetylsalicylic Acid &bull; COX-1/2 Inhibitor Pharmacophore</text>';
+
+  } else if(clean === 'CN1C=NC2=C1C(=O)N(C(=O)N2C)C'){
+    // --- 6. CAFFEINE (C8H10N4O2) ---
+    svg += '<polygon points="-60,-35 -20,-35 5,0 -20,35 -60,35 -75,0" fill="rgba(0, 240, 255, 0.05)" stroke="#00f0ff" stroke-width="2.5" stroke-linejoin="round"/>';
+    svg += '<polygon points="5,0 45,-25 70,0 45,25" fill="rgba(192, 132, 252, 0.05)" stroke="#c084fc" stroke-width="2.5" stroke-linejoin="round"/>';
+
+    svg += '<line x1="-20" y1="-35" x2="-20" y2="-62" stroke="#ff4d6d" stroke-width="2.5"/>';
+    svg += '<circle cx="-20" cy="-66" r="8" fill="#ff4d6d" stroke="#fff" stroke-width="1.5"/>';
+    svg += '<text x="-20" y="-63" fill="#fff" font-size="8" font-family="monospace" text-anchor="middle">O</text>';
+
+    svg += '<line x1="-60" y1="35" x2="-60" y2="62" stroke="#ff4d6d" stroke-width="2.5"/>';
+    svg += '<circle cx="-60" cy="66" r="8" fill="#ff4d6d" stroke="#fff" stroke-width="1.5"/>';
+    svg += '<text x="-60" y="69" fill="#fff" font-size="8" font-family="monospace" text-anchor="middle">O</text>';
+
+    svg += '<circle cx="-60" cy="-35" r="9" fill="#0b1736" stroke="#38bdf8" stroke-width="1.8"/>';
+    svg += '<text x="-60" y="-32" fill="#38bdf8" font-size="9" font-family="monospace" font-weight="bold" text-anchor="middle">N</text>';
+
+    svg += '<circle cx="-20" cy="35" r="9" fill="#0b1736" stroke="#38bdf8" stroke-width="1.8"/>';
+    svg += '<text x="-20" y="38" fill="#38bdf8" font-size="9" font-family="monospace" font-weight="bold" text-anchor="middle">N</text>';
+
+    svg += '<circle cx="45" cy="-25" r="9" fill="#0b1736" stroke="#c084fc" stroke-width="1.8"/>';
+    svg += '<text x="45" y="-22" fill="#c084fc" font-size="9" font-family="monospace" font-weight="bold" text-anchor="middle">N</text>';
+
+    svg += '<text x="0" y="118" fill="#38bdf8" font-size="11.5" font-family="monospace" font-weight="bold" text-anchor="middle" letter-spacing="1">CAFFEINE (C₈H₁₀N₄O₂)</text>';
+    svg += '<text x="0" y="134" fill="#00ff9d" font-size="9" font-family="monospace" text-anchor="middle">1,3,7-Trimethylxanthine &bull; CNS Adenosine Receptor Antagonist</text>';
+
+  } else if(clean === 'CC(=O)Nc1ccc(O)cc1'){
+    // --- 7. PARACETAMOL (C8H9NO2) ---
+    var R = 44;
+    var pts = [];
+    for(var i = 0; i < 6; i++){
+      var ang = (-90 + i * 60) * Math.PI / 180;
+      var vx = Math.round((R * Math.cos(ang)) * 10) / 10;
+      var vy = Math.round((R * Math.sin(ang)) * 10) / 10;
+      pts.push(vx + ',' + vy);
+    }
+    svg += '<polygon points="' + pts.join(' ') + '" fill="rgba(0, 240, 255, 0.05)" stroke="#00f0ff" stroke-width="2.8" stroke-linejoin="round" filter="url(#glow)"/>';
+    svg += '<circle cx="0" cy="0" r="25" fill="none" stroke="#00ff9d" stroke-width="1.8" stroke-dasharray="4,3" opacity="0.9"/>';
+
+    svg += '<line x1="0" y1="-44" x2="0" y2="-78" stroke="#ff4d6d" stroke-width="2.8"/>';
+    svg += '<circle cx="0" cy="-80" r="12" fill="#ff4d6d" stroke="#fff" stroke-width="1.5"/>';
+    svg += '<text x="0" y="-76" fill="#fff" font-size="9" font-family="monospace" font-weight="bold" text-anchor="middle">OH</text>';
+
+    svg += '<line x1="0" y1="44" x2="0" y2="70" stroke="#38bdf8" stroke-width="2.8"/>';
+    svg += '<circle cx="0" cy="74" r="10" fill="#0b1736" stroke="#38bdf8" stroke-width="1.5"/>';
+    svg += '<text x="0" y="77" fill="#38bdf8" font-size="8.5" font-family="monospace" font-weight="bold" text-anchor="middle">NH</text>';
+    svg += '<line x1="10" y1="74" x2="45" y2="74" stroke="#38bdf8" stroke-width="2.2"/>';
+    svg += '<text x="50" y="77" fill="#f8fafc" font-size="9" font-family="monospace">Ac</text>';
+
+    svg += '<text x="0" y="118" fill="#38bdf8" font-size="11.5" font-family="monospace" font-weight="bold" text-anchor="middle" letter-spacing="1">PARACETAMOL (C₈H₉NO₂)</text>';
+    svg += '<text x="0" y="134" fill="#00ff9d" font-size="9" font-family="monospace" text-anchor="middle">N-(4-Hydroxyphenyl)acetamide &bull; Antipyretic Analgesic</text>';
+
+  } else if(clean === 'CC(C)Cc1ccc(C(C)C(=O)O)cc1'){
+    // --- 8. IBUPROFEN (C13H18O2) ---
+    var R = 40;
+    var pts = [];
+    for(var i = 0; i < 6; i++){
+      var ang = (i * 60) * Math.PI / 180;
+      var vx = Math.round((R * Math.cos(ang)) * 10) / 10;
+      var vy = Math.round((R * Math.sin(ang)) * 10) / 10;
+      pts.push(vx + ',' + vy);
+    }
+    svg += '<polygon points="' + pts.join(' ') + '" fill="rgba(0, 240, 255, 0.05)" stroke="#00f0ff" stroke-width="2.8" stroke-linejoin="round" filter="url(#glow)"/>';
+    svg += '<circle cx="0" cy="0" r="23" fill="none" stroke="#00ff9d" stroke-width="1.8" stroke-dasharray="4,3" opacity="0.9"/>';
+
+    svg += '<line x1="-40" y1="0" x2="-75" y2="0" stroke="#00f0ff" stroke-width="2.5"/>';
+    svg += '<line x1="-75" y1="0" x2="-105" y2="-22" stroke="#00f0ff" stroke-width="2.5"/>';
+    svg += '<line x1="-75" y1="0" x2="-105" y2="22" stroke="#00f0ff" stroke-width="2.5"/>';
+    svg += '<text x="-115" y="-20" fill="#f8fafc" font-size="8.5" font-family="monospace">CH₃</text>';
+    svg += '<text x="-115" y="25" fill="#f8fafc" font-size="8.5" font-family="monospace">CH₃</text>';
+
+    svg += '<line x1="40" y1="0" x2="72" y2="0" stroke="#00f0ff" stroke-width="2.5"/>';
+    svg += '<line x1="72" y1="0" x2="72" y2="-32" stroke="#00f0ff" stroke-width="2.2"/>';
+    svg += '<text x="72" y="-36" fill="#f8fafc" font-size="8.5" font-family="monospace" text-anchor="middle">CH₃</text>';
+    svg += '<line x1="72" y1="0" x2="105" y2="18" stroke="#ff4d6d" stroke-width="2.5"/>';
+    svg += '<text x="110" y="22" fill="#ff4d6d" font-size="9.5" font-family="monospace" font-weight="bold">COOH</text>';
+
+    svg += '<text x="0" y="118" fill="#38bdf8" font-size="11.5" font-family="monospace" font-weight="bold" text-anchor="middle" letter-spacing="1">IBUPROFEN (C₁₃H₁₈O₂)</text>';
+    svg += '<text x="0" y="134" fill="#00ff9d" font-size="9" font-family="monospace" text-anchor="middle">2-(4-Isobutylphenyl)propanoic Acid &bull; NSAID Analgesic</text>';
+
   } else {
-    // Generalized Organic Molecule Diagram
-    svg += '<path d="M-90,30 L-30,-20 L30,30 L90,-20" fill="none" stroke="#00f0ff" stroke-width="4" stroke-linecap="round"/>';
-    svg += '<line x1="30" y1="30" x2="30" y2="85" stroke="#ff4d6d" stroke-width="4" stroke-linecap="round"/>';
-    svg += '<circle cx="30" cy="85" r="14" fill="#ff4d6d" stroke="#fff" stroke-width="2"/>';
-    svg += '<text x="30" y="90" fill="#fff" font-size="11" font-family="monospace" text-anchor="middle">O</text>';
-    svg += '<circle cx="90" cy="-20" r="14" fill="#00ff9d" stroke="#fff" stroke-width="2"/>';
-    svg += '<text x="90" y="-15" fill="#020617" font-size="11" font-family="monospace" text-anchor="middle" font-weight="bold">OH</text>';
+    // --- 9. DYNAMIC GENERALIZED TOPOLOGY FOR CUSTOM SMILES ---
+    var atoms = clean.match(/(Cl|Br|Si|Na|Ca|Mg|Fe|Cu|Zn|[CNOPFSIcnops])/g) || ['C', 'C', 'O'];
+    var numAtoms = Math.min(atoms.length, 12);
+    var isRing = clean.indexOf('1') !== -1 || clean.indexOf('c') !== -1;
+
+    if(isRing && numAtoms >= 5){
+      var rRing = 55;
+      var ringPts = [];
+      for(var i = 0; i < numAtoms; i++){
+        var a = (i * 2 * Math.PI / numAtoms) - Math.PI / 2;
+        var ax = Math.round(rRing * Math.cos(a) * 10) / 10;
+        var ay = Math.round(rRing * Math.sin(a) * 10) / 10;
+        ringPts.push(ax + ',' + ay);
+      }
+      svg += '<polygon points="' + ringPts.join(' ') + '" fill="rgba(0, 240, 255, 0.05)" stroke="#00f0ff" stroke-width="3" stroke-linejoin="round" filter="url(#glow)"/>';
+      for(var i = 0; i < numAtoms; i++){
+        var a = (i * 2 * Math.PI / numAtoms) - Math.PI / 2;
+        var ax = Math.round(rRing * Math.cos(a) * 10) / 10;
+        var ay = Math.round(rRing * Math.sin(a) * 10) / 10;
+        var sym = (atoms[i] || 'C').toUpperCase();
+        var col = sym === 'O' ? '#ff4d6d' : (sym === 'N' ? '#c084fc' : (sym === 'S' ? '#fbbf24' : '#38bdf8'));
+        svg += '<circle cx="' + ax + '" cy="' + ay + '" r="8" fill="#071026" stroke="' + col + '" stroke-width="2"/>';
+        svg += '<text x="' + ax + '" y="' + (ay + 3.5) + '" fill="' + col + '" font-size="9" font-family="monospace" font-weight="bold" text-anchor="middle">' + sym + '</text>';
+      }
+    } else {
+      var step = Math.min(48, 220 / Math.max(numAtoms, 2));
+      var startX = -((numAtoms - 1) * step) / 2;
+      for(var i = 0; i < numAtoms - 1; i++){
+        var xA = startX + i * step;
+        var yA = (i % 2 === 0 ? 20 : -20);
+        var xB = startX + (i + 1) * step;
+        var yB = ((i + 1) % 2 === 0 ? 20 : -20);
+        svg += '<line x1="' + xA + '" y1="' + yA + '" x2="' + xB + '" y2="' + yB + '" stroke="#00f0ff" stroke-width="3.5" stroke-linecap="round" filter="url(#glow)"/>';
+      }
+      for(var i = 0; i < numAtoms; i++){
+        var xA = startX + i * step;
+        var yA = (i % 2 === 0 ? 20 : -20);
+        var sym = (atoms[i] || 'C').toUpperCase();
+        var col = sym === 'O' ? '#ff4d6d' : (sym === 'N' ? '#c084fc' : (sym === 'S' ? '#fbbf24' : '#38bdf8'));
+        svg += '<circle cx="' + xA + '" cy="' + yA + '" r="10" fill="#071026" stroke="' + col + '" stroke-width="2"/>';
+        svg += '<text x="' + xA + '" y="' + (yA + 3.5) + '" fill="' + col + '" font-size="9" font-family="monospace" font-weight="bold" text-anchor="middle">' + sym + '</text>';
+      }
+    }
+
+    svg += '<text x="0" y="118" fill="#38bdf8" font-size="11" font-family="monospace" font-weight="bold" text-anchor="middle" letter-spacing="1">' + clean + '</text>';
+    svg += '<text x="0" y="134" fill="#00ff9d" font-size="9" font-family="monospace" text-anchor="middle">2D Skeletal Graph &bull; ' + numAtoms + ' Heavy Atoms</text>';
   }
 
   svg += '</svg>';
-  container.innerHTML = svg;
+
+  // Retain cybernetic HUD corner reticles inside #canvas2D
+  var reticles = '<div class="hud-reticle tl"></div><div class="hud-reticle tr"></div><div class="hud-reticle bl"></div><div class="hud-reticle br"></div>';
+  container.innerHTML = reticles + svg;
 
   if(window.gsap){
-    gsap.fromTo("#canvas2D line, #canvas2D path, #canvas2D polygon",
-      { strokeDasharray: 300, strokeDashoffset: 300, opacity: 0 },
-      { strokeDashoffset: 0, opacity: 1, duration: 0.75, stagger: 0.08, ease: "power2.out" }
-    );
-    gsap.fromTo("#canvas2D circle, #canvas2D text",
-      { scale: 0, opacity: 0, transformOrigin: "center" },
-      { scale: 1, opacity: 1, duration: 0.5, stagger: 0.05, delay: 0.25, ease: "back.out(1.7)" }
-    );
+    var svgEl = container.querySelector('svg');
+    if(svgEl){
+      gsap.fromTo(svgEl,
+        { opacity: 0, scale: 0.94, transformOrigin: "center center" },
+        { opacity: 1, scale: 1, duration: 0.4, ease: "power2.out" }
+      );
+    }
   }
 }
 
