@@ -374,14 +374,14 @@ nav.links a.active {
 }
 
 /* ==========================================================================
-   ADVANCED MAGNETIC BUTTONS WITH ROTATING LIGHT SHEEN & CURSOR TRACKING
+   ADVANCED MOTION.DEV ROLLING TEXT BUTTONS & SPRING KINETICS
    ========================================================================== */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 12px 22px;
+  gap: 10px;
+  padding: 12px 24px;
   border-radius: var(--r-btn);
   border: 1px solid var(--border);
   background: var(--panel);
@@ -392,15 +392,61 @@ nav.links a.active {
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  transition: transform 0.22s var(--ease), border-color 0.22s, box-shadow 0.22s, background 0.22s;
   text-decoration: none;
+  transform: translateZ(0);
+  transition: border-color 0.28s var(--ease), box-shadow 0.28s var(--ease), background 0.28s var(--ease);
+  will-change: transform;
+}
+
+/* Motion.dev Rolling Text Container */
+.btn-roll {
+  display: inline-flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  height: 1.3em;
+  line-height: 1.3em;
+  vertical-align: middle;
+}
+
+.btn-roll-text {
+  display: block;
+  transform: translateY(0%);
+  transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+  white-space: nowrap;
+}
+
+.btn-roll-hover {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+}
+
+.btn:hover .btn-roll-text {
+  transform: translateY(-100%);
+}
+
+.btn svg {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  flex-shrink: 0;
+}
+
+.btn:hover svg {
+  transform: translateX(4px);
+}
+
+.btn:active {
+  transform: scale(0.95);
+  transition: transform 0.1s ease;
 }
 
 /* Dynamic Radial Glow following mouse */
 .btn .btn-glow {
   position: absolute;
-  width: 100px;
-  height: 100px;
+  width: 90px;
+  height: 90px;
   background: radial-gradient(circle, rgba(0, 240, 255, 0.45) 0%, transparent 70%);
   border-radius: 50%;
   pointer-events: none;
@@ -430,17 +476,12 @@ nav.links a.active {
 .btn:hover {
   background: var(--panel-hover);
   border-color: var(--acc);
-  transform: translateY(-3px);
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.6), 0 0 20px var(--acc-glow);
 }
 
 .btn:hover::after {
   left: 220%;
   transition: left 0.7s var(--ease);
-}
-
-.btn:active {
-  transform: scale(0.97) translateY(0);
 }
 
 .btn.primary {
@@ -469,21 +510,43 @@ nav.links a.active {
   padding: 26px;
   backdrop-filter: blur(14px);
   position: relative;
-  transition: transform 0.32s var(--ease), border-color 0.32s, box-shadow 0.32s;
+  transition: border-color 0.3s, box-shadow 0.3s;
   transform-style: preserve-3d;
+  will-change: transform, opacity;
+  overflow: hidden;
 }
 
 .card:hover {
   border-color: var(--border-glow);
-  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.75), 0 0 26px rgba(0, 240, 255, 0.14);
-  transform: translateY(-4px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 240, 255, 0.2);
 }
 
-/* Crisp Card & Section Animations (Zero Blur) */
-.k-reveal {
+.card-sheen {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle 320px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(0, 240, 255, 0.14), transparent 70%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 2;
+}
+
+.card:hover .card-sheen {
   opacity: 1;
-  transform: none;
-  transition: transform 0.4s var(--ease), opacity 0.4s var(--ease);
+}
+
+/* Sliding Kinetic Classes */
+.slide-left { will-change: transform, opacity; }
+.slide-right { will-change: transform, opacity; }
+
+/* Dynamic Accent Line under Section Titles */
+.sec-line {
+  height: 3px;
+  width: 0px;
+  background: linear-gradient(90deg, var(--acc), var(--acc2), transparent);
+  box-shadow: 0 0 14px var(--acc-glow);
+  margin-top: 10px;
+  border-radius: 2px;
 }
 
 /* Grid Layouts */
@@ -657,13 +720,30 @@ input:focus, select:focus {
 }
 
 .preset-chips {
+  position: relative;
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
   margin-bottom: 24px;
 }
 
+.preset-pill-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: linear-gradient(135deg, var(--acc), var(--acc2));
+  border-radius: var(--r-btn);
+  pointer-events: none;
+  z-index: 1;
+  box-shadow: 0 0 16px var(--acc-glow);
+  transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1), width 0.38s cubic-bezier(0.16, 1, 0.3, 1), height 0.38s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+  will-change: transform, width;
+  opacity: 0;
+}
+
 .preset-chip {
+  position: relative;
+  z-index: 2;
   padding: 7px 15px;
   background: var(--panel);
   border: 1px solid var(--border);
@@ -672,21 +752,20 @@ input:focus, select:focus {
   font-size: 12px;
   color: var(--mut);
   cursor: pointer;
-  transition: all 0.2s var(--ease);
+  transition: color 0.22s var(--ease), border-color 0.22s var(--ease), transform 0.22s var(--ease);
 }
 
 .preset-chip:hover {
   color: var(--acc);
   border-color: var(--acc);
-  background: var(--panel-hover);
   transform: translateY(-2px);
 }
 
 .preset-chip.active {
-  color: #020617;
-  background: var(--acc);
-  border-color: var(--acc);
+  color: #020617 !important;
   font-weight: 700;
+  border-color: transparent;
+  background: transparent;
 }
 
 /* Dual Canvas Layout */
@@ -1152,17 +1231,18 @@ footer {
   <!-- BLOCK 2: CHEMINFORMATICS THEORY & FOUNDATIONS -->
   <section id="theory">
     <div class="wrap">
-      <div class="sechead k-reveal">
+      <div class="sechead">
         <div class="kicker">Curriculum Foundations</div>
         <h2>Introduction to Cheminformatics</h2>
-        <p>
+        <div class="sec-line"></div>
+        <p style="margin-top:12px">
           Cheminformatics combines chemistry, computer science, and information technology to represent,
           simulate, and analyze molecular structures and their physicochemical behaviors computationally.
         </p>
       </div>
 
       <div class="grid g2">
-        <div class="card theory-card k-reveal">
+        <div class="card theory-card slide-left">
           <h3>SMILES Representation</h3>
           <p style="color:var(--mut);font-size:14px;margin-bottom:12px">
             <strong>SMILES</strong> (Simplified Molecular Input Line Entry System) encodes molecular connectivity into a concise ASCII text string.
@@ -1175,7 +1255,7 @@ footer {
           </ul>
         </div>
 
-        <div class="card theory-card k-reveal" style="border-left-color:var(--acc2)">
+        <div class="card theory-card slide-right" style="border-left-color:var(--acc2)">
           <h3>3D Molecular Geometries</h3>
           <p style="color:var(--mut);font-size:14px;margin-bottom:12px">
             Computational methods predict spatial coordinates from 2D connectivity graphs using energy minimization algorithms:
@@ -1194,10 +1274,11 @@ footer {
   <!-- BLOCK 3: 2D & 3D INTERACTIVE MOLECULAR LAB -->
   <section id="lab">
     <div class="wrap">
-      <div class="sechead k-reveal">
+      <div class="sechead">
         <div class="kicker">Core Laboratory Suite</div>
         <h2>SMILES to 2D &amp; 3D Molecular Representation</h2>
-        <p>
+        <div class="sec-line"></div>
+        <p style="margin-top:12px">
           Enter any valid SMILES notation or click an example molecule.
           The laboratory immediately resolves the 2D bond topology, derives 3D coordinates via force-field optimization,
           and renders an interactive WebGL viewport.
@@ -1215,7 +1296,7 @@ footer {
         <span id="smilesSuccessText">Valid chemical structure parsed and 3D geometry rendered successfully.</span>
       </div>
 
-      <div class="card k-reveal">
+      <div class="card">
         <!-- SMILES Input Row -->
         <div class="smiles-bar">
           <div class="input-box">
@@ -1236,10 +1317,10 @@ footer {
           <!-- Populated by JS -->
         </div>
 
-        <!-- Dual Canvas Viewport -->
+        <!-- Dual Canvas Viewport with Sliding Collision -->
         <div class="dual-canvas-grid">
           <!-- 2D Structure Canvas -->
-          <div>
+          <div class="slide-left">
             <div style="font-size:13px;font-family:var(--mono);color:var(--acc);margin-bottom:8px;font-weight:700">2D CHEMICAL CONNECTIVITY GRAPH</div>
             <div class="mol-2d-canvas" id="canvas2D">
               <!-- SVG generated dynamically -->
@@ -1247,7 +1328,7 @@ footer {
           </div>
 
           <!-- 3D WebGL Viewer -->
-          <div>
+          <div class="slide-right">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
               <span style="font-size:13px;font-family:var(--mono);color:var(--acc2);font-weight:700">3D HARDWARE-ACCELERATED MODEL</span>
               <div style="display:flex;align-items:center;gap:10px">
@@ -1303,16 +1384,17 @@ footer {
   <!-- BLOCK 4: COMPLETE 18 MOLECULAR DESCRIPTORS -->
   <section id="properties">
     <div class="wrap">
-      <div class="sechead k-reveal">
+      <div class="sechead">
         <div class="kicker">Quantitative Cheminformatics</div>
         <h2>Complete 18-Descriptor Analytical Suite</h2>
-        <p>
+        <div class="sec-line"></div>
+        <p style="margin-top:12px">
           Derived through topological graph theory, Wildman-Crippen lipophilicity matrices, and Ertl polar surface calculations.
           Each metric includes an educational interpretation explaining its physical and pharmacological significance.
         </p>
       </div>
 
-      <div class="card k-reveal">
+      <div class="card">
         <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:14px">
           <div>
             <span style="font-family:var(--mono);color:var(--dim);font-size:12px">ACTIVE MOLECULE: </span>
@@ -1345,16 +1427,17 @@ footer {
   <!-- BLOCK 5: COMPARATIVE ANALYSIS MATRIX -->
   <section id="compare">
     <div class="wrap">
-      <div class="sechead k-reveal">
+      <div class="sechead">
         <div class="kicker">Structure-Property Relationships</div>
         <h2>Multi-Molecule Comparative Matrix</h2>
-        <p>
+        <div class="sec-line"></div>
+        <p style="margin-top:12px">
           Compare fundamental chemical compounds side-by-side to observe how functional groups, aromaticity,
           and branching influence boiling points, aqueous solubility, and hydrogen-bonding potentials.
         </p>
       </div>
 
-      <div class="card k-reveal" style="overflow-x:auto">
+      <div class="card" style="overflow-x:auto">
         <table class="prop-table" id="compareTable">
           <thead>
             <tr>
@@ -1380,16 +1463,17 @@ footer {
   <!-- BLOCK 6: STUDENT ASSESSMENT & QUIZ -->
   <section id="quiz">
     <div class="wrap">
-      <div class="sechead k-reveal">
+      <div class="sechead">
         <div class="kicker">Knowledge Verification</div>
         <h2>Student Assessment Module</h2>
-        <p>
+        <div class="sec-line"></div>
+        <p style="margin-top:12px">
           Test your comprehension of SMILES notation, molecular descriptors, and Lipinski's Rule of 5.
           Your score is calculated instantly and can be certified in the downloadable laboratory report.
         </p>
       </div>
 
-      <div class="card k-reveal" style="max-width:760px;margin:0 auto">
+      <div class="card" style="max-width:760px;margin:0 auto">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
           <span style="font-family:var(--mono);font-size:12px;color:var(--acc)" id="quizProgress">QUESTION 1 OF 5</span>
           <span style="font-family:var(--mono);font-size:12px;color:var(--acc2)" id="quizScore">SCORE: 0</span>
@@ -1411,16 +1495,17 @@ footer {
   <!-- BLOCK 7: STUDENT REPORT GENERATION -->
   <section id="report">
     <div class="wrap">
-      <div class="sechead k-reveal">
+      <div class="sechead">
         <div class="kicker">Official Certification</div>
         <h2>Generate Student Laboratory PDF Report</h2>
-        <p>
+        <div class="sec-line"></div>
+        <p style="margin-top:12px">
           Generate a standardized, publication-ready PDF report bearing official SRM Institute of Science and Technology
           laboratory formatting, student credentials, and descriptor interpretations.
         </p>
       </div>
 
-      <div class="card k-reveal" style="max-width:700px;margin:0 auto">
+      <div class="card" style="max-width:700px;margin:0 auto">
         <div class="grid g2" style="margin-bottom:18px">
           <div>
             <label style="font-size:11px;color:var(--dim);text-transform:uppercase;font-family:var(--mono)">Student Name</label>
@@ -1604,49 +1689,15 @@ var ScrollEngine = (function(){
       }
     });
 
-    // GSAP 3.12 & ScrollTrigger Integration
-    if(window.gsap && window.ScrollTrigger){
-      gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+    // Initialize GSAP 3.12 & ScrollTrigger Peak Animations
+    initPeakAnimations();
 
-      // Kinetic Staggered Card Entrance on Scroll
-      gsap.utils.toArray('section:not(#home) .card').forEach(function(el){
-        gsap.from(el, {
-          y: 40,
-          opacity: 0.5,
-          duration: 0.7,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: el,
-            start: "top 90%",
-            toggleActions: "play none none none"
-          }
-        });
-      });
-
-      // Smooth Navigation Links
-      document.querySelectorAll('nav.links a, .mobile-nav-links a').forEach(function(link){
-        link.addEventListener('click', function(e){
-          var targetId = link.getAttribute('href');
-          if(targetId && targetId.startsWith('#')){
-            e.preventDefault();
-            var targetEl = document.querySelector(targetId);
-            if(targetEl){
-              gsap.to(window, {
-                duration: 0.85,
-                scrollTo: { y: targetEl, offsetY: 70 },
-                ease: "power3.inOut"
-              });
-              if(document.getElementById('mobileDrawer').classList.contains('open')){
-                toggleMobileMenu();
-              }
-            }
-          }
-        });
-      });
-    }
-
-    // Initialize GSAP Magnetic Buttons
+    // Initialize Motion.dev Rolling Text & Magnetic Buttons
+    setupRollingButtons();
     initMagneticButtons();
+
+    // Initialize 3D Card Perspective Tilt
+    initCardTilt();
   }
 
   function update(){
@@ -1676,49 +1727,258 @@ var ScrollEngine = (function(){
     
     var hud = document.getElementById('hudPct');
     if(hud) hud.innerText = pct + '%';
-
-    // Velocity-driven 3D card tilt
-    var tilt = Math.max(-2.5, Math.min(2.5, velocity * 0.045));
-    document.querySelectorAll('.card').forEach(function(card){
-      if(!card.matches(':hover')){
-        card.style.transform = 'perspective(1000px) rotateX(' + (-tilt * 0.5) + 'deg) skewY(' + (tilt * 0.3) + 'deg)';
-      }
-    });
-  }
-
-  function initMagneticButtons(){
-    document.querySelectorAll('.btn').forEach(function(btn){
-      var glow = document.createElement('span');
-      glow.className = 'btn-glow';
-      btn.appendChild(glow);
-
-      if(window.gsap){
-        var xTo = gsap.quickTo(btn, "x", { duration: 0.3, ease: "power3.out" });
-        var yTo = gsap.quickTo(btn, "y", { duration: 0.3, ease: "power3.out" });
-
-        btn.addEventListener('mousemove', function(e){
-          var rect = btn.getBoundingClientRect();
-          var x = e.clientX - rect.left;
-          var y = e.clientY - rect.top;
-          glow.style.left = x + 'px';
-          glow.style.top = y + 'px';
-
-          var moveX = (x - rect.width / 2) * 0.38;
-          var moveY = (y - rect.height / 2) * 0.38;
-          xTo(moveX);
-          yTo(moveY);
-        });
-
-        btn.addEventListener('mouseleave', function(){
-          xTo(0);
-          yTo(0);
-        });
-      }
-    });
   }
 
   return { init: init };
 })();
+
+/* ==========================================================================
+   PEAK MOTION.DEV KINETIC ANIMATION ENGINE & GSAP SCROLLTRIGGER SUITE
+   ========================================================================== */
+function initPeakAnimations(){
+  if(!window.gsap || !window.ScrollTrigger) return;
+  gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+
+  var isMobile = window.innerWidth < 768;
+  var slideX = isMobile ? 35 : 150;
+
+  // 1. HERO ENTRANCE (Instant crisp render, no blur)
+  var heroTl = gsap.timeline({ defaults: { ease: "power3.out" } });
+  heroTl.from(".hero-badge-row .badge", { y: -25, opacity: 0, stagger: 0.08, duration: 0.6 })
+        .from(".hero h1", { y: 35, opacity: 0, duration: 0.8 }, "-=0.3")
+        .from(".hero p", { y: 25, opacity: 0, duration: 0.7 }, "-=0.5")
+        .from(".hero-actions .btn", { y: 30, opacity: 0, stagger: 0.1, duration: 0.6 }, "-=0.4")
+        .from(".telemetry-strip .tele-item", { x: isMobile ? 0 : -35, y: isMobile ? 30 : 0, opacity: 0, stagger: 0.08, duration: 0.65 }, "-=0.3");
+
+  // 2. EXPANDING LASER ACCENT UNDER TITLES
+  gsap.utils.toArray('.sec-line').forEach(function(line){
+    gsap.fromTo(line,
+      { width: 0, opacity: 0 },
+      {
+        width: 140,
+        opacity: 1,
+        duration: 0.85,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: line,
+          start: "top 88%",
+          toggleActions: "play none none none"
+        }
+      }
+    );
+  });
+
+  // 3. BLOCK 2: THEORY SECTION BI-DIRECTIONAL SLIDE
+  gsap.fromTo("#theory .slide-left",
+    { x: -slideX, opacity: 0, rotateY: isMobile ? 0 : 12 },
+    {
+      x: 0, opacity: 1, rotateY: 0, duration: 0.9, ease: "power3.out",
+      scrollTrigger: { trigger: "#theory", start: "top 82%" }
+    }
+  );
+  gsap.fromTo("#theory .slide-right",
+    { x: slideX, opacity: 0, rotateY: isMobile ? 0 : -12 },
+    {
+      x: 0, opacity: 1, rotateY: 0, duration: 0.9, ease: "power3.out",
+      scrollTrigger: { trigger: "#theory", start: "top 82%" }
+    }
+  );
+
+  // 4. BLOCK 3: MOLECULAR LAB DUAL CANVAS COLLISION
+  gsap.fromTo("#lab .dual-canvas-grid .slide-left",
+    { x: -slideX * 1.15, opacity: 0, rotateY: isMobile ? 0 : 16 },
+    {
+      x: 0, opacity: 1, rotateY: 0, duration: 0.95, ease: "power3.out",
+      scrollTrigger: { trigger: "#lab .dual-canvas-grid", start: "top 82%" }
+    }
+  );
+  gsap.fromTo("#lab .dual-canvas-grid .slide-right",
+    { x: slideX * 1.15, opacity: 0, rotateY: isMobile ? 0 : -16 },
+    {
+      x: 0, opacity: 1, rotateY: 0, duration: 0.95, ease: "power3.out",
+      scrollTrigger: { trigger: "#lab .dual-canvas-grid", start: "top 82%" }
+    }
+  );
+
+  // 5. BOND ARCHITECTURE METRIC CARDS DOMINO
+  gsap.fromTo("#bondMetricGrid .bond-metric-card",
+    { y: 45, opacity: 0, scale: 0.95 },
+    {
+      y: 0, opacity: 1, scale: 1, duration: 0.65, stagger: 0.07, ease: "back.out(1.5)",
+      scrollTrigger: { trigger: "#bondMetricGrid", start: "top 88%" }
+    }
+  );
+
+  // 6. BLOCK 4: 18-DESCRIPTOR TABLE CASCADE WATERFALL
+  ScrollTrigger.create({
+    trigger: "#propTable",
+    start: "top 85%",
+    onEnter: function(){
+      gsap.fromTo("#propTableBody tr",
+        { x: -45, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.45, stagger: 0.028, ease: "power2.out" }
+      );
+    }
+  });
+
+  // 7. BLOCK 5: COMPARATIVE MATRIX WAVE (Alternating Left/Right)
+  ScrollTrigger.create({
+    trigger: "#compareTable",
+    start: "top 85%",
+    onEnter: function(){
+      gsap.utils.toArray("#compareTableBody tr").forEach(function(row, idx){
+        var dir = (idx % 2 === 0) ? -slideX * 0.4 : slideX * 0.4;
+        gsap.fromTo(row,
+          { x: isMobile ? -25 : dir, opacity: 0 },
+          { x: 0, opacity: 1, duration: 0.55, delay: idx * 0.05, ease: "power2.out" }
+        );
+      });
+    }
+  });
+
+  // 8. BLOCK 6 & 7: QUIZ & REPORT 3D PERSPECTIVE SLIDE
+  gsap.fromTo("#quiz .card",
+    { y: 50, scale: 0.96, opacity: 0 },
+    {
+      y: 0, scale: 1, opacity: 1, duration: 0.8, ease: "power3.out",
+      scrollTrigger: { trigger: "#quiz .card", start: "top 85%" }
+    }
+  );
+  gsap.fromTo("#report .card",
+    { y: 50, scale: 0.96, opacity: 0 },
+    {
+      y: 0, scale: 1, opacity: 1, duration: 0.8, ease: "power3.out",
+      scrollTrigger: { trigger: "#report .card", start: "top 85%" }
+    }
+  );
+
+  // 9. SMOOTH NAV LINKS SCROLL
+  document.querySelectorAll('nav.links a, .mobile-nav-links a').forEach(function(link){
+    link.addEventListener('click', function(e){
+      var targetId = link.getAttribute('href');
+      if(targetId && targetId.startsWith('#')){
+        e.preventDefault();
+        var targetEl = document.querySelector(targetId);
+        if(targetEl){
+          gsap.to(window, {
+            duration: 0.85,
+            scrollTo: { y: targetEl, offsetY: 70 },
+            ease: "power3.inOut"
+          });
+          if(document.getElementById('mobileDrawer').classList.contains('open')){
+            toggleMobileMenu();
+          }
+        }
+      }
+    });
+  });
+}
+
+function setupRollingButtons(){
+  document.querySelectorAll('.btn').forEach(function(btn){
+    if(btn.dataset.rollingDone) return;
+    btn.dataset.rollingDone = "true";
+    var span = btn.querySelector(':scope > span:not(.btn-glow)');
+    if(span && !span.classList.contains('btn-roll')){
+      var text = span.textContent.trim();
+      if(text){
+        span.className = 'btn-roll';
+        span.innerHTML = '<span class="btn-roll-text">' + text + '</span><span class="btn-roll-text btn-roll-hover">' + text + '</span>';
+      }
+    }
+  });
+}
+
+function initMagneticButtons(){
+  if(window.innerWidth < 768) return;
+  document.querySelectorAll('.btn').forEach(function(btn){
+    if(!btn.querySelector('.btn-glow')){
+      var glow = document.createElement('span');
+      glow.className = 'btn-glow';
+      btn.appendChild(glow);
+    }
+
+    if(window.gsap && !btn.dataset.magneticDone){
+      btn.dataset.magneticDone = "true";
+      var xTo = gsap.quickTo(btn, "x", { duration: 0.3, ease: "power3.out" });
+      var yTo = gsap.quickTo(btn, "y", { duration: 0.3, ease: "power3.out" });
+
+      btn.addEventListener('mousemove', function(e){
+        var rect = btn.getBoundingClientRect();
+        var x = e.clientX - rect.left;
+        var y = e.clientY - rect.top;
+        var glow = btn.querySelector('.btn-glow');
+        if(glow){
+          glow.style.left = x + 'px';
+          glow.style.top = y + 'px';
+        }
+
+        var moveX = (x - rect.width / 2) * 0.35;
+        var moveY = (y - rect.height / 2) * 0.35;
+        xTo(moveX);
+        yTo(moveY);
+      });
+
+      btn.addEventListener('mouseleave', function(){
+        xTo(0);
+        yTo(0);
+      });
+    }
+  });
+}
+
+function initCardTilt(){
+  if(window.innerWidth < 768) return;
+  document.querySelectorAll('.card').forEach(function(card){
+    if(!card.querySelector('.card-sheen')){
+      var sheen = document.createElement('div');
+      sheen.className = 'card-sheen';
+      card.appendChild(sheen);
+    }
+
+    card.addEventListener('mousemove', function(e){
+      var rect = card.getBoundingClientRect();
+      var x = e.clientX - rect.left;
+      var y = e.clientY - rect.top;
+      var cx = rect.width / 2;
+      var cy = rect.height / 2;
+      var rotX = ((y - cy) / cy) * -4.5;
+      var rotY = ((x - cx) / cx) * 4.5;
+
+      card.style.transform = 'perspective(1000px) rotateX(' + rotX + 'deg) rotateY(' + rotY + 'deg) translateZ(4px)';
+      card.style.setProperty('--mouse-x', x + 'px');
+      card.style.setProperty('--mouse-y', y + 'px');
+    });
+
+    card.addEventListener('mouseleave', function(){
+      card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)';
+    });
+  });
+}
+
+function animateCounter(elementId, targetVal, isFloat){
+  var el = document.getElementById(elementId);
+  if(!el) return;
+  var target = parseFloat(targetVal);
+  if(isNaN(target)){
+    el.innerText = targetVal;
+    return;
+  }
+  var current = parseFloat(el.innerText) || 0;
+  var obj = { val: current };
+  if(window.gsap){
+    gsap.to(obj, {
+      val: target,
+      duration: 0.65,
+      ease: "power2.out",
+      onUpdate: function(){
+        el.innerText = isFloat ? obj.val.toFixed(3) : Math.round(obj.val);
+      }
+    });
+  } else {
+    el.innerText = isFloat ? target.toFixed(3) : Math.round(target);
+  }
+}
 
 /* ==========================================================================
    3. WEB AUDIO SYNTHESIZER
@@ -1790,22 +2050,48 @@ function initVisualizer(){
     console.warn("3Dmol WebGL fallback mode:", e);
   }
 
-  // Populate preset chips
+  // Populate preset chips with sliding pill indicator
   var chipsWrap = document.getElementById('presetChips');
   if(chipsWrap){
-    chipsWrap.innerHTML = BENCHMARK_MOLECULES.map(function(m){
-      return '<button class="preset-chip' + (m.smiles === activeSmiles ? ' active' : '') + '" onclick="selectPreset(\'' + m.smiles + '\', \'' + m.name + '\')">' + m.name + '</button>';
-    }).join('');
+    chipsWrap.innerHTML = '<div class="preset-pill-indicator" id="presetPill"></div>' +
+      BENCHMARK_MOLECULES.map(function(m){
+        return '<button class="preset-chip' + (m.smiles === activeSmiles ? ' active' : '') + '" onclick="selectPreset(\'' + m.smiles + '\', \'' + m.name + '\', this)">' + m.name + '</button>';
+      }).join('');
+
+    setTimeout(function(){
+      var activeBtn = chipsWrap.querySelector('.preset-chip.active');
+      if(activeBtn) movePillToChip(activeBtn);
+    }, 120);
   }
 
   analyzeMolecule();
 }
 
-function selectPreset(smiles, name){
+function movePillToChip(chip){
+  var pill = document.getElementById('presetPill');
+  if(!pill || !chip) return;
+  pill.style.opacity = '1';
+  pill.style.transform = 'translate3d(' + chip.offsetLeft + 'px, ' + chip.offsetTop + 'px, 0)';
+  pill.style.width = chip.offsetWidth + 'px';
+  pill.style.height = chip.offsetHeight + 'px';
+}
+
+function selectPreset(smiles, name, btnEl){
   document.getElementById('smilesInput').value = smiles;
   document.querySelectorAll('.preset-chip').forEach(function(c){
-    c.classList.toggle('active', c.innerText === name);
+    c.classList.remove('active');
   });
+  if(btnEl){
+    btnEl.classList.add('active');
+    movePillToChip(btnEl);
+  } else {
+    document.querySelectorAll('.preset-chip').forEach(function(c){
+      if(c.innerText.trim() === name){
+        c.classList.add('active');
+        movePillToChip(c);
+      }
+    });
+  }
   analyzeMolecule();
 }
 
@@ -1906,12 +2192,14 @@ function computeClientProperties(s){
 }
 
 function updateBondMetrics(p){
-  document.getElementById('bmFormula').innerText = p["Molecular Formula"] || "-";
-  document.getElementById('bmMw').innerText = p["Molecular Weight"] || "-";
-  document.getElementById('bmHeavyAtoms').innerText = p["Heavy Atoms"] || "-";
-  document.getElementById('bmSigma').innerText = p["Sigma (σ) Bonds"] || "-";
-  document.getElementById('bmPi').innerText = p["Pi (π) Bonds"] || "-";
-  document.getElementById('bmTotalBonds').innerText = p["Total Bonds (σ + π)"] || "-";
+  var formulaEl = document.getElementById('bmFormula');
+  if(formulaEl) formulaEl.innerText = p["Molecular Formula"] || "-";
+
+  animateCounter('bmMw', p["Molecular Weight"] || 0, true);
+  animateCounter('bmHeavyAtoms', p["Heavy Atoms"] || 0, false);
+  animateCounter('bmSigma', p["Sigma (σ) Bonds"] || 0, false);
+  animateCounter('bmPi', p["Pi (π) Bonds"] || 0, false);
+  animateCounter('bmTotalBonds', p["Total Bonds (σ + π)"] || 0, false);
 }
 
 function renderProperties(props, interp){
@@ -1949,6 +2237,13 @@ function renderProperties(props, interp){
   }).join('');
 
   document.getElementById('activeMolTitle').innerText = activeSmiles;
+
+  if(window.gsap){
+    gsap.fromTo("#propTableBody tr",
+      { x: -35, opacity: 0 },
+      { x: 0, opacity: 1, duration: 0.45, stagger: 0.025, ease: "power2.out" }
+    );
+  }
 }
 
 function render2DDiagram(smiles){
@@ -2112,9 +2407,12 @@ function initComparativeTable(){
       '<td>' + m.hbd + '</td>' +
       '<td>' + m.hba + '</td>' +
       '<td>' + m.rot + '</td>' +
-      '<td><button class="btn sm" onclick="selectPreset(\'' + m.smiles + '\', \'' + m.name + '\')">Load in 3D</button></td>' +
+      '<td><button class="btn sm" onclick="selectPreset(\'' + m.smiles + '\', \'' + m.name + '\')"><span>Load in 3D</span></button></td>' +
     '</tr>';
   }).join('');
+
+  setupRollingButtons();
+  initMagneticButtons();
 }
 
 /* ==========================================================================
@@ -2141,6 +2439,13 @@ function renderQuizQuestion(){
   }).join('');
 
   document.getElementById('btnNextQuiz').style.display = 'none';
+
+  if(window.gsap){
+    gsap.fromTo(".quiz-opt",
+      { x: -30, opacity: 0 },
+      { x: 0, opacity: 1, duration: 0.4, stagger: 0.06, ease: "power2.out" }
+    );
+  }
 }
 
 function checkAnswer(chosen){
@@ -2161,6 +2466,7 @@ function checkAnswer(chosen){
   }
 
   document.getElementById('btnNextQuiz').style.display = 'inline-flex';
+  setupRollingButtons();
 }
 
 function nextQuestion(){
@@ -2173,9 +2479,11 @@ function nextQuestion(){
       '<h3 style="color:var(--acc2);font-size:24px;margin-bottom:8px">Assessment Complete!</h3>' +
       '<p style="color:var(--ink);font-size:16px">Final Certified Score: <strong>' + quizScore + ' / 100</strong></p>' +
       '<p style="color:var(--dim);font-size:13px;margin-top:8px">Your assessment result has been recorded and will be certified on your downloadable report.</p>' +
-      '<button class="btn primary" onclick="currentQ=0;quizScore=0;renderQuizQuestion()" style="margin-top:16px">Retake Assessment</button>' +
+      '<button class="btn primary" onclick="currentQ=0;quizScore=0;renderQuizQuestion()" style="margin-top:16px"><span>Retake Assessment</span></button>' +
     '</div>';
     document.getElementById('btnNextQuiz').style.display = 'none';
+    setupRollingButtons();
+    initMagneticButtons();
   }
 }
 
