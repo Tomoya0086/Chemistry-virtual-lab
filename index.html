@@ -479,38 +479,11 @@ nav.links a.active {
   transform: translateY(-4px);
 }
 
-/* Jitter-inspired Masked Kinetic Typography */
-.word-mask {
-  display: inline-block;
-  overflow: hidden;
-  vertical-align: bottom;
-}
-
-.word-inner {
-  display: inline-block;
-  transform: translateY(115%);
-  opacity: 0;
-  transition: transform 0.75s var(--ease), opacity 0.75s var(--ease);
-}
-
-.k-reveal.in-view .word-inner {
-  transform: translateY(0%);
-  opacity: 1;
-}
-
-/* Staggered Child Reveal Elements */
+/* Crisp Card & Section Animations (Zero Blur) */
 .k-reveal {
-  opacity: 0;
-  transform: translateY(40px) scale(0.96) rotateX(4deg);
-  transform-origin: top center;
-  transition: opacity 0.8s var(--ease), transform 0.8s var(--ease), filter 0.8s var(--ease);
-  filter: blur(6px);
-}
-
-.k-reveal.in-view {
   opacity: 1;
   transform: none;
-  filter: blur(0px);
+  transition: transform 0.4s var(--ease), opacity 0.4s var(--ease);
 }
 
 /* Grid Layouts */
@@ -1125,29 +1098,21 @@ footer {
   <!-- BLOCK 1: HERO & TELEMETRY STRIP -->
   <section id="home" class="hero">
     <div class="wrap">
-      <div class="hero-badge-row k-reveal">
+      <div class="hero-badge-row">
         <span class="badge srm-badge">SRM Institute of Science and Technology</span>
         <span class="badge">Division of Chemistry &times; School of Sciences</span>
         <span class="badge" style="color:var(--acc3)">Computational Molecular Engineering</span>
       </div>
 
-      <h1 class="k-reveal">
-        <span class="word-mask"><span class="word-inner">Representation</span></span>
-        <span class="word-mask"><span class="word-inner">of</span></span>
-        <span class="word-mask"><span class="word-inner">2D</span></span>
-        <span class="word-mask"><span class="word-inner">&amp;</span></span>
-        <span class="word-mask"><span class="word-inner">3D</span></span>
-        <span class="word-mask"><span class="word-inner">Chemical</span></span>
-        <span class="word-mask"><span class="word-inner">Structures</span></span>
-      </h1>
+      <h1>Representation of 2D &amp; 3D Chemical Structures</h1>
       
-      <p class="k-reveal">
+      <p>
         An interactive virtual laboratory designed for students and researchers.
         Convert linear SMILES notations into dynamic 2D chemical graphs, generate 3D hardware-accelerated WebGL conformers,
         calculate 18 quantitative molecular descriptors, and export certified PDF laboratory reports.
       </p>
 
-      <div class="hero-actions k-reveal">
+      <div class="hero-actions">
         <a href="#lab" class="btn primary">
           <span>Launch Molecular Lab</span>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -1163,7 +1128,7 @@ footer {
       </div>
 
       <!-- Telemetry Strip -->
-      <div class="telemetry-strip k-reveal">
+      <div class="telemetry-strip">
         <div class="tele-item">
           <div class="tele-val">18 Metrics</div>
           <div class="tele-lbl">Descriptors Evaluated</div>
@@ -1643,34 +1608,17 @@ var ScrollEngine = (function(){
     if(window.gsap && window.ScrollTrigger){
       gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
-      // Kinetic Staggered Card Entrance
-      gsap.utils.toArray('.k-reveal').forEach(function(el){
-        gsap.fromTo(el,
-          { y: 50, opacity: 0, scale: 0.96, rotateX: 5 },
-          {
-            y: 0, opacity: 1, scale: 1, rotateX: 0,
-            duration: 0.9,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: el,
-              start: "top 88%",
-              toggleActions: "play none none reverse"
-            }
-          }
-        );
-      });
-
-      // Typographic Word Reveal
-      gsap.utils.toArray('.word-inner').forEach(function(word, idx){
-        gsap.to(word, {
-          yPercent: 0,
-          opacity: 1,
-          duration: 0.75,
-          delay: idx * 0.07,
-          ease: "power4.out",
+      // Kinetic Staggered Card Entrance on Scroll
+      gsap.utils.toArray('section:not(#home) .card').forEach(function(el){
+        gsap.from(el, {
+          y: 40,
+          opacity: 0.5,
+          duration: 0.7,
+          ease: "power2.out",
           scrollTrigger: {
-            trigger: word,
-            start: "top 92%"
+            trigger: el,
+            start: "top 90%",
+            toggleActions: "play none none none"
           }
         });
       });
