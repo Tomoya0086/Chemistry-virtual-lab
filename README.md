@@ -108,8 +108,7 @@ The repository is configured for instantaneous deployment to Vercel with zero bu
 2. Connect the repository in the Vercel dashboard.
 3. Vercel automatically deploys `index.html` at the edge and routes `/api/*` to the serverless Python handler `api/index.py`.
 
-Live deployment: [chemistry-virtual-lab-xi.vercel.app](https://chemistry-virtual-lab-xi.vercel.app)
-
+Live Deployment:[https://chemistry-virtual-i97crlgan-hoctf.vercel.app/]
 ---
 
 ## 📜 License
