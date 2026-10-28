@@ -79,6 +79,161 @@ def generate_index_html():
   --header-h: 70px;
 }
 
+/* ==========================================================================
+   LIGHT THEME OVERRIDES (Classroom Projection & High Contrast)
+   ========================================================================== */
+[data-theme="light"] {
+  --bg: #f8fafc;
+  --bg-deep: #f1f5f9;
+  --panel: rgba(255, 255, 255, 0.94);
+  --panel-hover: rgba(248, 250, 252, 0.98);
+  --border: rgba(0, 0, 0, 0.12);
+  --border-glow: rgba(37, 99, 235, 0.35);
+  --ink: #0f172a;
+  --mut: #334155;
+  --dim: #64748b;
+  --acc: #2563eb;
+  --acc-glow: rgba(37, 99, 235, 0.25);
+  --acc2: #059669;
+  --acc2-glow: rgba(5, 150, 105, 0.25);
+  --acc3: #0284c7;
+  --warn: #d97706;
+  --bad: #dc2626;
+}
+
+[data-theme="light"] body {
+  background: #f8fafc !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .card,
+[data-theme="light"] .nav-island-bar,
+[data-theme="light"] .hero-glow-mesh,
+[data-theme="light"] .ro5-dashboard,
+[data-theme="light"] .bond-metric-card,
+[data-theme="light"] .telemetry-strip,
+[data-theme="light"] .viewer-box,
+[data-theme="light"] .mol-2d-canvas {
+  background: rgba(255, 255, 255, 0.92) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06) !important;
+  border-color: rgba(0, 0, 0, 0.12) !important;
+}
+
+[data-theme="light"] .prop-table th {
+  background: #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .prop-table td {
+  border-bottom: 1px solid #e2e8f0 !important;
+  color: #1e293b !important;
+}
+
+[data-theme="light"] .prop-table tr:hover td {
+  background: rgba(37, 99, 235, 0.05) !important;
+}
+
+[data-theme="light"] input[type="text"],
+[data-theme="light"] select {
+  background: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+
+[data-theme="light"] .btn {
+  background: #e2e8f0 !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+
+[data-theme="light"] .btn.primary {
+  background: #2563eb !important;
+  color: #ffffff !important;
+  border-color: #1d4ed8 !important;
+}
+
+[data-theme="light"] .btn.secondary {
+  background: #ffffff !important;
+  color: #2563eb !important;
+  border-color: #cbd5e1 !important;
+}
+
+[data-theme="light"] .v-pill {
+  background: #f1f5f9 !important;
+  color: #334155 !important;
+  border-color: #cbd5e1 !important;
+}
+
+[data-theme="light"] .v-pill.active {
+  background: #2563eb !important;
+  color: #ffffff !important;
+}
+
+[data-theme="light"] .preset-chip {
+  background: #ffffff !important;
+  color: #334155 !important;
+  border-color: #cbd5e1 !important;
+}
+
+[data-theme="light"] ::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+[data-theme="light"] ::-webkit-scrollbar-thumb {
+  background: #94a3b8;
+}
+
+/* Mode tab buttons */
+.mode-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: var(--r);
+  font-family: var(--mono);
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(2, 6, 23, 0.6);
+  color: var(--dim);
+  transition: all 0.2s ease;
+}
+.mode-tab-btn:hover {
+  border-color: var(--acc);
+  color: var(--ink);
+}
+.mode-tab-btn.active {
+  background: var(--acc);
+  color: #ffffff;
+  border-color: var(--acc);
+}
+
+/* Toast alert */
+.chem-toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: rgba(2, 6, 23, 0.95);
+  border: 1px solid var(--acc2);
+  color: #ffffff;
+  padding: 10px 18px;
+  border-radius: 6px;
+  font-family: var(--mono);
+  font-size: 12px;
+  z-index: 999999;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  animation: toastFade 0.3s ease;
+}
+@keyframes toastFade {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -2025,6 +2180,7 @@ footer {
   <button class="p-dot" onclick="scrollToChapter('properties')" title="04 18 Descriptors" data-chapter="04"></button>
   <button class="p-dot" onclick="scrollToChapter('compare')" title="05 Comparative Matrix" data-chapter="05"></button>
   <button class="p-dot" onclick="scrollToChapter('quiz')" title="06 Assessment Module" data-chapter="06"></button>
+  <button class="p-dot" onclick="scrollToChapter('reactions')" title="08 Reaction Simulator" data-chapter="08"></button>
   <button class="p-dot" onclick="scrollToChapter('report')" title="07 Official Report" data-chapter="07"></button>
 </nav>
 
@@ -2092,6 +2248,10 @@ footer {
         <span class="nav-num">06</span>
         <span class="nav-label">Assessment</span>
       </a>
+      <a href="#reactions" class="nav-link-item" data-chapter="08">
+        <span class="nav-num">08</span>
+        <span class="nav-label">Reactions</span>
+      </a>
       <a href="#report" class="nav-link-item" data-chapter="07">
         <span class="nav-num">07</span>
         <span class="nav-label">Report</span>
@@ -2099,6 +2259,11 @@ footer {
     </nav>
 
     <div class="nav-actions">
+            <button class="ctrl-btn" id="themeToggleBtn" onclick="toggleTheme()" title="Toggle Dark / Light Presentation Theme">
+        <svg id="themeIconSun" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg id="themeIconMoon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <span id="themeStatusText">THEME</span>
+      </button>
       <button class="ctrl-btn" id="audioBtn" onclick="toggleAudio()" title="Toggle Web Audio Synthesizer">
         <span class="audio-pulse-dot" id="audioDot"></span>
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
@@ -2129,6 +2294,7 @@ footer {
     <a href="#properties" onclick="toggleMobileMenu()"><span class="m-num">04</span> Molecular Descriptors</a>
     <a href="#compare" onclick="toggleMobileMenu()"><span class="m-num">05</span> Comparative Analysis</a>
     <a href="#quiz" onclick="toggleMobileMenu()"><span class="m-num">06</span> Student Assessment</a>
+    <a href="#reactions" onclick="toggleMobileMenu()"><span class="m-num">08</span> Reaction Simulator</a>
     <a href="#report" onclick="toggleMobileMenu()"><span class="m-num">07</span> Download PDF Report</a>
   </div>
 </div>
@@ -2165,6 +2331,41 @@ footer {
           <span>Download PDF Report</span>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
         </a>
+      </div>
+
+      
+      <!-- Molecule of the Day Card -->
+      <div class="card" id="motdCard" style="margin-top:24px;border:1px solid rgba(0,240,255,0.22);background:linear-gradient(135deg, rgba(2,6,23,0.85) 0%, rgba(15,23,42,0.65) 100%);padding:18px 24px">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:12px">
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="background:linear-gradient(135deg,#3d8bff,#00ff9d);color:#020617;font-family:var(--mono);font-size:11px;font-weight:700;padding:4px 10px;border-radius:9999px">
+              FEATURED &bull; MOLECULE OF THE DAY
+            </span>
+            <span id="motdDateBadge" style="color:var(--dim);font-size:12px;font-family:var(--mono)">Daily Educational Highlight</span>
+          </div>
+          <button type="button" class="btn primary" onclick="loadMotdToLab()" style="padding:6px 14px;font-size:12px">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            <span>Explore in 3D Lab</span>
+          </button>
+        </div>
+        <div style="display:flex;gap:20px;align-items:center;flex-wrap:wrap">
+          <div style="font-size:32px;background:rgba(255,255,255,0.05);width:56px;height:56px;display:flex;align-items:center;justify-content:center;border-radius:8px;border:1px solid rgba(255,255,255,0.08);flex-shrink:0">
+            🧪
+          </div>
+          <div style="flex:1;min-width:240px">
+            <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
+              <h3 id="motdName" style="color:var(--ink);font-size:19px;margin:0">Pyridine</h3>
+              <span id="motdClass" style="color:var(--acc);font-size:12px;font-family:var(--mono);background:rgba(61,139,255,0.12);padding:2px 8px;border-radius:4px">Heteroaromatic Base</span>
+              <span id="motdFormula" style="color:var(--acc2);font-family:var(--mono);font-size:12.5px">C5H5N</span>
+            </div>
+            <p id="motdDesc" style="color:var(--mut);font-size:13px;margin-top:6px;line-height:1.5">
+              Basic aromatic ring where the nitrogen lone pair occupies an sp² orbital orthogonal to the aromatic pi-system.
+            </p>
+            <div style="font-family:var(--mono);font-size:11.5px;color:var(--dim);margin-top:4px">
+              Canonical SMILES: <code id="motdSmiles" style="color:var(--acc3)">c1ccncc1</code>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- Telemetry Strip -->
@@ -2324,9 +2525,12 @@ footer {
       </div>
 
       <!-- Alerts -->
-      <div id="smilesError" class="alert-banner error" style="display:none">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-        <span id="smilesErrorText">Invalid SMILES notation. Please inspect molecular valence or ring closures.</span>
+      <div id="smilesError" class="alert-banner error" style="display:none;flex-direction:column;align-items:flex-start;gap:6px">
+        <div style="display:flex;align-items:center;gap:8px;width:100%">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span id="smilesErrorText">Invalid SMILES notation. Please inspect molecular valence or ring closures.</span>
+        </div>
+        <div id="smilesPedagogicTip" style="font-size:12.5px;color:rgba(255,255,255,0.92);background:rgba(0,0,0,0.25);padding:6px 10px;border-radius:6px;width:100%;display:none;line-height:1.45;border-left:3px solid #ff4d6a"></div>
       </div>
 
       <div id="smilesSuccess" class="alert-banner success" style="display:none">
@@ -2335,11 +2539,129 @@ footer {
       </div>
 
       <div class="card">
+
+        <!-- Input Mode Tabs: SMILES Mode | ✏️ Draw Studio | 🧬 Peptide Mode -->
+        <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+          <button type="button" class="mode-tab-btn active" id="modeTabSmiles" onclick="switchInputMode('smiles')">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></svg>
+            <span>SMILES Notation</span>
+          </button>
+          <button type="button" class="mode-tab-btn" id="modeTabDraw" onclick="switchInputMode('draw')">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            <span>✏️ 2D Drawing Studio (JSME)</span>
+          </button>
+          <button type="button" class="mode-tab-btn" id="modeTabPeptide" onclick="switchInputMode('peptide')">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            <span>🧬 Peptide Sequence Mode</span>
+          </button>
+        </div>
+
+        <!-- 2D Structure Drawing Studio (JSME Canvas & Quick Palette) -->
+        <div id="drawStudioContainer" style="display:none;background:rgba(2,6,23,0.85);border:1px solid rgba(0,240,255,0.25);border-radius:8px;padding:16px;margin-bottom:18px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:10px">
+            <div>
+              <div style="font-size:13px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:8px">
+                <span style="color:var(--acc)">✏️ JSME MOLECULAR STRUCTURE EDITOR</span>
+                <span style="font-size:11px;background:rgba(61,139,255,0.15);color:var(--acc);padding:2px 8px;border-radius:4px;font-family:var(--mono)">Interactive Canvas</span>
+              </div>
+              <div style="font-size:11.5px;color:var(--dim);margin-top:2px">
+                Click and drag atoms, bonds, and rings on the canvas below, or pick rapid templates.
+              </div>
+            </div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap">
+              <button type="button" class="btn secondary" onclick="loadJsmeTemplate('c1ccccc1')" style="padding:5px 9px;font-size:11px">Benzene</button>
+              <button type="button" class="btn secondary" onclick="loadJsmeTemplate('C1CCCCC1')" style="padding:5px 9px;font-size:11px">Cyclohexane</button>
+              <button type="button" class="btn secondary" onclick="loadJsmeTemplate('c1ccncc1')" style="padding:5px 9px;font-size:11px">Pyridine</button>
+              <button type="button" class="btn secondary" onclick="clearJsmeCanvas()" style="padding:5px 9px;font-size:11px">Clear</button>
+              <button type="button" class="btn primary" onclick="transferJsmeToLab()" style="padding:5px 12px;font-size:11.5px">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                <span>Apply to 3D Lab</span>
+              </button>
+            </div>
+          </div>
+          
+          <div id="jsme_container" style="width:100%;min-height:360px;background:#ffffff;border-radius:4px;overflow:hidden;box-shadow:inset 0 0 10px rgba(0,0,0,0.1)">
+            <div id="jsme_placeholder" style="height:360px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#334155;font-family:var(--mono);font-size:12px;background:#f8fafc">
+              <div style="font-size:24px;margin-bottom:8px">✏️</div>
+              <strong>Loading JSME Molecular Drawing Editor...</strong>
+              <span style="font-size:11px;color:#64748b;margin-top:4px">Instant 2D structure drawing with live SMILES synchronization</span>
+            </div>
+          </div>
+          
+          <div style="margin-top:12px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+            <span style="font-size:11px;color:var(--dim);font-family:var(--mono);margin-right:6px">1-CLICK FRAGMENTS:</span>
+            <button type="button" class="v-pill" onclick="appendJsmeFragment('O')">-OH</button>
+            <button type="button" class="v-pill" onclick="appendJsmeFragment('C(=O)O')">-COOH</button>
+            <button type="button" class="v-pill" onclick="appendJsmeFragment('N')">-NH2</button>
+            <button type="button" class="v-pill" onclick="appendJsmeFragment('[N+](=O)[O-]')">-NO2</button>
+            <button type="button" class="v-pill" onclick="appendJsmeFragment('C=O')">-C=O</button>
+            <button type="button" class="v-pill" onclick="appendJsmeFragment('C#N')">-C#N</button>
+            <button type="button" class="v-pill" onclick="appendJsmeFragment('Cl')">-Cl</button>
+            <button type="button" class="v-pill" onclick="appendJsmeFragment('Br')">-Br</button>
+            <button type="button" class="v-pill" onclick="appendJsmeFragment('F')">-F</button>
+            <button type="button" class="v-pill" onclick="appendJsmeFragment('S')">-SH</button>
+          </div>
+        </div>
+
+        <!-- Peptide Sequence Mode Studio -->
+        <div id="peptideStudioContainer" style="display:none;background:rgba(2,6,23,0.85);border:1px solid rgba(0,255,157,0.25);border-radius:8px;padding:16px;margin-bottom:18px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:10px">
+            <div>
+              <div style="font-size:13px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:8px">
+                <span style="color:var(--acc2)">🧬 AMINO ACID / PEPTIDE TRANSLATION ENGINE</span>
+                <span style="font-size:11px;background:rgba(0,255,157,0.15);color:var(--acc2);padding:2px 8px;border-radius:4px;font-family:var(--mono)">Biochemistry Module</span>
+              </div>
+              <div style="font-size:11.5px;color:var(--dim);margin-top:2px">
+                Input 1-letter or 3-letter amino acid sequences (e.g. YGGFL for Enkephalin, RGD, or Ala-Gly-Tyr).
+              </div>
+            </div>
+          </div>
+          
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px">
+            <div style="flex:1;min-width:260px">
+              <input type="text" id="peptideInput" placeholder="Enter sequence (e.g. YGGFL, AGY, RGD, ECG)" value="YGGFL" style="width:100%;font-family:var(--mono);text-transform:uppercase" onkeyup="if(event.key==='Enter') translateAndAnalyzePeptide()">
+            </div>
+            <button type="button" class="btn primary" onclick="translateAndAnalyzePeptide()">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              <span>Translate &amp; Render 3D</span>
+            </button>
+          </div>
+          
+          <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:10px">
+            <span style="font-size:11px;color:var(--dim);font-family:var(--mono)">PRESETS:</span>
+            <button type="button" class="preset-chip" onclick="setPeptideSeq('YGGFL')">Enkephalin (YGGFL)</button>
+            <button type="button" class="preset-chip" onclick="setPeptideSeq('RGD')">Cell Adhesion (RGD)</button>
+            <button type="button" class="preset-chip" onclick="setPeptideSeq('ECG')">Glutathione (ECG)</button>
+            <button type="button" class="preset-chip" onclick="setPeptideSeq('GHK')">GHK Tripeptide</button>
+            <button type="button" class="preset-chip" onclick="setPeptideSeq('CYIQNC')">Oxytocin Segment</button>
+            <button type="button" class="preset-chip" onclick="setPeptideSeq('AGY')">Ala-Gly-Tyr</button>
+          </div>
+
+          <div id="peptideInfoBox" style="background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:10px 14px;font-size:12px;display:flex;align-items:center;gap:18px;flex-wrap:wrap">
+            <div><strong>Sequence:</strong> <span id="pepSeqDisplay" style="color:var(--acc2);font-family:var(--mono)">YGGFL</span></div>
+            <div><strong>Length:</strong> <span id="pepLenDisplay" style="color:var(--ink);font-family:var(--mono)">5 residues</span></div>
+            <div><strong>Est. MW:</strong> <span id="pepMwDisplay" style="color:var(--ink);font-family:var(--mono)">555.6 g/mol</span></div>
+            <div><strong>Net Charge (pH 7.4):</strong> <span id="pepChargeDisplay" style="color:var(--ink);font-family:var(--mono)">0.0</span></div>
+          </div>
+        </div>
+
         <!-- SMILES Input Row -->
         <div class="smiles-bar">
-          <div class="input-box">
-            <input type="text" id="smilesInput" value="CCO" placeholder="Enter SMILES (e.g. c1ccccc1, CC(=O)O, CC(=O)Oc1ccccc1C(=O)O)" spellcheck="false">
+          <div class="input-box" style="position:relative">
+            <input type="text" id="smilesInput" value="CCO" placeholder="Enter SMILES (e.g. c1ccccc1, CC(=O)O, CC(=O)Oc1ccccc1C(=O)O)" spellcheck="false" onkeyup="if(event.key==='Enter') analyzeMolecule()">
           </div>
+          <button class="btn secondary" type="button" onclick="copySmilesToClipboard()" title="Copy active SMILES to clipboard" style="padding:10px 12px">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span>Copy</span>
+          </button>
+          <button class="btn secondary" type="button" onclick="copyShareLink()" title="Copy permanent shareable molecule link" style="padding:10px 12px">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <span>Share</span>
+          </button>
+          <button class="btn secondary" type="button" onclick="switchInputMode('draw')" title="Open 2D Structure Drawing Studio" style="padding:10px 12px">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            <span>Draw</span>
+          </button>
           <button class="btn primary" id="btnAnalyze" onclick="analyzeMolecule()">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
             <span>Analyze &amp; Render 3D</span>
@@ -2569,6 +2891,94 @@ footer {
             </tbody>
           </table>
         </div>
+
+        <!-- BLOCK 4B: SPECTRAL PREDICTION PANEL (IR & 1H NMR) -->
+        <div style="margin-top:28px;border-top:1px solid rgba(255,255,255,0.08);padding-top:24px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px">
+            <div style="display:flex;align-items:center;gap:10px">
+              <span style="font-size:18px">🔬</span>
+              <div>
+                <h3 style="color:var(--ink);font-size:16.5px;margin:0">Spectroscopic Predictions (Infrared &amp; &sup1;H NMR)</h3>
+                <span style="font-size:11.5px;color:var(--dim)">Theoretical functional group frequencies and proton magnetic shielding profiles</span>
+              </div>
+            </div>
+            <div style="display:flex;gap:6px">
+              <button type="button" class="v-pill active" id="tabSpecIr" onclick="switchSpectralTab('ir')">Infrared (IR) Bands</button>
+              <button type="button" class="v-pill" id="tabSpecNmr" onclick="switchSpectralTab('nmr')">&sup1;H NMR Chemical Shifts</button>
+            </div>
+          </div>
+
+          <!-- IR Spectrum Content -->
+          <div id="specIrContainer">
+            <div style="background:rgba(2,6,23,0.7);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:12px 16px;margin-bottom:14px">
+              <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--dim);margin-bottom:6px">
+                <span>4000 cm&minus;&sup1; (O-H / N-H)</span>
+                <span>3000 (C-H)</span>
+                <span>2200 (Triple Bonds)</span>
+                <span>1700 (C=O)</span>
+                <span>1500 (Aromatic C=C)</span>
+                <span>1000 (Fingerprint)</span>
+                <span>400 cm&minus;&sup1;</span>
+              </div>
+              <div id="irSpectrumBar" style="height:26px;background:rgba(255,255,255,0.06);border-radius:4px;position:relative;overflow:hidden;border:1px solid rgba(255,255,255,0.1)">
+                <!-- Peak markers populated dynamically -->
+              </div>
+            </div>
+
+            <div style="overflow-x:auto">
+              <table class="prop-table" style="font-size:12.5px">
+                <thead>
+                  <tr>
+                    <th>Vibrational Mode / Functional Group</th>
+                    <th>Frequency (cm&minus;&sup1;)</th>
+                    <th>Intensity &amp; Band Shape</th>
+                    <th>Diagnostic Interpretation</th>
+                  </tr>
+                </thead>
+                <tbody id="specIrTableBody">
+                  <!-- Populated by JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- 1H NMR Content -->
+          <div id="specNmrContainer" style="display:none">
+            <div style="overflow-x:auto">
+              <table class="prop-table" style="font-size:12.5px">
+                <thead>
+                  <tr>
+                    <th>Proton Environment</th>
+                    <th>Chemical Shift (&delta;, ppm)</th>
+                    <th>Multiplicity &amp; Shielding</th>
+                    <th>Electronic &amp; Magnetic Context</th>
+                  </tr>
+                </thead>
+                <tbody id="specNmrTableBody">
+                  <!-- Populated by JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- BLOCK 4C: STRUCTURAL SIMILARITY & SAR SEARCH (TANIMOTO) -->
+        <div style="margin-top:28px;border-top:1px solid rgba(255,255,255,0.08);padding-top:24px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px">
+            <div style="display:flex;align-items:center;gap:10px">
+              <span style="font-size:18px">🧬</span>
+              <div>
+                <h3 style="color:var(--ink);font-size:16.5px;margin:0">Structural Similarity &amp; SAR Search (Tanimoto Coefficient)</h3>
+                <span style="font-size:11.5px;color:var(--dim)">Top 5 structural analogues retrieved from reference pharmacophore database</span>
+              </div>
+            </div>
+          </div>
+
+          <div id="similarityCardsGrid" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));gap:12px">
+            <!-- Populated dynamically by JS -->
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
@@ -2636,6 +3046,169 @@ footer {
             <span>Next Question</span>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </button>
+        </div>
+      </div>
+
+      <!-- Class Leaderboard & Progress Panel -->
+      <div class="card" style="max-width:760px;margin:24px auto 0 auto" id="leaderboardSection">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:16px;border-bottom:1px solid var(--border);padding-bottom:12px">
+          <div>
+            <div class="kicker" style="font-size:10px;margin-bottom:2px">Cohort Performance</div>
+            <h4 style="font-size:16px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:8px">
+              🏆 Class Leaderboard &amp; Progress
+            </h4>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="font-size:12px;color:var(--dim)">Class Code:</span>
+            <input type="text" id="leaderboardClassCode" value="SRM-CHEM-101" style="width:130px;padding:5px 8px;font-family:var(--mono);font-size:12px;text-transform:uppercase;background:rgba(255,255,255,0.04);border:1px solid var(--border);color:var(--ink)" />
+            <button type="button" class="btn secondary sm" onclick="fetchLeaderboard()" style="padding:5px 10px;font-size:11px">Filter</button>
+          </div>
+        </div>
+
+        <!-- Cohort Progress Metrics -->
+        <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));gap:12px;margin-bottom:16px" id="classMetricsContainer">
+          <div style="background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:4px;padding:10px;text-align:center">
+            <div style="font-size:11px;color:var(--dim)">Submissions</div>
+            <div id="metricSubmissions" style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--ink);margin-top:2px">0</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:4px;padding:10px;text-align:center">
+            <div style="font-size:11px;color:var(--dim)">Class Average</div>
+            <div id="metricAverage" style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--acc);margin-top:2px">0.0%</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:4px;padding:10px;text-align:center">
+            <div style="font-size:11px;color:var(--dim)">Top Score</div>
+            <div id="metricTopScore" style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--acc2);margin-top:2px">0 / 100</div>
+          </div>
+        </div>
+
+        <!-- Submit to Leaderboard Box -->
+        <div id="quizSubmitLeaderboardBox" style="background:rgba(0,240,255,0.04);border:1px solid rgba(0,240,255,0.25);border-radius:6px;padding:14px;margin-bottom:16px">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:10px">
+            <div>
+              <div style="font-size:12.5px;font-weight:600;color:var(--ink)">Post Your Certified Score to Class Leaderboard</div>
+              <div style="font-size:11px;color:var(--dim)">Certify your completion in the class cohort or submit anonymously.</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px">
+              <label style="display:flex;align-items:center;gap:4px;font-size:11.5px;color:var(--dim);cursor:pointer">
+                <input type="checkbox" id="anonLeaderboardCheck" /> Anonymous
+              </label>
+              <button type="button" class="btn primary sm" onclick="submitScoreToLeaderboard()" style="padding:6px 14px;font-size:11.5px">
+                Post Score
+              </button>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <input type="text" id="leaderboardStudentName" placeholder="Student Name (e.g. velmurgan)" style="flex:1;min-width:140px;padding:6px 10px;font-size:12px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:4px;color:var(--ink)" />
+            <input type="text" id="leaderboardStudentReg" placeholder="Register No (e.g. RA2611030050019)" style="flex:1;min-width:140px;padding:6px 10px;font-size:12px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:4px;color:var(--ink)" />
+          </div>
+          <div id="leaderboardSubmitStatus" style="font-size:11.5px;margin-top:8px;display:none;color:var(--acc2)"></div>
+        </div>
+
+        <!-- Leaderboard Table -->
+        <div style="overflow-x:auto">
+          <table style="width:100%;border-collapse:collapse;font-size:12px;text-align:left">
+            <thead>
+              <tr style="border-bottom:1px solid var(--border);color:var(--dim)">
+                <th style="padding:8px">Rank</th>
+                <th style="padding:8px">Student</th>
+                <th style="padding:8px">Register No</th>
+                <th style="padding:8px;text-align:right">Score</th>
+                <th style="padding:8px;text-align:right">Date</th>
+              </tr>
+            </thead>
+            <tbody id="leaderboardTableBody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
+  <!-- BLOCK 8: ORGANIC REACTION SIMULATOR -->
+  <section id="reactions" data-chapter="08" data-chapter-name="REACTION SIMULATOR">
+    <div class="wrap">
+      <div class="sechead">
+        <div class="kicker">Organic Transformations</div>
+        <h2>Curriculum Reaction Simulator</h2>
+        <div class="sec-line"></div>
+        <p style="margin-top:12px">
+          Explore 15 foundational organic reactions covering esterification, electrophilic aromatic substitution, oxidations, additions, and substitutions.
+          Observe reactants, catalysts, reaction mechanisms, and load products directly into the 3D molecular lab.
+        </p>
+      </div>
+
+      <div class="card">
+        <!-- Reaction Selection Controls -->
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;flex-wrap:wrap">
+          <label style="font-size:12px;font-family:var(--mono);color:var(--acc);text-transform:uppercase">SELECT REACTION:</label>
+          <select id="reactionSelect" onchange="onSelectReaction()" style="flex:1;min-width:280px;padding:9px 12px;background:rgba(2,6,23,0.8);border:1px solid rgba(0,240,255,0.3);color:var(--ink);border-radius:6px;font-family:var(--font-main);font-size:13.5px">
+            <!-- Populated by JS -->
+          </select>
+          <button type="button" class="btn primary" onclick="loadActiveReactionProductToLab()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            <span>Load Product in 3D Lab</span>
+          </button>
+        </div>
+
+        <!-- Balanced Equation Banner -->
+        <div style="background:rgba(2,6,23,0.9);border:1px solid rgba(0,240,255,0.25);border-radius:8px;padding:14px 18px;margin-bottom:20px;text-align:center">
+          <div style="font-size:11px;color:var(--acc3);font-family:var(--mono);text-transform:uppercase;margin-bottom:4px">BALANCED CHEMICAL EQUATION</div>
+          <div id="rxnEquation" style="font-size:16px;font-family:var(--mono);color:var(--ink);font-weight:700">CH3COOH + CH3CH2OH  --[H+]-->  CH3COOCH2CH3 + H2O</div>
+          <div style="display:flex;justify-content:center;gap:16px;margin-top:8px;flex-wrap:wrap;font-size:12px;color:var(--dim);font-family:var(--mono)">
+            <span>Classification: <strong id="rxnCategory" style="color:var(--acc)">Condensation</strong></span>
+            <span>&bull;</span>
+            <span>Catalyst / Conditions: <strong id="rxnCatalyst" style="color:var(--warn)">Conc. H2SO4, reflux</strong></span>
+            <span>&bull;</span>
+            <span>Byproduct: <strong id="rxnByproduct" style="color:var(--bad)">H2O</strong></span>
+          </div>
+        </div>
+
+        <!-- 3-Box Reaction Flow: Reactant A + Reactant B -> Product -->
+        <div style="display:grid;grid-template-columns:1fr auto 1fr auto 1.2fr;align-items:center;gap:14px;margin-bottom:20px">
+          <!-- Reactant A -->
+          <div style="background:rgba(15,23,42,0.6);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:14px;text-align:center">
+            <span style="font-size:11px;color:var(--dim);font-family:var(--mono);text-transform:uppercase">REACTANT A</span>
+            <h4 id="rxnReactantAName" style="color:var(--ink);margin:4px 0 6px">Acetic Acid</h4>
+            <div id="rxnReactantA2D" style="height:100px;display:flex;align-items:center;justify-content:center"></div>
+            <code id="rxnReactantASmiles" style="font-size:11px;color:var(--acc3);font-family:var(--mono)">CC(=O)O</code>
+          </div>
+
+          <div style="font-size:24px;color:var(--acc);font-weight:700;text-align:center">+</div>
+
+          <!-- Reactant B -->
+          <div style="background:rgba(15,23,42,0.6);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:14px;text-align:center">
+            <span style="font-size:11px;color:var(--dim);font-family:var(--mono);text-transform:uppercase">REACTANT B</span>
+            <h4 id="rxnReactantBName" style="color:var(--ink);margin:4px 0 6px">Ethanol</h4>
+            <div id="rxnReactantB2D" style="height:100px;display:flex;align-items:center;justify-content:center"></div>
+            <code id="rxnReactantBSmiles" style="font-size:11px;color:var(--acc3);font-family:var(--mono)">CCO</code>
+          </div>
+
+          <div style="font-size:24px;color:var(--acc2);font-weight:700;text-align:center">&rarr;</div>
+
+          <!-- Product Card -->
+          <div style="background:rgba(2,6,23,0.95);border:1px solid rgba(0,255,157,0.3);border-radius:8px;padding:14px;text-align:center;box-shadow:0 0 20px rgba(0,255,157,0.08)">
+            <span style="font-size:11px;color:var(--acc2);font-family:var(--mono);text-transform:uppercase;font-weight:700">PRIMARY PRODUCT</span>
+            <h4 id="rxnProductName" style="color:var(--ink);margin:4px 0 6px">Ethyl Acetate</h4>
+            <div id="rxnProduct2D" style="height:100px;display:flex;align-items:center;justify-content:center"></div>
+            <code id="rxnProductSmiles" style="font-size:11.5px;color:var(--acc2);font-family:var(--mono);font-weight:700">CCOC(=O)C</code>
+            <div style="margin-top:8px">
+              <button type="button" class="btn primary" onclick="loadActiveReactionProductToLab()" style="padding:4px 10px;font-size:11px;width:100%">
+                Inspect in 3D Lab
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mechanism Card -->
+        <div style="background:rgba(15,23,42,0.5);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:16px">
+          <div style="font-size:11.5px;color:var(--acc);font-family:var(--mono);text-transform:uppercase;font-weight:700;margin-bottom:6px">
+            STEP-BY-STEP REACTION MECHANISM &bull; PEDAGOGICAL INSIGHT
+          </div>
+          <p id="rxnMechanismText" style="color:var(--mut);font-size:13px;line-height:1.6">
+            Protonation of carbonyl oxygen activates carbonyl carbon toward nucleophilic attack by alcohol oxygen. Subsequent proton transfer and elimination of water yields the ester product.
+          </p>
         </div>
       </div>
     </div>
@@ -2807,14 +3380,22 @@ for smiles in smiles_list:
   </div>
 </div>
 
-<!-- Scripts: GSAP 3.12.5, ScrollTrigger, Three.js, 3Dmol, jsPDF -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/3Dmol/2.4.2/3Dmol-min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<!-- Local High-Performance Bundled Vendor Libraries -->
+<script src="/assets/vendor/gsap.min.js"></script>
+<script src="/assets/vendor/ScrollTrigger.min.js"></script>
+<script src="/assets/vendor/ScrollToPlugin.min.js"></script>
+<script src="/assets/vendor/three.min.js"></script>
+<script src="/assets/vendor/3Dmol-min.js"></script>
+<script src="/assets/vendor/jspdf.umd.min.js"></script>
+<script src="/assets/vendor/jspdf.plugin.autotable.min.js"></script>
+<script>
+window.jsmeOnLoad = function(){
+  if(typeof window.setupJsmeInstance === 'function'){
+    window.setupJsmeInstance();
+  }
+};
+</script>
+<script type="text/javascript" src="/assets/jsme/jsme.nocache.js"></script>
 
 <script>
 /* ==========================================================================
@@ -3580,6 +4161,458 @@ function toggleSpin(){
   AudioEngine.click();
 }
 
+
+/* ==========================================================================
+   FEATURE LOGIC: THEME, MOTD, JSME, PEPTIDES, REACTIONS, SPECTRA, SIMILARITY
+   ========================================================================== */
+
+// --- THEME TOGGLE (Dark / Light) ---
+function initTheme(){
+  var saved = localStorage.getItem('chem_theme') || 'dark';
+  setTheme(saved);
+}
+
+function toggleTheme(){
+  AudioEngine.click();
+  var curr = document.documentElement.getAttribute('data-theme') || 'dark';
+  var next = curr === 'dark' ? 'light' : 'dark';
+  setTheme(next);
+  showToast("Theme switched to " + next.toUpperCase() + " mode");
+}
+
+function setTheme(theme){
+  document.documentElement.setAttribute('data-theme', theme);
+  localStorage.setItem('chem_theme', theme);
+  var sun = document.getElementById('themeIconSun');
+  var moon = document.getElementById('themeIconMoon');
+  var txt = document.getElementById('themeStatusText');
+  if(sun && moon && txt){
+    if(theme === 'light'){
+      sun.style.display = 'inline-block';
+      moon.style.display = 'none';
+      txt.innerText = 'LIGHT';
+    } else {
+      sun.style.display = 'none';
+      moon.style.display = 'inline-block';
+      txt.innerText = 'DARK';
+    }
+  }
+}
+
+// --- FLOATING TOAST NOTIFICATION ---
+function showToast(msg){
+  var existing = document.getElementById('chemToast');
+  if(existing) existing.remove();
+  var t = document.createElement('div');
+  t.id = 'chemToast';
+  t.className = 'chem-toast';
+  t.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span>' + msg + '</span>';
+  document.body.appendChild(t);
+  setTimeout(function(){ if(t) t.remove(); }, 3200);
+}
+
+// --- COPY SMILES & SHAREABLE URL ---
+function copySmilesToClipboard(s){
+  AudioEngine.click();
+  var val = s || activeSmiles || (document.getElementById('smilesInput') ? document.getElementById('smilesInput').value : '');
+  if(navigator.clipboard && val){
+    navigator.clipboard.writeText(val).then(function(){
+      showToast("Copied SMILES: " + val);
+    });
+  }
+}
+
+function copyShareLink(){
+  AudioEngine.click();
+  var val = activeSmiles || (document.getElementById('smilesInput') ? document.getElementById('smilesInput').value : 'CCO');
+  var shareUrl = window.location.origin + window.location.pathname + '?smiles=' + encodeURIComponent(val);
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(shareUrl).then(function(){
+      showToast("Shareable link copied to clipboard!");
+    });
+  }
+}
+
+// --- MOLECULE OF THE DAY (MOTD) ---
+function loadMotd(){
+  fetch('/api/motd')
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      if(d && d.valid){
+        var n = document.getElementById('motdName');
+        var c = document.getElementById('motdClass');
+        var f = document.getElementById('motdFormula');
+        var s = document.getElementById('motdSmiles');
+        var desc = document.getElementById('motdDesc');
+        var b = document.getElementById('motdDateBadge');
+        if(n) n.innerText = d.name;
+        if(c) c.innerText = d.class;
+        if(f) f.innerText = d.formula;
+        if(s) s.innerText = d.smiles;
+        if(desc) desc.innerText = d.description;
+        if(b) b.innerText = "Day " + d.day + " Edition";
+      }
+    })
+    .catch(function(){});
+}
+
+function loadMotdToLab(){
+  AudioEngine.click();
+  var s = document.getElementById('motdSmiles');
+  var smiles = s ? s.innerText.trim() : 'c1ccncc1';
+  document.getElementById('smilesInput').value = smiles;
+  scrollToChapter('lab');
+  analyzeMolecule();
+}
+
+// --- INPUT MODE SWITCHING (SMILES / DRAW / PEPTIDE) ---
+var currentInputMode = 'smiles';
+var jsmeInitialized = false;
+
+function switchInputMode(mode){
+  AudioEngine.click();
+  currentInputMode = mode;
+  var bSmiles = document.getElementById('modeTabSmiles');
+  var bDraw = document.getElementById('modeTabDraw');
+  var bPep = document.getElementById('modeTabPeptide');
+  var cDraw = document.getElementById('drawStudioContainer');
+  var cPep = document.getElementById('peptideStudioContainer');
+  
+  if(bSmiles) bSmiles.className = 'mode-tab-btn' + (mode === 'smiles' ? ' active' : '');
+  if(bDraw) bDraw.className = 'mode-tab-btn' + (mode === 'draw' ? ' active' : '');
+  if(bPep) bPep.className = 'mode-tab-btn' + (mode === 'peptide' ? ' active' : '');
+  
+  if(cDraw) cDraw.style.display = (mode === 'draw') ? 'block' : 'none';
+  if(cPep) cPep.style.display = (mode === 'peptide') ? 'block' : 'none';
+  
+  if(mode === 'draw' && !jsmeInitialized){
+    initJsmeApplet();
+  }
+}
+
+function initJsmeApplet(){
+  if(window.jsmeApplet) return;
+  setupJsmeInstance();
+}
+
+window.jsmeOnLoad = function(){
+  setupJsmeInstance();
+};
+
+function setupJsmeInstance(){
+  var ph = document.getElementById('jsme_placeholder');
+  try {
+    var ctor = (window.JSApplet && window.JSApplet.JSME) ? window.JSApplet.JSME : window.JSME;
+    if(ctor && !window.jsmeApplet){
+      if(ph) ph.style.display = 'none';
+      window.jsmeApplet = new ctor("jsme_container", "100%", "360px", {
+        "options": "query,hydrogens,star"
+      });
+      jsmeInitialized = true;
+      if(window.jsmeApplet.setCallBack){
+        window.jsmeApplet.setCallBack("AfterStructureModified", function(jsmeEvent){
+          try {
+            var s = (jsmeEvent && jsmeEvent.src) ? jsmeEvent.src.smiles() : (window.jsmeApplet ? window.jsmeApplet.smiles() : '');
+            if(s && s.trim()){
+              document.getElementById('smilesInput').value = s.trim();
+            }
+          } catch(err){}
+        });
+      }
+      if(activeSmiles && window.jsmeApplet.readGenericMolecularInput){
+        window.jsmeApplet.readGenericMolecularInput(activeSmiles);
+      }
+    }
+  } catch(e){
+    console.warn('JSME init notice:', e);
+  }
+}
+window.setupJsmeInstance = setupJsmeInstance;
+
+function loadJsmeTemplate(smiles){
+  AudioEngine.click();
+  if(window.jsmeApplet){
+    try { window.jsmeApplet.readGenericMolecularInput(smiles); } catch(e){}
+  }
+  document.getElementById('smilesInput').value = smiles;
+}
+
+function clearJsmeCanvas(){
+  AudioEngine.click();
+  if(window.jsmeApplet){
+    try { window.jsmeApplet.reset(); } catch(e){}
+  }
+}
+
+function appendJsmeFragment(frag){
+  AudioEngine.click();
+  if(window.jsmeApplet){
+    try {
+      var curr = window.jsmeApplet.smiles();
+      window.jsmeApplet.readGenericMolecularInput(curr ? (curr + '.' + frag) : frag);
+    } catch(e){}
+  }
+}
+
+function transferJsmeToLab(){
+  AudioEngine.click();
+  var s = '';
+  if(window.jsmeApplet){
+    try { s = window.jsmeApplet.smiles(); } catch(e){}
+  }
+  if(!s){
+    s = document.getElementById('smilesInput').value;
+  }
+  if(s){
+    document.getElementById('smilesInput').value = s.trim();
+    switchInputMode('smiles');
+    showToast('Loaded drawn structure: ' + s.trim());
+    analyzeMolecule();
+  }
+}
+
+// --- PEPTIDE TRANSLATION ENGINE ---
+function setPeptideSeq(seq){
+  AudioEngine.click();
+  var input = document.getElementById('peptideInput');
+  if(input){
+    input.value = seq;
+    translateAndAnalyzePeptide();
+  }
+}
+
+function translateAndAnalyzePeptide(){
+  AudioEngine.click();
+  var seq = (document.getElementById('peptideInput').value || '').trim();
+  if(!seq) return;
+  
+  fetch('/api/peptide?seq=' + encodeURIComponent(seq))
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      if(d && d.valid){
+        var dispSeq = document.getElementById('pepSeqDisplay');
+        var dispLen = document.getElementById('pepLenDisplay');
+        var dispMw = document.getElementById('pepMwDisplay');
+        var dispCh = document.getElementById('pepChargeDisplay');
+        if(dispSeq) dispSeq.innerText = d.sequence;
+        if(dispLen) dispLen.innerText = d.length + " residues (" + d.residues.slice(0, 3).join('-') + (d.residues.length > 3 ? '...' : '') + ")";
+        if(dispMw) dispMw.innerText = d.estimated_mw + " g/mol";
+        if(dispCh) dispCh.innerText = (d.net_charge_ph7 > 0 ? '+' : '') + d.net_charge_ph7;
+        
+        // Put SMILES into input and analyze
+        document.getElementById('smilesInput').value = d.smiles;
+        analyzeMolecule();
+      } else {
+        showSmilesError(d.error || "Invalid peptide sequence", d.suggestion);
+      }
+    })
+    .catch(function(){});
+}
+
+// --- SPECTRAL PREDICTIONS (IR & 1H NMR) ---
+function switchSpectralTab(tab){
+  AudioEngine.click();
+  var bIr = document.getElementById('tabSpecIr');
+  var bNmr = document.getElementById('tabSpecNmr');
+  var cIr = document.getElementById('specIrContainer');
+  var cNmr = document.getElementById('specNmrContainer');
+  if(bIr) bIr.className = 'v-pill' + (tab === 'ir' ? ' active' : '');
+  if(bNmr) bNmr.className = 'v-pill' + (tab === 'nmr' ? ' active' : '');
+  if(cIr) cIr.style.display = (tab === 'ir') ? 'block' : 'none';
+  if(cNmr) cNmr.style.display = (tab === 'nmr') ? 'block' : 'none';
+}
+
+function loadSpectralPredictions(smiles){
+  fetch('/api/spectra?smiles=' + encodeURIComponent(smiles))
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      if(d && d.valid){
+        renderSpectralTables(d.ir, d.nmr);
+      }
+    })
+    .catch(function(){});
+}
+
+function renderSpectralTables(irList, nmrList){
+  var tbIr = document.getElementById('specIrTableBody');
+  var bar = document.getElementById('irSpectrumBar');
+  var tbNmr = document.getElementById('specNmrTableBody');
+  
+  if(tbIr){
+    var h = '';
+    for(var i = 0; i < irList.length; i++){
+      var p = irList[i];
+      h += '<tr>' +
+        '<td style="font-weight:600;color:var(--ink)">' + p.group + '</td>' +
+        '<td style="font-family:var(--mono);color:var(--acc)">' + p.freq + '</td>' +
+        '<td><span style="background:rgba(61,139,255,0.12);color:var(--acc3);padding:2px 8px;border-radius:4px;font-size:11.5px">' + p.intensity + '</span></td>' +
+        '<td style="color:var(--mut)">' + p.desc + '</td>' +
+      '</tr>';
+    }
+    tbIr.innerHTML = h;
+  }
+  
+  if(bar){
+    // 4000 cm-1 to 400 cm-1 (width = 3600 cm-1)
+    var barH = '';
+    for(var b = 0; b < irList.length; b++){
+      var raw = irList[b].freq.split('-')[0].trim();
+      var num = parseFloat(raw) || 1700;
+      var leftPct = Math.max(2, Math.min(98, ((4000 - num) / 3600) * 100));
+      barH += '<div style="position:absolute;left:' + leftPct + '%;top:0;bottom:0;width:3px;background:#00f0ff;box-shadow:0 0 8px #00f0ff" title="' + irList[b].group + ' (' + irList[b].freq + ' cm⁻¹)"></div>';
+    }
+    bar.innerHTML = barH;
+  }
+  
+  if(tbNmr){
+    var nh = '';
+    for(var j = 0; j < nmrList.length; j++){
+      var n = nmrList[j];
+      nh += '<tr>' +
+        '<td style="font-weight:600;color:var(--ink)">' + n.proton_type + '</td>' +
+        '<td style="font-family:var(--mono);color:var(--acc2)">' + n.region + '</td>' +
+        '<td><span style="background:rgba(0,255,157,0.12);color:var(--acc2);padding:2px 8px;border-radius:4px;font-size:11.5px">' + n.intensity + '</span></td>' +
+        '<td style="color:var(--mut)">' + n.desc + '</td>' +
+      '</tr>';
+    }
+    tbNmr.innerHTML = nh;
+  }
+}
+
+// --- STRUCTURAL SIMILARITY & SAR SEARCH (TANIMOTO) ---
+function loadSimilaritySearch(smiles){
+  fetch('/api/similarity?smiles=' + encodeURIComponent(smiles))
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      if(d && d.valid){
+        renderSimilarityCards(d.matches);
+      }
+    })
+    .catch(function(){});
+}
+
+function renderSimilarityCards(matches){
+  var grid = document.getElementById('similarityCardsGrid');
+  if(!grid) return;
+  var h = '';
+  for(var i = 0; i < matches.length; i++){
+    var m = matches[i];
+    var pct = Math.round(m.similarity * 100);
+    var color = pct >= 70 ? 'var(--acc2)' : (pct >= 40 ? 'var(--acc)' : 'var(--warn)');
+    h += '<div style="background:rgba(2,6,23,0.7);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:12px 14px;display:flex;flex-direction:column;justify-content:space-between">' +
+      '<div>' +
+        '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">' +
+          '<strong style="color:var(--ink);font-size:13.5px">' + m.name + '</strong>' +
+          '<span style="font-family:var(--mono);font-size:12px;font-weight:700;color:' + color + '">' + (m.similarity.toFixed(3)) + '</span>' +
+        '</div>' +
+        '<div style="font-size:11px;color:var(--dim);margin-bottom:8px">' + m.category + '</div>' +
+        '<div style="height:4px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden;margin-bottom:8px">' +
+          '<div style="height:100%;width:' + pct + '%;background:' + color + '"></div>' +
+        '</div>' +
+        '<div style="font-family:var(--mono);font-size:10.5px;color:var(--dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="' + m.smiles + '">' + m.smiles + '</div>' +
+      '</div>' +
+      '<button type="button" class="btn secondary" onclick="loadSimilarMolecule(&quot;' + m.smiles + '&quot;)" style="padding:4px 8px;font-size:11px;margin-top:10px;width:100%">' +
+        'Compare / Load Structure' +
+      '</button>' +
+    '</div>';
+  }
+  grid.innerHTML = h;
+}
+
+function loadSimilarMolecule(s){
+  AudioEngine.click();
+  document.getElementById('smilesInput').value = s;
+  scrollToChapter('lab');
+  analyzeMolecule();
+}
+
+// --- ORGANIC REACTION SIMULATOR ---
+var activeReactionsList = [];
+var currentReactionProductSmiles = 'CCOC(=O)C';
+
+function initReactions(){
+  fetch('/api/reactions')
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      activeReactionsList = data;
+      var sel = document.getElementById('reactionSelect');
+      if(sel){
+        var h = '';
+        for(var i = 0; i < data.length; i++){
+          var r = data[i];
+          h += '<option value="' + r.id + '">' + (i + 1) + '. ' + r.name + ' (' + r.category + ')</option>';
+        }
+        sel.innerHTML = h;
+        onSelectReaction();
+      }
+    })
+    .catch(function(){});
+}
+
+function onSelectReaction(){
+  var sel = document.getElementById('reactionSelect');
+  if(!sel) return;
+  var id = sel.value;
+  var rxn = activeReactionsList.find(function(r){ return r.id === id; });
+  if(!rxn) return;
+  
+  currentReactionProductSmiles = rxn.product;
+  
+  var eq = document.getElementById('rxnEquation');
+  var cat = document.getElementById('rxnCategory');
+  var cnd = document.getElementById('rxnCatalyst');
+  var byp = document.getElementById('rxnByproduct');
+  var rAName = document.getElementById('rxnReactantAName');
+  var rASmiles = document.getElementById('rxnReactantASmiles');
+  var rBName = document.getElementById('rxnReactantBName');
+  var rBSmiles = document.getElementById('rxnReactantBSmiles');
+  var pName = document.getElementById('rxnProductName');
+  var pSmiles = document.getElementById('rxnProductSmiles');
+  var mech = document.getElementById('rxnMechanismText');
+  
+  if(eq) eq.innerText = rxn.equation;
+  if(cat) cat.innerText = rxn.category;
+  if(cnd) cnd.innerText = rxn.catalyst;
+  if(byp) byp.innerText = rxn.byproduct;
+  if(rAName) rAName.innerText = rxn.reactants[0] ? rxn.reactants[0].split('(')[0].trim() : 'Reactant A';
+  if(rASmiles) rASmiles.innerText = rxn.default_a;
+  if(rBName) rBName.innerText = rxn.reactants[1] ? rxn.reactants[1].split('(')[0].trim() : 'Reactant B';
+  if(rBSmiles) rBSmiles.innerText = rxn.default_b;
+  if(pName) pName.innerText = rxn.product_name;
+  if(pSmiles) pSmiles.innerText = rxn.product;
+  if(mech) mech.innerText = rxn.mechanism;
+  
+  renderReactionMiniSvg('rxnReactantA2D', rxn.default_a);
+  renderReactionMiniSvg('rxnReactantB2D', rxn.default_b);
+  renderReactionMiniSvg('rxnProduct2D', rxn.product);
+}
+
+function renderReactionMiniSvg(containerId, smiles){
+  var el = document.getElementById(containerId);
+  if(!el) return;
+  if(window.RDKit && window.RDKit.get_mol){
+    try {
+      var mol = window.RDKit.get_mol(smiles);
+      if(mol){
+        var svg = mol.get_svg(160, 95);
+        mol.delete();
+        el.innerHTML = svg;
+        return;
+      }
+    } catch(e){}
+  }
+  el.innerHTML = '<div style="font-family:var(--mono);color:var(--dim);font-size:12px">' + smiles + '</div>';
+}
+
+function loadActiveReactionProductToLab(){
+  AudioEngine.click();
+  if(!currentReactionProductSmiles) return;
+  document.getElementById('smilesInput').value = currentReactionProductSmiles;
+  scrollToChapter('lab');
+  analyzeMolecule();
+}
+
+
 function analyzeMolecule(){
   AudioEngine.click();
   var input = document.getElementById('smilesInput').value.trim();
@@ -3600,23 +4633,34 @@ function analyzeMolecule(){
   // Query Python API with instant client-side fallback
   fetch('/api/calculate?smiles=' + encodeURIComponent(input))
     .then(function(res){
-      if(!res.ok) throw new Error("API calculation error");
-      return res.json();
+      return res.json().then(function(data){
+        return { ok: res.ok, status: res.status, data: data };
+      });
     })
-    .then(function(data){
-      if(data.valid){
+    .then(function(result){
+      var data = result.data;
+      if(result.ok && data && data.valid){
         currentProps = data.properties;
         renderProperties(data.properties, data.interpretations);
         render2DDiagram(input);
         render3DModel(input);
         updateBondMetrics(data.properties);
         showSmilesSuccess("Structure validated via Python Cheminformatics Engine.");
+        loadSpectralPredictions(input);
+        loadSimilaritySearch(input);
+        if(window.history && window.history.replaceState){
+          window.history.replaceState(null, '', '?smiles=' + encodeURIComponent(input));
+        }
       } else {
-        throw new Error(data.error || "Invalid structure");
+        var errMsg = (data && data.error) ? data.error : "Invalid SMILES structure";
+        var errTip = (data && data.suggestion) ? data.suggestion : "Please check atomic valencies, branch parentheses, and ring closure digits.";
+        showSmilesError(errMsg, errTip);
       }
     })
     .catch(function(err){
       computeClientProperties(input);
+      loadSpectralPredictions(input);
+      loadSimilaritySearch(input);
     });
 }
 
@@ -4205,7 +5249,7 @@ function generateRealistic3DConformer(smiles){
   var conectLines = [];
   var pdbLines = [];
 
-  if(isAromatic && count >= 5){
+  if(isAromatic && count >= 5 && count <= 10){
     var ringRadius = 1.40 / (2 * Math.sin(Math.PI / count));
     for(var i = 0; i < count; i++){
       var angle = (i * 2 * Math.PI) / count;
@@ -4263,11 +5307,20 @@ function generateRealistic3DConformer(smiles){
   return pdbLines.join("\\n") + "\\n" + conectLines.join("\\n") + "\\nEND\\n";
 }
 
-function showSmilesError(msg){
+function showSmilesError(msg, tip){
   var el = document.getElementById('smilesError');
   var txt = document.getElementById('smilesErrorText');
+  var tipEl = document.getElementById('smilesPedagogicTip');
   var suc = document.getElementById('smilesSuccess');
   if(txt) txt.innerText = msg;
+  if(tipEl){
+    if(tip){
+      tipEl.innerText = "💡 Educational Tip: " + tip;
+      tipEl.style.display = 'block';
+    } else {
+      tipEl.style.display = 'none';
+    }
+  }
   if(el) el.style.display = 'flex';
   if(suc) suc.style.display = 'none';
 }
@@ -4384,12 +5437,124 @@ function nextQuestion(){
       '<h3 style="color:var(--acc2);font-size:24px;margin-bottom:8px">Assessment Complete!</h3>' +
       '<p style="color:var(--ink);font-size:16px">Final Certified Score: <strong>' + quizScore + ' / 100</strong></p>' +
       '<p style="color:var(--dim);font-size:13px;margin-top:8px">Your assessment result has been recorded and will be certified on your downloadable report.</p>' +
-      '<button class="btn primary" onclick="currentQ=0;quizScore=0;renderQuizQuestion()" style="margin-top:16px"><span>Retake Assessment</span></button>' +
+      '<div style="margin-top:18px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">' +
+        '<button class="btn primary" onclick="currentQ=0;quizScore=0;renderQuizQuestion()"><span>Retake Assessment</span></button>' +
+        '<button class="btn secondary" onclick="scrollToLeaderboard()"><span>Post Score to Class Leaderboard</span></button>' +
+      '</div>' +
     '</div>';
     document.getElementById('btnNextQuiz').style.display = 'none';
     setupRollingButtons();
     initMagneticButtons();
+    fetchLeaderboard();
+    if(quizScore > 0){
+      submitScoreToLeaderboard();
+    }
   }
+}
+
+function fetchLeaderboard(){
+  var inputEl = document.getElementById('leaderboardClassCode');
+  var code = (inputEl && inputEl.value ? inputEl.value : 'SRM-CHEM-101') || 'SRM-CHEM-101';
+  fetch('/api/leaderboard?classCode=' + encodeURIComponent(code.trim().toUpperCase()))
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      if(!data || !data.valid) return;
+      var subEl = document.getElementById('metricSubmissions');
+      var avgEl = document.getElementById('metricAverage');
+      var topEl = document.getElementById('metricTopScore');
+      if(subEl) subEl.innerText = data.totalSubmissions || 0;
+      if(avgEl) avgEl.innerText = (data.classAverage || 0) + '%';
+      if(topEl) topEl.innerText = (data.topScore || 0) + ' / 100';
+      
+      var tb = document.getElementById('leaderboardTableBody');
+      if(!tb) return;
+      var html = '';
+      var list = data.leaderboard || [];
+      if(list.length === 0){
+        html = '<tr><td colspan="5" style="text-align:center;padding:16px;color:var(--dim)">No scores submitted for this class code yet. Be the first!</td></tr>';
+      } else {
+        for(var i = 0; i < list.length; i++){
+          var row = list[i];
+          var rankIcon = '#' + row.rank;
+          if(row.rank === 1) rankIcon = '🥇 #1';
+          else if(row.rank === 2) rankIcon = '🥈 #2';
+          else if(row.rank === 3) rankIcon = '🥉 #3';
+          var isTop = row.rank <= 3;
+          html += '<tr style="border-bottom:1px solid rgba(255,255,255,0.05);">' +
+            '<td style="padding:8px;font-family:var(--mono);font-weight:' + (isTop ? '700' : '400') + ';color:' + (row.rank===1 ? 'var(--warn)' : 'var(--ink)') + '">' + rankIcon + '</td>' +
+            '<td style="padding:8px;font-weight:600;color:var(--ink)">' + row.displayName + '</td>' +
+            '<td style="padding:8px;font-family:var(--mono);color:var(--dim)">' + row.displayRegNo + '</td>' +
+            '<td style="padding:8px;text-align:right;font-family:var(--mono);font-weight:700;color:' + (row.score >= 80 ? 'var(--acc2)' : 'var(--ink)') + '">' + row.score + ' / 100</td>' +
+            '<td style="padding:8px;text-align:right;font-family:var(--mono);font-size:11px;color:var(--dim)">' + (row.timestamp || '') + '</td>' +
+          '</tr>';
+        }
+      }
+      tb.innerHTML = html;
+    })
+    .catch(function(e){
+      console.warn('Leaderboard fetch error:', e);
+    });
+}
+
+function submitScoreToLeaderboard(){
+  AudioEngine.click();
+  var inputEl = document.getElementById('leaderboardClassCode');
+  var code = (inputEl && inputEl.value ? inputEl.value : 'SRM-CHEM-101') || 'SRM-CHEM-101';
+  var leadNameEl = document.getElementById('leaderboardStudentName');
+  var leadRegEl = document.getElementById('leaderboardStudentReg');
+  var repNameEl = document.getElementById('repStudentName');
+  var repRegEl = document.getElementById('repRegNumber');
+  
+  var name = (leadNameEl && leadNameEl.value ? leadNameEl.value.trim() : '') ||
+             (repNameEl && repNameEl.value ? repNameEl.value.trim() : '') ||
+             'velmurgan';
+  var reg = (leadRegEl && leadRegEl.value ? leadRegEl.value.trim() : '') ||
+            (repRegEl && repRegEl.value ? repRegEl.value.trim() : '') ||
+            'RA2611030050019';
+  var anonEl = document.getElementById('anonLeaderboardCheck');
+  var anon = anonEl ? anonEl.checked : false;
+  
+  var payload = {
+    name: name,
+    regNo: reg,
+    score: quizScore,
+    classCode: code.trim().toUpperCase(),
+    anonymous: anon
+  };
+  
+  var statusBox = document.getElementById('leaderboardSubmitStatus');
+  if(statusBox){
+    statusBox.style.display = 'block';
+    statusBox.style.color = 'var(--acc)';
+    statusBox.innerText = 'Submitting score to class leaderboard...';
+  }
+  
+  fetch('/api/leaderboard', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(res){
+    if(statusBox){
+      statusBox.style.color = 'var(--acc2)';
+      statusBox.innerText = res.message || 'Score certified and posted to leaderboard!';
+    }
+    showToast(res.message || 'Score posted to leaderboard!');
+    fetchLeaderboard();
+  })
+  .catch(function(err){
+    if(statusBox){
+      statusBox.style.color = 'var(--bad)';
+      statusBox.innerText = 'Could not post score. Please try again.';
+    }
+  });
+}
+
+function scrollToLeaderboard(){
+  var el = document.getElementById('leaderboardSection');
+  if(el) el.scrollIntoView({behavior:'smooth'});
+  submitScoreToLeaderboard();
 }
 
 /* ==========================================================================
@@ -6028,6 +7193,7 @@ var ChapterEngine = (function(){
    12. APPLICATION INITIALIZATION
    ========================================================================== */
 window.addEventListener('DOMContentLoaded', function(){
+  initTheme();
   ScrollEngine.init();
   SpaceStage.init();
   PutureCursor.init();
@@ -6037,6 +7203,18 @@ window.addEventListener('DOMContentLoaded', function(){
   initComparativeTable();
   initQuiz();
   renderReportQueueUI();
+  loadMotd();
+  initReactions();
+  fetchLeaderboard();
+  initJsmeApplet();
+  
+  // Quick Win: Shareable URL Query Parameter (?smiles=...)
+  var urlParams = new URLSearchParams(window.location.search);
+  var qSmiles = urlParams.get('smiles');
+  if(qSmiles){
+    document.getElementById('smilesInput').value = qSmiles;
+    setTimeout(function(){ analyzeMolecule(); }, 350);
+  }
 });
 </script>
 </body>
