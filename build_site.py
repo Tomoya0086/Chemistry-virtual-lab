@@ -233,6 +233,21 @@ def generate_index_html():
   to { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes blinkCursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.typewriter-cursor {
+  display: inline-block;
+  width: 7px;
+  height: 16px;
+  background: var(--acc);
+  margin-left: 3px;
+  vertical-align: middle;
+  animation: blinkCursor 0.75s infinite;
+}
+
 
 *, *::before, *::after {
   box-sizing: border-box;
@@ -1264,10 +1279,21 @@ nav.links.nav-pill-track {
   margin-top: 4px;
 }
 
-/* Section Headings */
+/* Section Headings with Subtle Scroll Fade-In (300ms) */
 section {
   padding: 85px 0;
   scroll-margin-top: 80px;
+}
+
+section .sechead {
+  opacity: 0.2;
+  transform: translateY(14px);
+  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+section.section-visible .sechead, section#home .sechead {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .sechead {
@@ -2180,8 +2206,8 @@ footer {
   <button class="p-dot" onclick="scrollToChapter('properties')" title="04 18 Descriptors" data-chapter="04"></button>
   <button class="p-dot" onclick="scrollToChapter('compare')" title="05 Comparative Matrix" data-chapter="05"></button>
   <button class="p-dot" onclick="scrollToChapter('quiz')" title="06 Assessment Module" data-chapter="06"></button>
-  <button class="p-dot" onclick="scrollToChapter('reactions')" title="08 Reaction Simulator" data-chapter="08"></button>
-  <button class="p-dot" onclick="scrollToChapter('report')" title="07 Official Report" data-chapter="07"></button>
+  <button class="p-dot" onclick="scrollToChapter('reactions')" title="07 Reaction Simulator" data-chapter="07"></button>
+  <button class="p-dot" onclick="scrollToChapter('report')" title="08 Official Report" data-chapter="08"></button>
 </nav>
 
 <!-- Puture SpaceStage 3D WebGL Horizon Canvas -->
@@ -2248,12 +2274,12 @@ footer {
         <span class="nav-num">06</span>
         <span class="nav-label">Assessment</span>
       </a>
-      <a href="#reactions" class="nav-link-item" data-chapter="08">
-        <span class="nav-num">08</span>
+      <a href="#reactions" class="nav-link-item" data-chapter="07">
+        <span class="nav-num">07</span>
         <span class="nav-label">Reactions</span>
       </a>
-      <a href="#report" class="nav-link-item" data-chapter="07">
-        <span class="nav-num">07</span>
+      <a href="#report" class="nav-link-item" data-chapter="08">
+        <span class="nav-num">08</span>
         <span class="nav-label">Report</span>
       </a>
     </nav>
@@ -2294,8 +2320,8 @@ footer {
     <a href="#properties" onclick="toggleMobileMenu()"><span class="m-num">04</span> Molecular Descriptors</a>
     <a href="#compare" onclick="toggleMobileMenu()"><span class="m-num">05</span> Comparative Analysis</a>
     <a href="#quiz" onclick="toggleMobileMenu()"><span class="m-num">06</span> Student Assessment</a>
-    <a href="#reactions" onclick="toggleMobileMenu()"><span class="m-num">08</span> Reaction Simulator</a>
-    <a href="#report" onclick="toggleMobileMenu()"><span class="m-num">07</span> Download PDF Report</a>
+    <a href="#reactions" onclick="toggleMobileMenu()"><span class="m-num">07</span> Reaction Simulator</a>
+    <a href="#report" onclick="toggleMobileMenu()"><span class="m-num">08</span> Download PDF Report</a>
   </div>
 </div>
 
@@ -2528,7 +2554,7 @@ footer {
       <div id="smilesError" class="alert-banner error" style="display:none;flex-direction:column;align-items:flex-start;gap:6px">
         <div style="display:flex;align-items:center;gap:8px;width:100%">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          <span id="smilesErrorText">Invalid SMILES notation. Please inspect molecular valence or ring closures.</span>
+          <span id="smilesErrorText">Invalid SMILES — possible unclosed ring (check digit pairs) or nitrogen valence error. Try CC(=O)O for acetic acid.</span>
         </div>
         <div id="smilesPedagogicTip" style="font-size:12.5px;color:rgba(255,255,255,0.92);background:rgba(0,0,0,0.25);padding:6px 10px;border-radius:6px;width:100%;display:none;line-height:1.45;border-left:3px solid #ff4d6a"></div>
       </div>
@@ -2580,11 +2606,12 @@ footer {
             </div>
           </div>
           
-          <div id="jsme_container" style="width:100%;min-height:360px;background:#ffffff;border-radius:4px;overflow:hidden;box-shadow:inset 0 0 10px rgba(0,0,0,0.1)">
+          <div id="jsme_container" style="width:100%;min-height:360px;background:#ffffff;border-radius:4px;overflow:hidden;box-shadow:inset 0 0 10px rgba(0,0,0,0.1);position:relative">
             <div id="jsme_placeholder" style="height:360px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#334155;font-family:var(--mono);font-size:12px;background:#f8fafc">
-              <div style="font-size:24px;margin-bottom:8px">✏️</div>
-              <strong>Loading JSME Molecular Drawing Editor...</strong>
-              <span style="font-size:11px;color:#64748b;margin-top:4px">Instant 2D structure drawing with live SMILES synchronization</span>
+              <div style="font-size:26px;margin-bottom:8px">✏️</div>
+              <strong style="color:#1e293b;font-size:13.5px">Loading JSME Molecular Drawing Editor...</strong>
+              <span style="font-size:11px;color:#64748b;margin-top:4px;margin-bottom:12px">Instant 2D structure drawing with live SMILES synchronization</span>
+              <button type="button" class="btn secondary sm" onclick="setupJsmeInstance(true)" style="padding:4px 12px;font-size:11px;border-color:#cbd5e1;color:#1e293b">Initialize Editor</button>
             </div>
           </div>
           
@@ -2751,23 +2778,23 @@ footer {
             <span>Formula</span>
           </div>
           <div class="bond-metric-card">
-            <strong id="bmMw">46.069</strong>
+            <strong id="bmMw" data-val="0">0.00</strong>
             <span>MW (g/mol)</span>
           </div>
           <div class="bond-metric-card">
-            <strong id="bmHeavyAtoms">3</strong>
+            <strong id="bmHeavyAtoms" data-val="0">0</strong>
             <span>Heavy Atoms</span>
           </div>
           <div class="bond-metric-card">
-            <strong id="bmSigma">8</strong>
+            <strong id="bmSigma" data-val="0">0</strong>
             <span>Sigma (σ) Bonds</span>
           </div>
           <div class="bond-metric-card">
-            <strong id="bmPi">0</strong>
+            <strong id="bmPi" data-val="0">0</strong>
             <span>Pi (π) Bonds</span>
           </div>
           <div class="bond-metric-card">
-            <strong id="bmTotalBonds">8</strong>
+            <strong id="bmTotalBonds" data-val="0">0</strong>
             <span>Total Bonds</span>
           </div>
         </div>
@@ -2806,7 +2833,7 @@ footer {
                 <span class="gauge-title">Molecular Weight</span>
                 <span class="gauge-badge" id="gaugeBadgeMw">PASS</span>
               </div>
-              <div class="gauge-val" id="gaugeValMw">46.07 <span class="gauge-unit">g/mol</span></div>
+              <div class="gauge-val" id="gaugeValMw" data-val="0">0.00 <span class="gauge-unit">g/mol</span></div>
               <div class="gauge-meter">
                 <div class="gauge-fill" id="gaugeFillMw" style="width: 9.2%"></div>
               </div>
@@ -2822,7 +2849,7 @@ footer {
                 <span class="gauge-title">LogP (Lipophilicity)</span>
                 <span class="gauge-badge" id="gaugeBadgeLogP">OPTIMAL</span>
               </div>
-              <div class="gauge-val" id="gaugeValLogP">-0.00 <span class="gauge-unit">oct/water</span></div>
+              <div class="gauge-val" id="gaugeValLogP" data-val="0">0.00 <span class="gauge-unit">oct/water</span></div>
               <div class="gauge-meter">
                 <div class="gauge-fill emerald" id="gaugeFillLogP" style="width: 28%"></div>
               </div>
@@ -2838,7 +2865,7 @@ footer {
                 <span class="gauge-title">H-Bond Donors</span>
                 <span class="gauge-badge" id="gaugeBadgeHbd">PASS</span>
               </div>
-              <div class="gauge-val" id="gaugeValHbd">1 <span class="gauge-unit">/ 5 max</span></div>
+              <div class="gauge-val" id="gaugeValHbd" data-val="0">0 <span class="gauge-unit">/ 5 max</span></div>
               <div class="gauge-meter">
                 <div class="gauge-fill cyan" id="gaugeFillHbd" style="width: 20%"></div>
               </div>
@@ -2854,7 +2881,7 @@ footer {
                 <span class="gauge-title">H-Bond Acceptors</span>
                 <span class="gauge-badge" id="gaugeBadgeHba">PASS</span>
               </div>
-              <div class="gauge-val" id="gaugeValHba">1 <span class="gauge-unit">/ 10 max</span></div>
+              <div class="gauge-val" id="gaugeValHba" data-val="0">0 <span class="gauge-unit">/ 10 max</span></div>
               <div class="gauge-meter">
                 <div class="gauge-fill purple" id="gaugeFillHba" style="width: 10%"></div>
               </div>
@@ -2968,10 +2995,18 @@ footer {
             <div style="display:flex;align-items:center;gap:10px">
               <span style="font-size:18px">🧬</span>
               <div>
-                <h3 style="color:var(--ink);font-size:16.5px;margin:0">Structural Similarity &amp; SAR Search (Tanimoto Coefficient)</h3>
+                <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+                  <h3 style="color:var(--ink);font-size:16.5px;margin:0">Structural Similarity &amp; SAR Search (Tanimoto Coefficient)</h3>
+                  <span class="badge" style="font-size:10.5px;background:rgba(255,184,0,0.1);color:var(--warn);border:1px solid rgba(255,184,0,0.28)">Approximate Structural Similarity</span>
+                </div>
                 <span style="font-size:11.5px;color:var(--dim)">Top 5 structural analogues retrieved from reference pharmacophore database</span>
               </div>
             </div>
+          </div>
+
+          <!-- Pedagogical SAR Disclaimer -->
+          <div style="font-size:11.5px;color:var(--dim);background:rgba(0,240,255,0.03);border:1px solid rgba(0,240,255,0.18);border-radius:6px;padding:8px 12px;margin-bottom:14px;line-height:1.45">
+            <strong style="color:var(--acc)">💡 Pedagogical SAR Note:</strong> Metric represents approximate topological circular atom-neighborhood similarity (radius-2 circular graph hashes). In commercial medicinal chemistry and clinical SAR research, candidate screening is performed using 2048-bit Morgan/ECFP4 bit-vectors via RDKit.
           </div>
 
           <div id="similarityCardsGrid" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));gap:12px">
@@ -3038,8 +3073,13 @@ footer {
           <span style="font-family:var(--mono);font-size:12px;color:var(--acc2)" id="quizScore">SCORE: 0</span>
         </div>
 
-        <h3 id="quizQuestion" style="font-size:18px;margin-bottom:18px;color:var(--ink)">Loading question...</h3>
-        <div id="quizOptions"></div>
+        <h3 id="quizQuestion" style="font-size:18px;margin-bottom:18px;color:var(--ink)">What does the SMILES acronym stand for in computational chemistry?</h3>
+        <div id="quizOptions">
+          <button class="quiz-opt" onclick="checkAnswer(0)"><span>A.</span> Simplified Molecular Input Line Entry System</button>
+          <button class="quiz-opt" onclick="checkAnswer(1)"><span>B.</span> Standard Molecular Identification &amp; Logic Expression Set</button>
+          <button class="quiz-opt" onclick="checkAnswer(2)"><span>C.</span> Systematic Molecular Integration Line Exchange Scheme</button>
+          <button class="quiz-opt" onclick="checkAnswer(3)"><span>D.</span> Substituent Mapping &amp; Isomer Linear Evaluation Syntax</button>
+        </div>
 
         <div style="margin-top:20px;display:flex;justify-content:flex-end">
           <button class="btn primary sm" id="btnNextQuiz" onclick="nextQuestion()" style="display:none">
@@ -3063,6 +3103,12 @@ footer {
             <input type="text" id="leaderboardClassCode" value="SRM-CHEM-101" style="width:130px;padding:5px 8px;font-family:var(--mono);font-size:12px;text-transform:uppercase;background:rgba(255,255,255,0.04);border:1px solid var(--border);color:var(--ink)" />
             <button type="button" class="btn secondary sm" onclick="fetchLeaderboard()" style="padding:5px 10px;font-size:11px">Filter</button>
           </div>
+        </div>
+
+        <!-- Class Code Guidance Banner -->
+        <div style="font-size:12px;color:var(--dim);margin-top:-6px;margin-bottom:14px;background:rgba(61,139,255,0.06);border:1px solid rgba(61,139,255,0.18);border-radius:6px;padding:8px 12px;display:flex;align-items:center;gap:8px">
+          <span style="color:var(--acc);font-size:14px">ℹ️</span>
+          <span>Get your official class code from <strong>Dr. R. Subramanian</strong> (Division of Chemistry) to view your cohort. Default code: <code style="color:var(--acc);background:rgba(0,0,0,0.25);padding:2px 6px;border-radius:4px;font-family:var(--mono)">SRM-CHEM-101</code></span>
         </div>
 
         <!-- Cohort Progress Metrics -->
@@ -3126,8 +3172,8 @@ footer {
   </section>
 
   
-  <!-- BLOCK 8: ORGANIC REACTION SIMULATOR -->
-  <section id="reactions" data-chapter="08" data-chapter-name="REACTION SIMULATOR">
+  <!-- BLOCK 07: ORGANIC REACTION SIMULATOR -->
+  <section id="reactions" data-chapter="07" data-chapter-name="REACTION SIMULATOR">
     <div class="wrap">
       <div class="sechead">
         <div class="kicker">Organic Transformations</div>
@@ -3214,8 +3260,8 @@ footer {
     </div>
   </section>
 
-  <!-- BLOCK 7: STUDENT REPORT GENERATION -->
-  <section id="report" data-chapter="07" data-chapter-name="OFFICIAL REPORT">
+  <!-- BLOCK 08: STUDENT REPORT GENERATION -->
+  <section id="report" data-chapter="08" data-chapter-name="OFFICIAL REPORT">
     <div class="wrap">
       <div class="sechead">
         <div class="kicker">Official Laboratory Certification</div>
@@ -3367,7 +3413,7 @@ for smiles in smiles_list:
 
     <div class="footer-bottom">
       <div>&copy; 2026 SRM Institute of Science and Technology. All rights reserved. Zero tracking cookies.</div>
-      <div style="font-family:var(--mono);color:var(--acc)">PYTHON SERVERLESS ENGINE v3.6 &times; VERCEL EDGE</div>
+      <div style="font-family:var(--mono);color:var(--acc)">PYTHON SERVERLESS ENGINE 3.14 &times; VERCEL EDGE</div>
     </div>
   </div>
 </footer>
@@ -3677,20 +3723,11 @@ var ScrollEngine = (function(){
     currentY = window.pageYOffset;
     targetY = currentY;
 
-    window.addEventListener('wheel', function(e){
-      if(e.target.closest('#viewer3D') || e.target.closest('.modal-box')) return;
-      targetY += e.deltaY;
-      targetY = Math.max(0, Math.min(targetY, document.documentElement.scrollHeight - window.innerHeight));
-      if(!isRunning){ isRunning = true; requestAnimationFrame(update); }
-    }, {passive: true});
-
     window.addEventListener('scroll', function(){
-      if(!isRunning){
-        currentY = window.pageYOffset;
-        targetY = currentY;
-        onScrollUpdate();
-      }
-    });
+      currentY = window.pageYOffset;
+      targetY = currentY;
+      onScrollUpdate();
+    }, { passive: true });
 
     // Initialize GSAP 3.12 & ScrollTrigger Peak Animations
     initPeakAnimations();
@@ -4005,15 +4042,16 @@ function reset3DCamera(){
   if(window.AudioEngine) window.AudioEngine.click();
 }
 
-function animateCounter(elementId, targetVal, isFloat){
+function animateCounter(elementId, targetVal, isFloat, suffix){
   var el = document.getElementById(elementId);
   if(!el) return;
   var target = parseFloat(targetVal);
   if(isNaN(target)){
-    el.innerText = targetVal;
+    el.innerHTML = targetVal + (suffix ? ' ' + suffix : '');
     return;
   }
-  var current = parseFloat(el.innerText) || 0;
+  var current = parseFloat(el.getAttribute('data-val') || '0') || 0;
+  el.setAttribute('data-val', target);
   var obj = { val: current };
   if(window.gsap){
     gsap.to(obj, {
@@ -4021,11 +4059,25 @@ function animateCounter(elementId, targetVal, isFloat){
       duration: 0.65,
       ease: "power2.out",
       onUpdate: function(){
-        el.innerText = isFloat ? obj.val.toFixed(3) : Math.round(obj.val);
+        var numStr = isFloat ? obj.val.toFixed(2) : Math.round(obj.val);
+        el.innerHTML = numStr + (suffix ? ' ' + suffix : '');
       }
     });
   } else {
-    el.innerText = isFloat ? target.toFixed(3) : Math.round(target);
+    var startTime = performance.now();
+    var duration = 650;
+    function animStep(now){
+      var elapsed = now - startTime;
+      var progress = Math.min(1, elapsed / duration);
+      var ease = 1 - Math.pow(1 - progress, 3);
+      var currentVal = current + (target - current) * ease;
+      var numStr = isFloat ? currentVal.toFixed(2) : Math.round(currentVal);
+      el.innerHTML = numStr + (suffix ? ' ' + suffix : '');
+      if(progress < 1){
+        requestAnimationFrame(animStep);
+      }
+    }
+    requestAnimationFrame(animStep);
   }
 }
 
@@ -4290,16 +4342,29 @@ function switchInputMode(mode){
   }
 }
 
+var jsmeRetries = 0;
+function tryInitJsme(){
+  var ctor = (window.JSApplet && window.JSApplet.JSME) ? window.JSApplet.JSME : window.JSME;
+  if(ctor){
+    setupJsmeInstance();
+    return;
+  }
+  if(jsmeRetries < 60){
+    jsmeRetries++;
+    setTimeout(tryInitJsme, 200);
+  }
+}
+
 function initJsmeApplet(){
   if(window.jsmeApplet) return;
-  setupJsmeInstance();
+  tryInitJsme();
 }
 
 window.jsmeOnLoad = function(){
   setupJsmeInstance();
 };
 
-function setupJsmeInstance(){
+function setupJsmeInstance(force){
   var ph = document.getElementById('jsme_placeholder');
   try {
     var ctor = (window.JSApplet && window.JSApplet.JSME) ? window.JSApplet.JSME : window.JSME;
@@ -4322,6 +4387,8 @@ function setupJsmeInstance(){
       if(activeSmiles && window.jsmeApplet.readGenericMolecularInput){
         window.jsmeApplet.readGenericMolecularInput(activeSmiles);
       }
+    } else if(!ctor && force){
+      tryInitJsme();
     }
   } catch(e){
     console.warn('JSME init notice:', e);
@@ -4549,6 +4616,36 @@ function initReactions(){
     .catch(function(){});
 }
 
+var rxnTypewriterTimer = null;
+function animateReactionEquationTyping(text){
+  var eq = document.getElementById('rxnEquation');
+  if(!eq) return;
+  if(rxnTypewriterTimer){
+    clearInterval(rxnTypewriterTimer);
+    rxnTypewriterTimer = null;
+  }
+  eq.innerHTML = '<span id="rxnEqText"></span><span class="typewriter-cursor"></span>';
+  var span = document.getElementById('rxnEqText');
+  var idx = 0;
+  var speed = Math.max(12, Math.min(28, Math.floor(550 / Math.max(1, text.length))));
+  rxnTypewriterTimer = setInterval(function(){
+    if(!span){
+      clearInterval(rxnTypewriterTimer);
+      return;
+    }
+    idx++;
+    span.innerText = text.substring(0, idx);
+    if(idx >= text.length){
+      clearInterval(rxnTypewriterTimer);
+      rxnTypewriterTimer = null;
+      var cur = eq.querySelector('.typewriter-cursor');
+      if(cur){
+        setTimeout(function(){ if(cur) cur.style.display = 'none'; }, 900);
+      }
+    }
+  }, speed);
+}
+
 function onSelectReaction(){
   var sel = document.getElementById('reactionSelect');
   if(!sel) return;
@@ -4558,7 +4655,6 @@ function onSelectReaction(){
   
   currentReactionProductSmiles = rxn.product;
   
-  var eq = document.getElementById('rxnEquation');
   var cat = document.getElementById('rxnCategory');
   var cnd = document.getElementById('rxnCatalyst');
   var byp = document.getElementById('rxnByproduct');
@@ -4570,7 +4666,7 @@ function onSelectReaction(){
   var pSmiles = document.getElementById('rxnProductSmiles');
   var mech = document.getElementById('rxnMechanismText');
   
-  if(eq) eq.innerText = rxn.equation;
+  animateReactionEquationTyping(rxn.equation);
   if(cat) cat.innerText = rxn.category;
   if(cnd) cnd.innerText = rxn.catalyst;
   if(byp) byp.innerText = rxn.byproduct;
@@ -4613,11 +4709,68 @@ function loadActiveReactionProductToLab(){
 }
 
 
+function analyzeSmilesPedagogical(s){
+  if(!s || !s.trim()){
+    return {
+      error: "Empty SMILES notation entered.",
+      tip: "Please enter a valid SMILES string or draw a molecule. Try CC(=O)O for acetic acid or CCO for ethanol."
+    };
+  }
+  var clean = s.trim();
+
+  // 1. Unclosed ring digits
+  var digits = clean.match(/\\d/g) || [];
+  var digitCounts = {};
+  digits.forEach(function(d){ digitCounts[d] = (digitCounts[d] || 0) + 1; });
+  var oddDigits = Object.keys(digitCounts).filter(function(d){ return digitCounts[d] % 2 !== 0; });
+  if(oddDigits.length > 0){
+    return {
+      error: "Invalid SMILES — possible unclosed ring (check digit pairs) or nitrogen valence error. Try CC(=O)O for acetic acid.",
+      tip: "In SMILES, each ring opening digit must have an identical paired closing digit (e.g. c1ccccc1 for benzene has paired '1's)."
+    };
+  }
+
+  // 2. Branch parentheses mismatch
+  var openP = (clean.match(/\\(/g) || []).length;
+  var closeP = (clean.match(/\\)/g) || []).length;
+  if(openP !== closeP){
+    return {
+      error: "Invalid SMILES — possible unclosed ring (check digit pairs) or nitrogen valence error. Try CC(=O)O for acetic acid.",
+      tip: "Branching substituents require matched parentheses: " + openP + " '(' vs " + closeP + " ')'. Try CC(=O)O for acetic acid."
+    };
+  }
+
+  // 3. Atom bracket mismatch
+  var openB = (clean.match(/\\[/g) || []).length;
+  var closeB = (clean.match(/\\]/g) || []).length;
+  if(openB !== closeB){
+    return {
+      error: "Invalid SMILES — possible unclosed ring (check digit pairs) or nitrogen valence error. Try CC(=O)O for acetic acid.",
+      tip: "Bracketed atoms for charge/stereochemistry must be closed, e.g. [NH4+] or [OH-]."
+    };
+  }
+
+  // 4. Unknown characters
+  var invalidChars = clean.replace(/[A-Za-z0-9\\(\\)\\[\\]\\=\\#\\+\\-\\/\\@\\.\\:\\\\]/g, '');
+  if(invalidChars.length > 0){
+    return {
+      error: "Invalid SMILES — possible unclosed ring (check digit pairs) or nitrogen valence error. Try CC(=O)O for acetic acid.",
+      tip: "Unrecognized character '" + invalidChars[0] + "'. Use IUPAC element symbols, bonds (=, #), or branches ()."
+    };
+  }
+
+  return {
+    error: "Invalid SMILES — possible unclosed ring (check digit pairs) or nitrogen valence error. Try CC(=O)O for acetic acid.",
+    tip: "Verify atom valencies (C: 4, N: 3-5, O: 2, H: 1) or check aromatic lowercase ring notation."
+  };
+}
+
 function analyzeMolecule(){
   AudioEngine.click();
   var input = document.getElementById('smilesInput').value.trim();
   if(!input){
-    showSmilesError("Please enter a valid SMILES string.");
+    var emptyDiag = analyzeSmilesPedagogical("");
+    showSmilesError(emptyDiag.error, emptyDiag.tip);
     return;
   }
 
@@ -4652,15 +4805,21 @@ function analyzeMolecule(){
           window.history.replaceState(null, '', '?smiles=' + encodeURIComponent(input));
         }
       } else {
-        var errMsg = (data && data.error) ? data.error : "Invalid SMILES structure";
-        var errTip = (data && data.suggestion) ? data.suggestion : "Please check atomic valencies, branch parentheses, and ring closure digits.";
+        var diag = analyzeSmilesPedagogical(input);
+        var errMsg = (data && data.error) ? data.error : diag.error;
+        var errTip = (data && data.suggestion) ? data.suggestion : diag.tip;
         showSmilesError(errMsg, errTip);
       }
     })
     .catch(function(err){
-      computeClientProperties(input);
-      loadSpectralPredictions(input);
-      loadSimilaritySearch(input);
+      var diag = analyzeSmilesPedagogical(input);
+      if(input.length < 2 || diag.error.indexOf("unclosed") !== -1 || diag.error.indexOf("mismatch") !== -1){
+        showSmilesError(diag.error, diag.tip);
+      } else {
+        computeClientProperties(input);
+        loadSpectralPredictions(input);
+        loadSimilaritySearch(input);
+      }
     });
 }
 
@@ -4755,10 +4914,9 @@ function updateLipinskiScorecard(props){
   }
 
   // 1. MW Gauge
-  var valMw = document.getElementById('gaugeValMw');
   var fillMw = document.getElementById('gaugeFillMw');
   var badgeMw = document.getElementById('gaugeBadgeMw');
-  if(valMw) valMw.innerHTML = mw.toFixed(2) + ' <span class="gauge-unit">g/mol</span>';
+  animateCounter('gaugeValMw', mw, true, '<span class="gauge-unit">g/mol</span>');
   if(fillMw){
     var mwPct = Math.min(100, Math.max(3, (mw / 600) * 100));
     fillMw.style.width = mwPct + '%';
@@ -4770,10 +4928,9 @@ function updateLipinskiScorecard(props){
   }
 
   // 2. LogP Gauge (optimal -0.4 to 5.0)
-  var valLogP = document.getElementById('gaugeValLogP');
   var fillLogP = document.getElementById('gaugeFillLogP');
   var badgeLogP = document.getElementById('gaugeBadgeLogP');
-  if(valLogP) valLogP.innerHTML = (logp >= 0 ? '+' : '') + logp.toFixed(2) + ' <span class="gauge-unit">oct/water</span>';
+  animateCounter('gaugeValLogP', logp, true, '<span class="gauge-unit">oct/water</span>');
   if(fillLogP){
     var logpPct = Math.min(100, Math.max(4, ((logp + 2) / 8) * 100));
     fillLogP.style.width = logpPct + '%';
@@ -4785,10 +4942,9 @@ function updateLipinskiScorecard(props){
   }
 
   // 3. H-Bond Donors Gauge (limit 5)
-  var valHbd = document.getElementById('gaugeValHbd');
   var fillHbd = document.getElementById('gaugeFillHbd');
   var badgeHbd = document.getElementById('gaugeBadgeHbd');
-  if(valHbd) valHbd.innerHTML = hbd + ' <span class="gauge-unit">/ 5 max</span>';
+  animateCounter('gaugeValHbd', hbd, false, '<span class="gauge-unit">/ 5 max</span>');
   if(fillHbd){
     var hbdPct = Math.min(100, Math.max(5, (hbd / 6) * 100));
     fillHbd.style.width = hbdPct + '%';
@@ -4800,10 +4956,9 @@ function updateLipinskiScorecard(props){
   }
 
   // 4. H-Bond Acceptors Gauge (limit 10)
-  var valHba = document.getElementById('gaugeValHba');
   var fillHba = document.getElementById('gaugeFillHba');
   var badgeHba = document.getElementById('gaugeBadgeHba');
-  if(valHba) valHba.innerHTML = hba + ' <span class="gauge-unit">/ 10 max</span>';
+  animateCounter('gaugeValHba', hba, false, '<span class="gauge-unit">/ 10 max</span>');
   if(fillHba){
     var hbaPct = Math.min(100, Math.max(5, (hba / 12) * 100));
     fillHba.style.width = hbaPct + '%';
@@ -4819,7 +4974,7 @@ function updateBondMetrics(p){
   var formulaEl = document.getElementById('bmFormula');
   if(formulaEl) formulaEl.innerText = p["Molecular Formula"] || "-";
 
-  animateCounter('bmMw', p["Molecular Weight"] || 0, true);
+  animateCounter('bmMw', p["Molecular Weight"] || 0, true, '<span style="font-size:11px;color:var(--dim)">g/mol</span>');
   animateCounter('bmHeavyAtoms', p["Heavy Atoms"] || 0, false);
   animateCounter('bmSigma', p["Sigma (σ) Bonds"] || 0, false);
   animateCounter('bmPi', p["Pi (π) Bonds"] || 0, false);
@@ -5312,14 +5467,24 @@ function showSmilesError(msg, tip){
   var txt = document.getElementById('smilesErrorText');
   var tipEl = document.getElementById('smilesPedagogicTip');
   var suc = document.getElementById('smilesSuccess');
-  if(txt) txt.innerText = msg;
+
+  var finalMsg = (msg || "").trim();
+  var finalTip = (tip || "").trim();
+
+  if(!finalMsg.startsWith("Invalid SMILES")){
+    finalMsg = "Invalid SMILES — " + (finalMsg || "possible unclosed ring (check digit pairs) or nitrogen valence error");
+  }
+  if(finalMsg.indexOf("Try CC(=O)O") === -1){
+    finalMsg += ". Try CC(=O)O for acetic acid.";
+  }
+  if(!finalTip){
+    finalTip = "In SMILES, each ring opening digit must have an identical paired closing digit (e.g. c1ccccc1 for benzene).";
+  }
+
+  if(txt) txt.innerText = finalMsg;
   if(tipEl){
-    if(tip){
-      tipEl.innerText = "💡 Educational Tip: " + tip;
-      tipEl.style.display = 'block';
-    } else {
-      tipEl.style.display = 'none';
-    }
+    tipEl.innerText = "💡 Educational Tip: " + finalTip;
+    tipEl.style.display = 'block';
   }
   if(el) el.style.display = 'flex';
   if(suc) suc.style.display = 'none';
@@ -5471,7 +5636,25 @@ function fetchLeaderboard(){
       var html = '';
       var list = data.leaderboard || [];
       if(list.length === 0){
-        html = '<tr><td colspan="5" style="text-align:center;padding:16px;color:var(--dim)">No scores submitted for this class code yet. Be the first!</td></tr>';
+        // Attempt self-healing sync if client has cached submissions in localStorage
+        try {
+          var cachedAll = JSON.parse(localStorage.getItem('srm_chemistry_leaderboard_all') || '[]');
+          if(cachedAll.length > 0 && !window._lbSyncedOnce){
+            window._lbSyncedOnce = true;
+            fetch('/api/leaderboard/sync', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ entries: cachedAll })
+            }).then(function(){
+              fetchLeaderboard();
+            }).catch(function(){});
+          }
+        } catch(e){}
+
+        html = '<tr><td colspan="5" style="text-align:center;padding:24px;color:var(--dim)">' +
+          '<div style="font-weight:600;color:var(--ink);margin-bottom:4px">No submissions recorded for ' + code + ' yet.</div>' +
+          '<div style="font-size:11.5px">Complete the assessment above to post your certified score, or get your cohort code from Dr. Subramanian.</div>' +
+          '</td></tr>';
       } else {
         for(var i = 0; i < list.length; i++){
           var row = list[i];
@@ -5509,8 +5692,8 @@ function submitScoreToLeaderboard(){
              (repNameEl && repNameEl.value ? repNameEl.value.trim() : '') ||
              'velmurgan';
   var reg = (leadRegEl && leadRegEl.value ? leadRegEl.value.trim() : '') ||
-            (repRegEl && repRegEl.value ? repRegEl.value.trim() : '') ||
-            'RA2611030050019';
+             (repRegEl && repRegEl.value ? repRegEl.value.trim() : '') ||
+             'RA2611030050019';
   var anonEl = document.getElementById('anonLeaderboardCheck');
   var anon = anonEl ? anonEl.checked : false;
   
@@ -5522,6 +5705,13 @@ function submitScoreToLeaderboard(){
     anonymous: anon
   };
   
+  // Persist locally in browser to survive serverless restarts
+  try {
+    var stored = JSON.parse(localStorage.getItem('srm_chemistry_leaderboard_all') || '[]');
+    stored.push(payload);
+    localStorage.setItem('srm_chemistry_leaderboard_all', JSON.stringify(stored));
+  } catch(e){}
+
   var statusBox = document.getElementById('leaderboardSubmitStatus');
   if(statusBox){
     statusBox.style.display = 'block';
@@ -5789,10 +5979,26 @@ function loadQueueMoleculeIntoLab(index){
     var m = reportQueue[index];
     var input = document.getElementById('smilesInput');
     if(input) input.value = m.smiles;
+
+    // Highlight matching preset chip if exists
+    var matchingChip = null;
+    document.querySelectorAll('.preset-chip').forEach(function(c){
+      c.classList.remove('active');
+      var cText = c.innerText.trim().toLowerCase();
+      var mName = (m.name || '').toLowerCase();
+      var mSmiles = (m.smiles || '').toLowerCase();
+      if(cText === mName || (mSmiles === 'c1ccccc1' && cText === 'benzene') || (mSmiles === 'cco' && cText === 'ethanol')){
+        matchingChip = c;
+      }
+    });
+    if(matchingChip){
+      matchingChip.classList.add('active');
+      if(typeof movePillToChip === 'function') movePillToChip(matchingChip);
+    }
+
     analyzeMolecule();
-    var labSec = document.getElementById('simulation');
-    if(labSec) labSec.scrollIntoView({ behavior: 'smooth' });
-    AudioEngine.click();
+    scrollToChapter('lab');
+    if(window.AudioEngine) window.AudioEngine.click();
   }
 }
 
@@ -7116,6 +7322,7 @@ window.FramerNav = FramerNav;
 function scrollToChapter(sectionId){
   var el = document.getElementById(sectionId);
   if(!el) return;
+  el.classList.add('section-visible');
   if(window.FramerNav){
     window.FramerNav.setActive(sectionId);
   }
@@ -7133,7 +7340,8 @@ var ChapterEngine = (function(){
     { id: 'properties', num: '04', name: '18 DESCRIPTORS' },
     { id: 'compare', num: '05', name: 'COMPARATIVE MATRIX' },
     { id: 'quiz', num: '06', name: 'ASSESSMENT MODULE' },
-    { id: 'report', num: '07', name: 'OFFICIAL REPORT' }
+    { id: 'reactions', num: '07', name: 'REACTION SIMULATOR' },
+    { id: 'report', num: '08', name: 'OFFICIAL REPORT' }
   ];
 
   function init(){
@@ -7189,11 +7397,44 @@ var ChapterEngine = (function(){
   return { init: init, setActiveChapter: setActiveChapter };
 })();
 
+function initSectionScrollAnimations(){
+  var sections = document.querySelectorAll('section');
+  function checkVisible(){
+    var vh = window.innerHeight || document.documentElement.clientHeight;
+    sections.forEach(function(s){
+      var r = s.getBoundingClientRect();
+      if(r.top < vh + 120 && r.bottom > -50){
+        s.classList.add('section-visible');
+      }
+    });
+  }
+  window.addEventListener('scroll', checkVisible, { passive: true });
+
+  if(!('IntersectionObserver' in window)){
+    sections.forEach(function(s){ s.classList.add('section-visible'); });
+    return;
+  }
+  var observer = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        entry.target.classList.add('section-visible');
+      }
+    });
+  }, { threshold: 0.01, rootMargin: '0px 0px 100px 0px' });
+
+  sections.forEach(function(s){
+    if(s.id === 'home') s.classList.add('section-visible');
+    observer.observe(s);
+  });
+  checkVisible();
+}
+
 /* ==========================================================================
    12. APPLICATION INITIALIZATION
    ========================================================================== */
 window.addEventListener('DOMContentLoaded', function(){
   initTheme();
+  initSectionScrollAnimations();
   ScrollEngine.init();
   SpaceStage.init();
   PutureCursor.init();
@@ -7213,8 +7454,8 @@ window.addEventListener('DOMContentLoaded', function(){
   var qSmiles = urlParams.get('smiles');
   if(qSmiles){
     document.getElementById('smilesInput').value = qSmiles;
-    setTimeout(function(){ analyzeMolecule(); }, 350);
   }
+  setTimeout(function(){ analyzeMolecule(); }, 350);
 });
 </script>
 </body>

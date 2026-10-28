@@ -7,7 +7,7 @@
 [![License: Academic](https://img.shields.io/badge/License-Academic%20Fair--Use-00FF9D?style=for-the-badge)](index.html)
 [![Zero Build Pipeline](https://img.shields.io/badge/Build-Zero%20Bundler%20Static-00F0FF?style=for-the-badge)](index.html)
 
-A next-generation interactive Cheminformatics Virtual Laboratory and 3D molecular simulation workstation developed for the Division of Chemistry at **SRM Institute of Science and Technology, Tiruchirappalli**.
+A production-grade, interactive Cheminformatics Virtual Laboratory and 3D molecular workstation developed for the Division of Chemistry at **SRM Institute of Science and Technology, Tiruchirappalli**.
 
 ---
 
@@ -19,59 +19,55 @@ A next-generation interactive Cheminformatics Virtual Laboratory and 3D molecula
   SRM Institute of Science and Technology, Tiruchirappalli  
   📧 Email: [rsmani84@gmail.com](mailto:rsmani84@gmail.com)
 
----
-
-## 🚀 Key Modules & Capabilities
-
-### 1. Interactive 2D & 3D Molecular Simulation
-* **SMILES Parser & Coordinate Embedder:** Real-time conversion of SMILES strings (`CCO`, `c1ccccc1`, `CC(=O)Oc1ccccc1C(=O)O`, etc.) into 2D chemical connectivity vectors and 3D WebGL geometries.
-* **Hardware-Accelerated 3D Models:** Ball and Stick, Stick Model, Space Filling (CPK), Wireframe, and Cartoon Ribbon representations with van der Waals (vdW) surface mesh overlay.
-* **Interactive Controls:** Mouse rotation, mouse wheel zoom, 3D panning, and automated gyroscopic spin.
-
-### 2. Complete 18-Descriptor Analytical Suite
-Evaluates comprehensive physicochemical and structural descriptors:
-1. **Molecular Formula** (Standard Hill notation)
-2. **Molecular Weight** (Average isotopic mass)
-3. **Exact Molecular Weight** (Monoisotopic mass for high-res MS)
-4. **LogP** (Wildman-Crippen lipophilicity octanol-water partition coefficient)
-5. **TPSA** (Topological Polar Surface Area in Å²)
-6. **Hydrogen Bond Donors** (Lipinski Rule of 5 donor sites)
-7. **Hydrogen Bond Acceptors** (Electronegative N/O heteroatoms)
-8. **Rotatable Bonds** (Conformational flexibility index)
-9. **Total Ring Count**
-10. **Aromatic Rings** (Hückel $4n+2$ planar conjugated systems)
-11. **Aliphatic Rings**
-12. **Number of Atoms**
-13. **Heavy Atoms**
-14. **Heavy Atom Bonds**
-15. **Sigma ($\sigma$) Bonds** (Localized framework bonds including implicit H)
-16. **Pi ($\pi$) Bonds** (Multiple bonds and aromatic delocalization)
-17. **Fraction Csp3** (Ratio of sp³ carbons to total carbons)
-18. **Molar Refractivity** (Steric volume and electronic polarizability)
-
-### 3. Student Assessment & PDF Report Generation
-* **Interactive 5-Question Evaluator:** Evaluates knowledge on SMILES grammar, Lipinski's Rule of 5, TPSA, and bonding theory with instant feedback.
-* **Certified Laboratory Report:** One-click client-side export to downloadable PDF with student name, registration number, evaluation metrics, and institutional verification block.
-
-### 4. GSAP 3.12 & ScrollTrigger Kinetic Dynamics
-* **GSAP ScrollTrigger:** Smooth scrubbed viewport reveals, 3D card perspective pitch, and masked typographic reveals inspired by Jitter video website animations.
-* **Liquid Magnetic Buttons:** Interactive cursor tracking (`gsap.quickTo`) with dynamic neon glow beacons and tactile click compression.
-* **Vector Bond Stroke Animation:** 2D chemical bonds draw stroke-by-stroke when a molecule loads into memory.
+* **Student Developer & Research Implementation:**  
+  **velmurgan** (Register No: `RA2611030050019`)  
+  Cohort: `SRM-CHEM-101`
 
 ---
 
-## ⚡ Kinetic Motion & Zero-Vibe Design Principles
+## 🚀 The 8 Interactive Laboratory Chapters
 
-1. **Momentum Inertial Scrolling:** Custom mathematical velocity scroller providing fluid, weighted scroll physics.
-2. **Scroll-Driven 3D Perspective:** Cards and telemetry modules enter the viewport with kinetic tilt (`rotateX`, `skewY`, `scale`) and staggered child delays (0.08s - 0.25s).
-3. **Button Hover Dynamics:** Micro-displacement (-3px), light sheen diagonal sweep, and neon electric cyan glow.
-4. **Zero-Vibe Anti-Patterns:**
-   * ❌ Zero purple/pink gradients
-   * ❌ Zero 999px pill buttons (industrial 6px/8px radii)
-   * ❌ Zero fake reviews or fake metrics
-   * ❌ Zero emoji icons (crisp inline SVG vectors)
-   * ❌ Zero em dashes
-   * ✅ Favicon, meta descriptions, mobile responsive drawer, 404 recovery modal, privacy and terms compliance.
+The workstation is organized into 8 synchronized curriculum chapters (numbered 01 to 08):
+
+| Chapter | Module | Description |
+|---|---|---|
+| **01** | **Overview** | Institutional orientation, course objectives, and interactive lab tour. |
+| **02** | **Theory** | SMILES grammar specifications, molecular graphing principles, valence rules, and spectral physics. |
+| **03** | **2D & 3D Lab** | SMILES parser, JSME 2D molecular drawing canvas, and 3D WebGL renderers (Ball & Stick, Stick, Space Filling CPK, Wireframe, Cartoon Ribbon). |
+| **04** | **Descriptors** | 18-descriptor analytical engine with kinetic counter animations ($0 \rightarrow 46.07\text{ g/mol}$). |
+| **05** | **Matrix** | Topological atom-neighborhood circular fingerprints (ECFP4-equivalent) and Tanimoto structural similarity matrix with SAR pedagogical guidance. |
+| **06** | **Assessment** | Instant evaluative quiz with zero-flash static DOM hydration, automated scoring, and cohort leaderboard registration. |
+| **07** | **Reactions** | Chemical transformation engine featuring left-to-right typewriter kinetics and stoichiometry balances. |
+| **08** | **Report** | Inspection queue, active molecule-to-lab loading workflow, and certified institutional PDF export with cryptographic QR verification. |
+
+---
+
+## ⚡ Core Engineering & Architectural Features
+
+### 1. Pure Python 3.14 Serverless Engine (`api/index.py`)
+* Fully self-contained, standard-library cheminformatics engine executing on Python 3.14 edge runtime.
+* Zero heavy binary dependencies (no C-compilation failures on serverless edge).
+* Strict institutional CORS whitelist restricting origins to authorized domains:
+  * `http://localhost:*` & `http://127.0.0.1:*`
+  * `https://*.vercel.app`
+  * `https://*.srmist.edu.in`
+
+### 2. Multi-Tier Resilient Leaderboard Persistence
+* **Cloud Tier:** PostgREST integration with Supabase for permanent multi-session storage.
+* **Local Disk Tier:** Automated fallback to local disk storage (`leaderboard.json` / `/tmp`).
+* **Client Self-Healing:** Browser `localStorage` cache automatically synchronizes past submissions to `/api/leaderboard/sync` if a serverless cold restart occurs.
+* **Faculty Cohort Guidance:** In-UI instructions guiding students: *"Get your class code from Dr. R. Subramanian (Default cohort: SRM-CHEM-101)"*.
+
+### 3. Pedagogical Error Feedback ("Errors That Teach")
+* Intelligent SMILES error parser providing diagnostic root causes (e.g., unclosed ring pairs, nitrogen valence saturation errors) with recommended corrections (e.g., *"Try CC(=O)O for acetic acid"*).
+
+### 4. Topological Structural Similarity (ECFP4-Equivalent)
+* Replaces naive string matching with radius-2 circular atom-neighborhood topological connectivity fingerprints.
+* Clear visual disclaimers for pedagogical Structure-Activity Relationship (SAR) studies.
+
+### 5. Native 120fps Kinetic Motion
+* Unlocked hardware-accelerated 120fps scrolling with 300ms viewport opacity reveals.
+* Count-up descriptor animations and typewriter reaction dynamics.
 
 ---
 
@@ -86,24 +82,25 @@ cd Chemistry-virtual-lab
 # Run the standalone Python server
 python3 app.py
 ```
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+Open [http://localhost:3000](http://localhost:3000) in your web browser.
 
-### Option 2: Node.js (npx serve)
+### Option 2: Node.js Static Server
 ```bash
 npx serve -l 3000
 ```
 
 ---
 
-## ☁️ Deploying to Vercel
+## ☁️ Deployment
 
-The repository is configured for instantaneous deployment to Vercel with zero build configuration:
-1. Push changes to GitHub: `git push origin main`.
-2. Connect the repository in the Vercel dashboard.
-3. Vercel automatically deploys `index.html` at the edge and routes `/api/*` to the serverless Python handler `api/index.py`.
+The project is pre-configured for automated Vercel deployment:
+1. Pushing commits to `main` automatically triggers Vercel CI/CD.
+2. Edge static assets (`index.html`, assets) are served via Vercel Global CDN.
+3. Cheminformatics API endpoints (`/api/*`) are handled serverlessly by `api/index.py`.
 
-Live Deployment:[https://chemistry-virtual-i97crlgan-hoctf.vercel.app/]
+Live Production URL: [https://chemistry-virtual-lab-xi.vercel.app](https://chemistry-virtual-lab-xi.vercel.app)
+
 ---
 
-## 📜 License
-Educational and academic fair-use license. Division of Chemistry, SRM Institute of Science and Technology.
+## 📜 Academic License & Attribution
+Developed for educational use by the Division of Chemistry, School of Sciences, SRM Institute of Science and Technology, Tiruchirappalli. All rights reserved under academic fair-use licensing.
