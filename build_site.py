@@ -2664,11 +2664,11 @@ footer {
         <div class="grid g2" style="margin-bottom:24px">
           <div>
             <label style="font-size:11px;color:var(--dim);text-transform:uppercase;font-family:var(--mono);display:block;margin-bottom:6px">Student Name</label>
-            <input type="text" id="repStudentName" placeholder="e.g. siva" value="" style="width:100%">
+            <input type="text" id="repStudentName" placeholder="e.g. velmurgan" value="" style="width:100%">
           </div>
           <div>
             <label style="font-size:11px;color:var(--dim);text-transform:uppercase;font-family:var(--mono);display:block;margin-bottom:6px">Registration Number</label>
-            <input type="text" id="repRegNumber" placeholder="e.g. RA2611030050054" value="" style="width:100%">
+            <input type="text" id="repRegNumber" placeholder="e.g. RA2611030050002" value="" style="width:100%">
           </div>
         </div>
 
@@ -5029,8 +5029,8 @@ function createStructureCanvas3D(mol){
 function generatePdfReport(){
   AudioEngine.click();
   
-  var studentName = (document.getElementById('repStudentName').value || "").trim() || "Student Scholar";
-  var regNum = (document.getElementById('repRegNumber').value || "").trim() || "RA2611030050054";
+  var studentName = (document.getElementById('repStudentName').value || "").trim() || "velmurgan";
+  var regNum = (document.getElementById('repRegNumber').value || "").trim() || "RA2611030050002";
   
   if(!reportQueue || reportQueue.length === 0){
     alert("Please add at least one molecule to the report queue before generating the report.");
@@ -5144,15 +5144,15 @@ function generatePdfReport(){
       ['Hydrogen Bond Acceptors', String(mol.hba), 'The molecule has ' + mol.hba + ' acceptor site(s) capable of accepting hydrogen in hydrogen-bond interactions.'],
       ['Rotatable Bonds', String(mol.rot), mol.rot === 0 ? 'No freely rotatable bonds are detected, suggesting a relatively rigid molecular framework.' : 'Has ' + mol.rot + ' rotatable bond(s), offering conformational flexibility to adapt to binding sites.'],
       ['Ring Count', String(mol.rings), 'The molecule contains ' + mol.rings + ' ring(s), which contribute to its overall shape and structural rigidity.'],
-      ['Aromatic Rings', String(mol.arom), mol.arom + ' aromatic ring(s) contribute to aromaticity, planarity and delocalized π-electron character.'],
-      ['Aliphatic Rings', String(mol.aliph), mol.aliph + ' non-aromatic ring(s) contribute to cyclic structure without aromatic π-electron delocalization.'],
+      ['Aromatic Rings', String(mol.arom), mol.arom + ' aromatic ring(s) contribute to aromaticity, planarity and delocalized pi-electron character.'],
+      ['Aliphatic Rings', String(mol.aliph), mol.aliph + ' non-aromatic ring(s) contribute to cyclic structure without aromatic pi-electron delocalization.'],
       ['Number of Atoms', String(mol.num_atoms), 'Counts atoms explicitly present in the RDKit molecular representation; implicit hydrogens are not included here.'],
       ['Heavy Atoms', String(mol.heavy_atoms), 'Counts all non-hydrogen atoms and provides a useful measure of molecular structural size.'],
       ['Heavy Atom Bonds', String(mol.heavy_bonds), 'Counts connections between non-hydrogen atoms in the molecular graph.'],
-      ['Sigma (σ) Bonds', String(mol.sigma), 'Every bonded atom pair contains one σ bond; this value includes bonds involving explicit or added hydrogens.'],
-      ['Pi (π) Bonds', String(mol.pi), 'π bonds arise from multiple bonds and aromatic systems and are associated with electron delocalization.'],
-      ['Total Bonds (σ + π)', String(mol.total_bonds), 'Represents the total bond components obtained by adding the calculated σ and π bond counts.'],
-      ['Fraction Csp3', String(mol.fcsp3), mol.fcsp3 <= 0.25 ? 'A low sp³ fraction suggests a comparatively planar, unsaturated or aromatic structural character.' : (mol.fcsp3 >= 0.75 ? 'A high sp³ fraction indicates a more saturated, three-dimensional molecular framework.' : 'An intermediate sp³ fraction indicates a balance between saturated and unsaturated structural features.')],
+      ['Sigma Bonds', String(mol.sigma), 'Every bonded atom pair contains one sigma bond; this value includes bonds involving explicit or added hydrogens.'],
+      ['Pi Bonds', String(mol.pi), 'Pi bonds arise from multiple bonds and aromatic systems and are associated with electron delocalization.'],
+      ['Total Bonds (Sigma + Pi)', String(mol.total_bonds), 'Represents the total bond components obtained by adding the calculated sigma and pi bond counts.'],
+      ['Fraction Csp3', String(mol.fcsp3), mol.fcsp3 <= 0.25 ? 'A low sp3 fraction suggests a comparatively planar, unsaturated or aromatic structural character.' : (mol.fcsp3 >= 0.75 ? 'A high sp3 fraction indicates a more saturated, three-dimensional molecular framework.' : 'An intermediate sp3 fraction indicates a balance between saturated and unsaturated structural features.')],
       ['Molar Refractivity', String(mol.mr), 'Relates to molecular volume and electronic polarizability and reflects how the electron cloud responds to an electric field.']
     ];
     
@@ -5201,44 +5201,62 @@ function generatePdfReport(){
     var bullets = [
       { label: 'Molecular identity: ', text: 'The submitted structure has molecular formula ' + mol.formula + ' and molecular weight ' + mol.mw + '.' },
       { label: 'Lipophilicity: ', text: 'LogP = ' + mol.logp + ', indicating that the molecule is ' + lipoText + '. This descriptor describes the balance between preference for non-polar and polar environments.' },
-      { label: 'Molecular polarity: ', text: 'TPSA = ' + mol.tpsa + ' Å². TPSA reflects the contribution of polar atoms and functional groups to the overall surface polarity of the molecule.' },
+      { label: 'Molecular polarity: ', text: 'TPSA = ' + mol.tpsa + ' Angstrom^2. TPSA reflects the contribution of polar atoms and functional groups to the overall surface polarity of the molecule.' },
       { label: 'Hydrogen bonding: ', text: 'The structure contains ' + mol.hbd + ' hydrogen-bond donor(s) and ' + mol.hba + ' acceptor(s), which helps describe possible intermolecular interactions.' },
       { label: 'Flexibility: ', text: mol.rot + ' rotatable bond(s) indicate the degree of conformational freedom available to the molecule.' },
-      { label: 'Cyclic and aromatic character: ', text: 'The molecule contains ' + mol.rings + ' ring(s), including ' + mol.arom + ' aromatic ring(s). Aromatic rings are associated with delocalized π-electron systems.' },
-      { label: 'Bonding pattern: ', text: 'The calculated structure contains ' + mol.sigma + ' σ bonds and ' + mol.pi + ' π bonds. This helps distinguish the framework-forming σ bonds from multiple-bond and delocalized π bonding.' },
-      { label: 'Three-dimensional character: ', text: 'Fraction Csp³ = ' + mol.fcsp3 + '. This descriptor provides a simple indication of the balance between saturated 3D carbon environments and planar/unsaturated environments.' },
+      { label: 'Cyclic and aromatic character: ', text: 'The molecule contains ' + mol.rings + ' ring(s), including ' + mol.arom + ' aromatic ring(s). Aromatic rings are associated with delocalized pi-electron systems.' },
+      { label: 'Bonding pattern: ', text: 'The calculated structure contains ' + mol.sigma + ' sigma bonds and ' + mol.pi + ' pi bonds. This helps distinguish the framework-forming sigma bonds from multiple-bond and delocalized pi bonding.' },
+      { label: 'Three-dimensional character: ', text: 'Fraction Csp3 = ' + mol.fcsp3 + '. This descriptor provides a simple indication of the balance between saturated 3D carbon environments and planar/unsaturated environments.' },
       { label: 'Overall conclusion: ', text: "The calculated descriptors should be interpreted together with the 2D connectivity and generated 3D geometry to understand the molecule's composition, bonding, polarity, flexibility and structural character." }
     ];
     
     doc.setFontSize(7.5);
     for(var b = 0; b < bullets.length; b++){
-      if(finalY > 280){
+      if(finalY > 276){
         doc.addPage();
         finalY = 18;
       }
       var bullet = bullets[b];
-      var prefix = "  • " + bullet.label;
+      var prefix = "- " + bullet.label;
       doc.setFont("helvetica", "bold");
       doc.setTextColor(0, 0, 0);
-      doc.text(prefix, 14, finalY);
-      
       var pWidth = doc.getTextWidth(prefix);
+      
+      // Keep text comfortably inside margins: max right x = 192 mm (left margin 14, right margin 196)
+      var maxLine1Width = Math.max(20, 192 - (14 + pWidth));
       doc.setFont("helvetica", "normal");
       
-      var textLines = doc.splitTextToSize(bullet.text, 182 - pWidth);
-      if(textLines.length > 0){
-        doc.text(textLines[0], 14 + pWidth, finalY);
-        if(textLines.length > 1){
-          var rem = textLines.slice(1);
-          var wrapped = doc.splitTextToSize(rem.join(' '), 174);
-          for(var wl = 0; wl < wrapped.length; wl++){
-            finalY += 3.6;
-            if(finalY > 282){
-              doc.addPage();
-              finalY = 18;
-            }
-            doc.text(wrapped[wl], 22, finalY);
+      var words = bullet.text.split(' ');
+      var currLine1 = "";
+      var remWords = [];
+      
+      for(var w = 0; w < words.length; w++){
+        var testStr = currLine1 ? (currLine1 + " " + words[w]) : words[w];
+        if(doc.getTextWidth(testStr) <= maxLine1Width){
+          currLine1 = testStr;
+        } else {
+          remWords = words.slice(w);
+          break;
+        }
+      }
+      
+      doc.setFont("helvetica", "bold");
+      doc.text(prefix, 14, finalY);
+      doc.setFont("helvetica", "normal");
+      if(currLine1){
+        doc.text(currLine1, 14 + pWidth, finalY);
+      }
+      
+      if(remWords.length > 0){
+        var remText = remWords.join(' ');
+        var wrappedLines = doc.splitTextToSize(remText, 172);
+        for(var wl = 0; wl < wrappedLines.length; wl++){
+          finalY += 3.6;
+          if(finalY > 280){
+            doc.addPage();
+            finalY = 18;
           }
+          doc.text(wrappedLines[wl], 18, finalY);
         }
       }
       finalY += 4.2;
