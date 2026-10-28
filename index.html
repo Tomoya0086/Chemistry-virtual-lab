@@ -2658,7 +2658,7 @@ footer {
           </div>
           <div>
             <label style="font-size:11px;color:var(--dim);text-transform:uppercase;font-family:var(--mono);display:block;margin-bottom:6px">Registration Number</label>
-            <input type="text" id="repRegNumber" placeholder="e.g. RA2611030050002" value="" style="width:100%">
+            <input type="text" id="repRegNumber" placeholder="e.g. RA2611030050019" value="" style="width:100%">
           </div>
         </div>
 
@@ -5020,7 +5020,7 @@ function generatePdfReport(){
   AudioEngine.click();
   
   var studentName = (document.getElementById('repStudentName').value || "").trim() || "velmurgan";
-  var regNum = (document.getElementById('repRegNumber').value || "").trim() || "RA2611030050002";
+  var regNum = (document.getElementById('repRegNumber').value || "").trim() || "RA2611030050019";
   
   if(!reportQueue || reportQueue.length === 0){
     alert("Please add at least one molecule to the report queue before generating the report.");
