@@ -831,24 +831,37 @@ def get_molecule_of_the_day(day_override: int = None):
 # 8. CLASS LEADERBOARD & ASSESSMENT PROGRESS
 # ==============================================================================
 LEADERBOARD_FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "leaderboard.json")
+TMP_LEADERBOARD_FILE = "/tmp/leaderboard.json"
 
 INITIAL_LEADERBOARD = []
 
+def get_writable_leaderboard_path():
+    if os.environ.get("VERCEL") or not os.access(os.path.dirname(LEADERBOARD_FILE), os.W_OK):
+        return TMP_LEADERBOARD_FILE
+    return LEADERBOARD_FILE
+
 def load_leaderboard():
-    if os.path.exists(LEADERBOARD_FILE):
-        try:
-            with open(LEADERBOARD_FILE, 'r') as f:
-                return json.load(f)
-        except Exception:
-            pass
+    for p in (TMP_LEADERBOARD_FILE, LEADERBOARD_FILE):
+        if os.path.exists(p):
+            try:
+                with open(p, 'r') as f:
+                    return json.load(f)
+            except Exception:
+                pass
     return []
 
 def save_leaderboard(data):
+    target = get_writable_leaderboard_path()
     try:
-        with open(LEADERBOARD_FILE, 'w') as f:
+        with open(target, 'w') as f:
             json.dump(data, f, indent=2)
     except Exception:
-        pass
+        if target != TMP_LEADERBOARD_FILE:
+            try:
+                with open(TMP_LEADERBOARD_FILE, 'w') as f:
+                    json.dump(data, f, indent=2)
+            except Exception:
+                pass
 
 def get_class_leaderboard(class_code="SRM-CHEM-101"):
     entries = load_leaderboard()
@@ -937,6 +950,13 @@ class handler(BaseHTTPRequestHandler):
         parsed = urlparse(self.path)
         path = parsed.path.rstrip('/')
         query = parse_qs(parsed.query)
+        route_arg = query.get('_route', [''])[0]
+        if route_arg:
+            path = '/' + route_arg.lstrip('/')
+        else:
+            matched = self.headers.get('x-matched-path', '') or self.headers.get('x-now-route-matches', '')
+            if matched and not matched.startswith('/api?'):
+                path = matched.split('?')[0].rstrip('/')
 
         # Health / Status
         if path.endswith('/health') or path.endswith('/status'):
@@ -1063,6 +1083,14 @@ class handler(BaseHTTPRequestHandler):
     def do_POST(self):
         parsed = urlparse(self.path)
         path = parsed.path.rstrip('/')
+        query = parse_qs(parsed.query)
+        route_arg = query.get('_route', [''])[0]
+        if route_arg:
+            path = '/' + route_arg.lstrip('/')
+        else:
+            matched = self.headers.get('x-matched-path', '') or self.headers.get('x-now-route-matches', '')
+            if matched and not matched.startswith('/api?'):
+                path = matched.split('?')[0].rstrip('/')
         content_len = int(self.headers.get('Content-Length', 0))
         body = self.rfile.read(content_len).decode('utf-8') if content_len > 0 else '{}'
         
