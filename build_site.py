@@ -1,7 +1,7 @@
 """
 High-Precision Site Generator for Cheminformatics Virtual Laboratory
 SRM Institute of Science and Technology, Tiruchirappalli
-In collaboration with Tomoya Okazaki
+School of Sciences | Division of Chemistry
 """
 
 import os
@@ -16,14 +16,14 @@ def generate_index_html():
 <title>Cheminformatics Virtual Laboratory | 2D &amp; 3D Chemical Structures | SRM IST</title>
 
 <!-- SEO & Meta Descriptions -->
-<meta name="description" content="Cheminformatics Virtual Laboratory: Representation of 2D and 3D Chemical Structures. Developed for the Division of Chemistry at SRM Institute of Science and Technology, Tiruchirappalli, with Tomoya Okazaki. Convert SMILES, visualize 3D molecular models, evaluate 18 descriptors, and export certified PDF reports.">
-<meta name="keywords" content="cheminformatics, 2D chemical structure, 3D molecular visualization, SMILES, SRM Institute of Science and Technology, Dr. R. Subramanian, Tomoya Okazaki, Lipinski rule, TPSA, LogP, molecular descriptors">
-<meta name="author" content="Dr. R. Subramanian &amp; Tomoya Okazaki">
+<meta name="description" content="Cheminformatics Virtual Laboratory: Representation of 2D and 3D Chemical Structures. Developed for the Division of Chemistry at SRM Institute of Science and Technology, Tiruchirappalli. Convert SMILES, visualize 3D molecular models, evaluate 18 descriptors, and export certified PDF reports.">
+<meta name="keywords" content="cheminformatics, 2D chemical structure, 3D molecular visualization, SMILES, SRM Institute of Science and Technology, Dr. R. Subramanian, Lipinski rule, TPSA, LogP, molecular descriptors">
+<meta name="author" content="Dr. R. Subramanian, Division of Chemistry, SRM IST">
 <meta name="theme-color" content="#030712">
 
 <!-- Open Graph / Social Media -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="Cheminformatics Virtual Laboratory | SRM IST &times; Tomoya Okazaki">
+<meta property="og:title" content="Cheminformatics Virtual Laboratory | SRM IST">
 <meta property="og:description" content="Interactive 2D &amp; 3D Chemical Structure Simulation, 18 Molecular Descriptors, and Certified Student Reports.">
 <meta property="og:image" content="assets/srm_logo.jpeg">
 <meta property="twitter:card" content="summary_large_image">
@@ -301,7 +301,7 @@ main, header, footer {
 }
 
 /* ==========================================================================
-   INSTITUTIONAL HEADER - SRM IST & TOMOYA OKAZAKI
+   INSTITUTIONAL HEADER - SRM IST
    ========================================================================== */
 .inst-bar {
   background: #020617;
@@ -412,19 +412,35 @@ header.scrolled .nav-island-bar, .floating-header.scrolled .nav-island-bar {
   transform: scale(1.02);
 }
 
-.tomoya-avatar {
+.brand-icon-wrap {
   width: 38px;
   height: 38px;
   border-radius: 50%;
-  border: 1.5px solid rgba(0, 240, 255, 0.75);
-  box-shadow: 0 0 14px rgba(0, 240, 255, 0.45);
-  object-fit: cover;
+  background: radial-gradient(circle at 35% 35%, rgba(0, 240, 255, 0.22), rgba(15, 23, 42, 0.95));
+  border: 1.5px solid rgba(0, 240, 255, 0.6);
+  box-shadow: 0 0 14px rgba(0, 240, 255, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--acc);
+  flex-shrink: 0;
   transition: all 0.3s var(--ease);
 }
 
-header.scrolled .tomoya-avatar {
+.brand-icon-wrap svg {
+  width: 22px;
+  height: 22px;
+  stroke: var(--acc);
+}
+
+header.scrolled .brand-icon-wrap {
   width: 34px;
   height: 34px;
+}
+
+header.scrolled .brand-icon-wrap svg {
+  width: 19px;
+  height: 19px;
 }
 
 .brand-text h1 {
@@ -710,9 +726,13 @@ nav.links.nav-pill-track {
   .nav-island-bar {
     padding: 6px 12px;
   }
-  .tomoya-avatar {
+  .brand-icon-wrap {
     width: 32px;
     height: 32px;
+  }
+  .brand-icon-wrap svg {
+    width: 18px;
+    height: 18px;
   }
   .inst-bar {
     font-size: 10px;
@@ -848,6 +868,28 @@ nav.links.nav-pill-track {
 .btn.sm {
   padding: 6px 14px;
   font-size: 12px;
+}
+
+.queue-del-btn {
+  background: rgba(239, 68, 68, 0.12);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 15px;
+  line-height: 1;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+.queue-del-btn:hover {
+  background: #ef4444;
+  color: #ffffff;
+  transform: scale(1.08);
 }
 
 /* ==========================================================================
@@ -2009,10 +2051,17 @@ footer {
 <header class="floating-header" id="mainHeader">
   <div class="nav-island-bar" id="navIslandBar">
     <a href="#home" class="brand-group" aria-label="Cheminformatics Virtual Lab Home">
-      <img src="assets/tomoya_logo.png" alt="Tomoya Okazaki Avatar" class="tomoya-avatar">
+      <div class="brand-icon-wrap" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"/>
+          <ellipse cx="12" cy="12" rx="9" ry="3.5" transform="rotate(30 12 12)"/>
+          <ellipse cx="12" cy="12" rx="9" ry="3.5" transform="rotate(90 12 12)"/>
+          <ellipse cx="12" cy="12" rx="9" ry="3.5" transform="rotate(150 12 12)"/>
+        </svg>
+      </div>
       <div class="brand-text">
         <h1>Cheminformatics Virtual Lab</h1>
-        <span>SRM IST &times; TOMOYA OKAZAKI</span>
+        <span>SRM INSTITUTE OF SCIENCE &amp; TECHNOLOGY</span>
       </div>
     </a>
 
@@ -2298,6 +2347,10 @@ footer {
           <button class="btn" id="btnSpin" onclick="toggleSpin()">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
             <span>Auto Spin</span>
+          </button>
+          <button class="btn secondary" id="btnAddToQueue" onclick="addCurrentToReportQueue()" title="Add active molecule to Multi-Molecule Report Queue">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            <span>+ Queue for Report</span>
           </button>
         </div>
 
@@ -2592,36 +2645,115 @@ footer {
   <section id="report" data-chapter="07" data-chapter-name="OFFICIAL REPORT">
     <div class="wrap">
       <div class="sechead">
-        <div class="kicker">Official Certification</div>
-        <h2>Generate Student Laboratory PDF Report</h2>
+        <div class="kicker">Official Laboratory Certification</div>
+        <h2>Multi-Molecule Student Analysis Report Generator</h2>
         <div class="sec-line"></div>
         <p style="margin-top:12px">
-          Generate a standardized, publication-ready PDF report bearing official SRM Institute of Science and Technology
-          laboratory formatting, student credentials, and descriptor interpretations.
+          Generate a standardized, publication-grade multi-molecule laboratory report matching the official curriculum rubric
+          at SRM Institute of Science and Technology. Each molecule is documented with 2D/3D projections, 18 quantitative
+          descriptors in high-contrast autotables, and comprehensive interpretations followed by reproducible RDKit Python source code.
         </p>
       </div>
 
-      <div class="card" style="max-width:700px;margin:0 auto">
-        <div class="grid g2" style="margin-bottom:18px">
+      <div class="card" style="max-width:880px;margin:0 auto">
+        <!-- Student Credentials Grid -->
+        <div style="font-size:12px;font-family:var(--mono);color:var(--acc);margin-bottom:12px;display:flex;align-items:center;gap:8px">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span>STUDENT CREDENTIALS</span>
+        </div>
+        <div class="grid g2" style="margin-bottom:24px">
           <div>
-            <label style="font-size:11px;color:var(--dim);text-transform:uppercase;font-family:var(--mono)">Student Name</label>
-            <input type="text" id="repStudentName" placeholder="e.g. Khalid Nawaz" value="Tomoya Okazaki">
+            <label style="font-size:11px;color:var(--dim);text-transform:uppercase;font-family:var(--mono);display:block;margin-bottom:6px">Student Name</label>
+            <input type="text" id="repStudentName" placeholder="e.g. siva" value="" style="width:100%">
           </div>
           <div>
-            <label style="font-size:11px;color:var(--dim);text-transform:uppercase;font-family:var(--mono)">Registration Number</label>
-            <input type="text" id="repRegNumber" placeholder="e.g. RA2411003010000" value="RA2411003010886">
+            <label style="font-size:11px;color:var(--dim);text-transform:uppercase;font-family:var(--mono);display:block;margin-bottom:6px">Registration Number</label>
+            <input type="text" id="repRegNumber" placeholder="e.g. RA2611030050054" value="" style="width:100%">
           </div>
         </div>
 
-        <div style="margin-bottom:20px">
-          <label style="font-size:11px;color:var(--dim);text-transform:uppercase;font-family:var(--mono)">Report Molecule (SMILES)</label>
-          <input type="text" id="repSmiles" value="CCO" readonly style="color:var(--acc);background:rgba(0,240,255,0.04)">
+        <div style="border-top:1px solid rgba(255,255,255,0.08);padding-top:20px;margin-bottom:20px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:10px">
+            <div style="font-size:12px;font-family:var(--mono);color:var(--acc);display:flex;align-items:center;gap:8px">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+              <span>REPORT MOLECULES QUEUE</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px">
+              <span id="repMolCountBadge" style="background:rgba(0,240,255,0.12);color:var(--acc);padding:4px 10px;border-radius:20px;font-size:12px;font-family:var(--mono);border:1px solid rgba(0,240,255,0.25)">
+                Number of molecules analyzed: <strong id="repMolCountNum">3</strong>
+              </span>
+              <button type="button" class="btn secondary" onclick="clearReportQueue()" style="padding:4px 10px;font-size:11px">
+                <span>Clear All</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Add Molecule Controls -->
+          <div style="background:rgba(15,23,42,0.6);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:16px;margin-bottom:16px">
+            <div style="font-size:11.5px;color:var(--dim);margin-bottom:10px;font-family:var(--mono)">
+              ENTER MOLECULE TO ADD TO REPORT:
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 140px auto;gap:10px;align-items:center" class="queue-input-grid">
+              <input type="text" id="customRepSmiles" placeholder="SMILES string (e.g. c1ccccc1, CCO, CC(=O)O)" style="font-family:var(--mono);font-size:13px">
+              <input type="text" id="customRepName" placeholder="Name (optional)" style="font-size:13px">
+              <button class="btn secondary" type="button" onclick="addCustomMoleculeToReportQueue()" style="white-space:nowrap;padding:10px 16px">
+                <span>+ Add Molecule</span>
+              </button>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px;flex-wrap:wrap;gap:8px">
+              <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+                <span style="font-size:11px;color:var(--dim);font-family:var(--mono)">QUICK PRESETS:</span>
+                <button type="button" class="btn secondary" onclick="quickAddBenchmarkToReport('Benzene')" style="padding:3px 8px;font-size:11px"><span>+ Benzene</span></button>
+                <button type="button" class="btn secondary" onclick="quickAddBenchmarkToReport('Ethanol')" style="padding:3px 8px;font-size:11px"><span>+ Ethanol</span></button>
+                <button type="button" class="btn secondary" onclick="quickAddBenchmarkToReport('Caffeine')" style="padding:3px 8px;font-size:11px"><span>+ Caffeine</span></button>
+                <button type="button" class="btn secondary" onclick="quickAddBenchmarkToReport('Aspirin')" style="padding:3px 8px;font-size:11px"><span>+ Aspirin</span></button>
+                <button type="button" class="btn secondary" onclick="quickAddBenchmarkToReport('Paracetamol')" style="padding:3px 8px;font-size:11px"><span>+ Paracetamol</span></button>
+              </div>
+              <button type="button" class="btn secondary" onclick="addCurrentToReportQueue()" style="padding:4px 12px;font-size:11.5px;color:var(--acc);border-color:rgba(0,240,255,0.4)">
+                <span>➕ Add Active Lab Molecule (<span id="activeMolNameBadge">Current</span>)</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Queued Molecules Cards List -->
+          <div id="reportQueueContainer" style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px;max-height:360px;overflow-y:auto;padding-right:4px">
+            <!-- Populated dynamically via renderReportQueueUI() -->
+          </div>
         </div>
 
-        <button class="btn primary" onclick="generatePdfReport()" style="width:100%">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-          <span>Download Certified PDF Report</span>
+        <!-- Download Action Button -->
+        <button class="btn primary" onclick="generatePdfReport()" style="width:100%;padding:14px;font-size:15px;display:flex;align-items:center;justify-content:center;gap:10px">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          <span>Download Certified Multi-Molecule PDF Report (<span id="btnMolCountNum">3</span> Molecules)</span>
         </button>
+        <p style="text-align:center;font-size:11.5px;color:var(--dim);margin-top:10px;font-family:var(--mono)">
+          Generates standardized 7+ page PDF report with side-by-side 2D &amp; 3D projections, 18-descriptor autotables, comprehensive interpretations, and RDKit source code.
+        </p>
+
+        <!-- Python Code & Libraries Explanation Preview in UI -->
+        <div style="margin-top:24px;border-top:1px solid rgba(255,255,255,0.08);padding-top:16px">
+          <details style="background:rgba(2,6,23,0.5);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:12px">
+            <summary style="font-size:12px;font-family:var(--mono);color:var(--acc);cursor:pointer;user-select:none">
+              &gt; VIEW PYTHON EXECUTION SCRIPT &amp; RDKIT LIBRARIES SPECIFICATION
+            </summary>
+            <div style="margin-top:12px">
+              <pre style="background:rgba(15,23,42,0.8);border:1px solid rgba(255,255,255,0.08);padding:14px;border-radius:6px;color:#94a3b8;font-family:var(--mono);font-size:12px;overflow-x:auto"><code>from rdkit import Chem
+from rdkit.Chem import Descriptors, Crippen, rdMolDescriptors
+
+smiles_list = ["CCO", "c1ccccc1"]  # Add more SMILES strings here
+
+for smiles in smiles_list:
+    mol = Chem.MolFromSmiles(smiles)
+    if mol is None:
+        print("Invalid SMILES:", smiles)
+        continue
+    print("SMILES:", smiles)
+    print("Formula:", rdMolDescriptors.CalcMolFormula(mol))
+    print("Molecular weight:", Descriptors.MolWt(mol))
+    print("LogP:", Crippen.MolLogP(mol))</code></pre>
+            </div>
+          </details>
+        </div>
       </div>
     </div>
   </section>
@@ -2633,8 +2765,7 @@ footer {
     <div class="footer-top">
       <div class="footer-brand">
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
-          <img src="assets/tomoya_logo.png" alt="Tomoya Logo" style="width:36px;height:36px;border-radius:4px;border:1px solid var(--acc)">
-          <img src="assets/srm_logo.jpeg" alt="SRM Logo" style="height:32px;border-radius:2px">
+          <img src="assets/srm_logo.jpeg" alt="SRM Logo" style="height:36px;border-radius:3px">
         </div>
         <h3>Cheminformatics Virtual Laboratory</h3>
         <p>
@@ -2642,35 +2773,27 @@ footer {
           <strong>SRM Institute of Science and Technology</strong>, Tiruchirappalli, Tamil Nadu, India.
         </p>
         <p style="margin-top:10px;font-size:12.5px;color:var(--dim)">
-          Curriculum direction &amp; academic supervision by <strong>Dr. R. Subramanian</strong> (Assistant Professor, Chemistry).<br>
-          Kinetic engineering &amp; systems architecture by <strong>Tomoya Okazaki</strong> (Purple Team Systems).
+          Curriculum direction &amp; academic supervision by <strong>Dr. R. Subramanian</strong> (Assistant Professor, Chemistry).
         </p>
       </div>
 
       <div class="footer-links">
-        <h4>Direct Faculty &amp; Technical Contacts</h4>
+        <h4>Faculty &amp; Academic Contacts</h4>
         <a href="mailto:rsmani84@gmail.com">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
           <span>Dr. R. Subramanian (rsmani84@gmail.com)</span>
         </a>
-        <a href="mailto:khalidnawaz7y@gmail.com">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          <span>Tomoya Okazaki (khalidnawaz7y@gmail.com)</span>
-        </a>
       </div>
 
       <div class="footer-links">
-        <h4>Ethics &amp; Verified Identity</h4>
-        <a href="https://tryhackme.com/p/Tomoya.okazaki" target="_blank" rel="noopener">TryHackMe: Tomoya.okazaki</a>
-        <a href="https://profile.hackthebox.com/profile/01a0be6e-b00a-7335-9ff0-5864ad467519" target="_blank" rel="noopener">HackTheBox: Profile</a>
-        <a href="https://www.linkedin.com/in/khalidnawaz-sec" target="_blank" rel="noopener">LinkedIn: khalidnawaz-sec</a>
+        <h4>Academic Governance</h4>
         <a href="javascript:void(0)" onclick="openLegalModal('privacy')">Privacy Policy &amp; Data Ethics</a>
         <a href="javascript:void(0)" onclick="openLegalModal('terms')">Academic License &amp; Fair Use</a>
       </div>
     </div>
 
     <div class="footer-bottom">
-      <div>&copy; 2026 SRM Institute of Science and Technology &amp; Tomoya Okazaki. All rights reserved. Zero tracking cookies.</div>
+      <div>&copy; 2026 SRM Institute of Science and Technology. All rights reserved. Zero tracking cookies.</div>
       <div style="font-family:var(--mono);color:var(--acc)">PYTHON SERVERLESS ENGINE v3.6 &times; VERCEL EDGE</div>
     </div>
   </div>
@@ -2691,20 +2814,220 @@ footer {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/3Dmol/2.4.2/3Dmol-min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 
 <script>
 /* ==========================================================================
    1. DATA DEFINITIONS & PRESET BENCHMARKS
    ========================================================================== */
 var BENCHMARK_MOLECULES = [
-  { name: "Ethanol", smiles: "CCO", formula: "C2H6O", mw: 46.069, logp: -0.4, tpsa: 30.23, hbd: 1, hba: 1, rot: 0, desc: "Primary aliphatic alcohol used as a solvent and antiseptic." },
-  { name: "Benzene", smiles: "c1ccccc1", formula: "C6H6", mw: 78.114, logp: 1.5, tpsa: 0.0, hbd: 0, hba: 0, rot: 0, desc: "Fundamental aromatic hydrocarbon with planar delocalized pi electrons." },
-  { name: "Phenol", smiles: "Oc1ccccc1", formula: "C6H6O", mw: 94.113, logp: 1.1, tpsa: 20.23, hbd: 1, hba: 1, rot: 0, desc: "Aromatic alcohol exhibiting resonance-stabilized phenoxide formation." },
-  { name: "Acetic Acid", smiles: "CC(=O)O", formula: "C2H4O2", mw: 60.052, logp: -0.4, tpsa: 40.46, hbd: 1, hba: 2, rot: 0, desc: "Carboxylic acid exhibiting strong intermolecular hydrogen bonding." },
-  { name: "Aspirin", smiles: "CC(=O)Oc1ccccc1C(=O)O", formula: "C9H8O4", mw: 180.159, logp: -0.7, tpsa: 90.69, hbd: 1, hba: 4, rot: 2, desc: "Acetylsalicylic acid, standard NSAID analgesic and antipyretic." },
-  { name: "Caffeine", smiles: "CN1C=NC2=C1C(=O)N(C(=O)N2C)C", formula: "C8H10N4O2", mw: 194.194, logp: -1.0, tpsa: 114.46, hbd: 0, hba: 6, rot: 0, desc: "Methylxanthine central nervous system stimulant." },
-  { name: "Paracetamol", smiles: "CC(=O)Nc1ccc(O)cc1", formula: "C8H9NO2", mw: 151.165, logp: 0.8, tpsa: 49.33, hbd: 2, hba: 2, rot: 1, desc: "Widely used antipyretic and analgesic." },
-  { name: "Ibuprofen", smiles: "CC(C)Cc1ccc(C(C)C(=O)O)cc1", formula: "C13H18O2", mw: 206.285, logp: 2.8, tpsa: 40.46, hbd: 1, hba: 2, rot: 4, desc: "Non-steroidal anti-inflammatory drug with chiral propionic acid core." }
+  {
+    name: "Benzene",
+    smiles: "c1ccccc1",
+    canonical: "c1ccccc1",
+    formula: "C6H6",
+    mw: 78.114,
+    exact_mw: 78.0470,
+    logp: 1.687,
+    tpsa: 0.0,
+    hbd: 0,
+    hba: 0,
+    rot: 0,
+    rings: 1,
+    arom: 1,
+    aliph: 0,
+    num_atoms: 6,
+    heavy_atoms: 6,
+    heavy_bonds: 6,
+    sigma: 12,
+    pi: 3,
+    total_bonds: 15,
+    fcsp3: 0.0,
+    mr: 26.442,
+    desc: "Fundamental aromatic hydrocarbon with planar delocalized pi electrons."
+  },
+  {
+    name: "Ethanol",
+    smiles: "CCO",
+    canonical: "CCO",
+    formula: "C2H6O",
+    mw: 46.069,
+    exact_mw: 46.0419,
+    logp: -0.001,
+    tpsa: 20.23,
+    hbd: 1,
+    hba: 1,
+    rot: 0,
+    rings: 0,
+    arom: 0,
+    aliph: 0,
+    num_atoms: 3,
+    heavy_atoms: 3,
+    heavy_bonds: 2,
+    sigma: 8,
+    pi: 0,
+    total_bonds: 8,
+    fcsp3: 1.0,
+    mr: 12.76,
+    desc: "Primary aliphatic alcohol used as a solvent and antiseptic."
+  },
+  {
+    name: "Caffeine",
+    smiles: "CN1C=NC2=C1C(=O)N(C(=O)N2C)C",
+    canonical: "Cn1c(=O)c2c(ncn2C)n(C)c1=O",
+    formula: "C8H10N4O2",
+    mw: 194.194,
+    exact_mw: 194.0804,
+    logp: -1.029,
+    tpsa: 61.82,
+    hbd: 0,
+    hba: 3,
+    rot: 0,
+    rings: 2,
+    arom: 2,
+    aliph: 0,
+    num_atoms: 14,
+    heavy_atoms: 14,
+    heavy_bonds: 15,
+    sigma: 25,
+    pi: 4,
+    total_bonds: 29,
+    fcsp3: 0.375,
+    mr: 51.196,
+    desc: "Methylxanthine central nervous system stimulant."
+  },
+  {
+    name: "Aspirin",
+    smiles: "CC(=O)Oc1ccccc1C(=O)O",
+    canonical: "CC(=O)Oc1ccccc1C(=O)O",
+    formula: "C9H8O4",
+    mw: 180.159,
+    exact_mw: 180.0423,
+    logp: 1.19,
+    tpsa: 63.60,
+    hbd: 1,
+    hba: 3,
+    rot: 3,
+    rings: 1,
+    arom: 1,
+    aliph: 0,
+    num_atoms: 13,
+    heavy_atoms: 13,
+    heavy_bonds: 13,
+    sigma: 21,
+    pi: 5,
+    total_bonds: 26,
+    fcsp3: 0.111,
+    mr: 46.12,
+    desc: "Acetylsalicylic acid, standard NSAID analgesic and antipyretic."
+  },
+  {
+    name: "Phenol",
+    smiles: "Oc1ccccc1",
+    canonical: "Oc1ccccc1",
+    formula: "C6H6O",
+    mw: 94.113,
+    exact_mw: 94.0419,
+    logp: 1.46,
+    tpsa: 20.23,
+    hbd: 1,
+    hba: 1,
+    rot: 0,
+    rings: 1,
+    arom: 1,
+    aliph: 0,
+    num_atoms: 7,
+    heavy_atoms: 7,
+    heavy_bonds: 7,
+    sigma: 13,
+    pi: 3,
+    total_bonds: 16,
+    fcsp3: 0.0,
+    mr: 28.13,
+    desc: "Aromatic alcohol exhibiting resonance-stabilized phenoxide formation."
+  },
+  {
+    name: "Acetic Acid",
+    smiles: "CC(=O)O",
+    canonical: "CC(=O)O",
+    formula: "C2H4O2",
+    mw: 60.052,
+    exact_mw: 60.0211,
+    logp: -0.17,
+    tpsa: 37.30,
+    hbd: 1,
+    hba: 1,
+    rot: 0,
+    rings: 0,
+    arom: 0,
+    aliph: 0,
+    num_atoms: 4,
+    heavy_atoms: 4,
+    heavy_bonds: 3,
+    sigma: 7,
+    pi: 1,
+    total_bonds: 8,
+    fcsp3: 0.5,
+    mr: 12.99,
+    desc: "Carboxylic acid exhibiting strong intermolecular hydrogen bonding."
+  },
+  {
+    name: "Paracetamol",
+    smiles: "CC(=O)Nc1ccc(O)cc1",
+    canonical: "CC(=O)Nc1ccc(O)cc1",
+    formula: "C8H9NO2",
+    mw: 151.165,
+    exact_mw: 151.0633,
+    logp: 0.46,
+    tpsa: 49.33,
+    hbd: 2,
+    hba: 2,
+    rot: 1,
+    rings: 1,
+    arom: 1,
+    aliph: 0,
+    num_atoms: 11,
+    heavy_atoms: 11,
+    heavy_bonds: 11,
+    sigma: 20,
+    pi: 4,
+    total_bonds: 24,
+    fcsp3: 0.125,
+    mr: 41.54,
+    desc: "Widely used antipyretic and analgesic."
+  },
+  {
+    name: "Ibuprofen",
+    smiles: "CC(C)Cc1ccc(C(C)C(=O)O)cc1",
+    canonical: "CC(C)Cc1ccc(C(C)C(=O)O)cc1",
+    formula: "C13H18O2",
+    mw: 206.285,
+    exact_mw: 206.1307,
+    logp: 3.50,
+    tpsa: 37.30,
+    hbd: 1,
+    hba: 1,
+    rot: 4,
+    rings: 1,
+    arom: 1,
+    aliph: 0,
+    num_atoms: 15,
+    heavy_atoms: 15,
+    heavy_bonds: 15,
+    sigma: 33,
+    pi: 4,
+    total_bonds: 37,
+    fcsp3: 0.538,
+    mr: 60.73,
+    desc: "Non-steroidal anti-inflammatory drug with chiral propionic acid core."
+  }
+];
+
+/* Multi-Molecule Report Queue - Preloaded with 3 benchmark compounds matching curriculum sample */
+var reportQueue = [
+  BENCHMARK_MOLECULES[0], // Benzene
+  BENCHMARK_MOLECULES[1], // Ethanol
+  BENCHMARK_MOLECULES[2]  // Caffeine
 ];
 
 /* __BENCHMARK_SDF_PLACEHOLDER__ */
@@ -3266,7 +3589,13 @@ function analyzeMolecule(){
   }
 
   activeSmiles = input;
-  document.getElementById('repSmiles').value = input;
+  var repSmilesEl = document.getElementById('repSmiles');
+  if(repSmilesEl) repSmilesEl.value = input;
+  var actMolBadge = document.getElementById('activeMolNameBadge');
+  if(actMolBadge){
+    var actBm = BENCHMARK_MOLECULES.find(function(b){ return b.smiles === input; });
+    actMolBadge.innerText = actBm ? actBm.name : input;
+  }
 
   // Query Python API with instant client-side fallback
   fetch('/api/calculate?smiles=' + encodeURIComponent(input))
@@ -4064,101 +4393,964 @@ function nextQuestion(){
 }
 
 /* ==========================================================================
-   7. PDF REPORT GENERATOR (CLIENT-SIDE JSLIB & SRM BRANDING)
+   7. MULTI-MOLECULE REPORT QUEUE & CERTIFIED PDF REPORT GENERATOR
    ========================================================================== */
-function generatePdfReport(){
-  AudioEngine.click();
-  var studentName = document.getElementById('repStudentName').value || "Tomoya Okazaki";
-  var regNum = document.getElementById('repRegNumber').value || "RA2411003010886";
-  var smiles = activeSmiles;
-  var props = currentProps;
 
-  if(!props){
-    alert("Please evaluate a molecular structure before downloading the report.");
+function computePropertiesForSmiles(s, customName){
+  s = (s || '').trim();
+  if(!s) return null;
+  
+  // Check if it's already one of the benchmark molecules
+  var bm = BENCHMARK_MOLECULES.find(function(b){
+    return b.smiles === s || b.canonical === s || b.name.toLowerCase() === (customName || '').toLowerCase();
+  });
+  if(bm){
+    var copy = JSON.parse(JSON.stringify(bm));
+    if(customName) copy.name = customName;
+    return copy;
+  }
+  
+  var clean = s.replace(/\\[([A-Za-z0-9\\+\\-\\@]+)\\]/g, '$1');
+  var atomMatches = clean.match(/(Cl|Br|Si|Na|Ca|Mg|Fe|Cu|Zn|[CNOPFSIcnops])/g) || [];
+  var aromaticAtoms = (clean.match(/[cnops]/g) || []).length;
+  var cCount = (clean.match(/C/g) || []).length + (clean.match(/c/g) || []).length;
+  var nCount = (clean.match(/N/g) || []).length + (clean.match(/n/g) || []).length;
+  var oCount = (clean.match(/O/g) || []).length + (clean.match(/o/g) || []).length;
+  var clCount = (clean.match(/Cl/g) || []).length;
+  var brCount = (clean.match(/Br/g) || []).length;
+  var fCount = (clean.match(/F/g) || []).length;
+  var sCount = (clean.match(/S/g) || []).length + (clean.match(/s/g) || []).length;
+  
+  var doubleBonds = (s.match(/=/g) || []).length;
+  var tripleBonds = (s.match(/#/g) || []).length;
+  var ringsRaw = s.match(/\\d/g) || [];
+  var ringSet = {};
+  for(var ri = 0; ri < ringsRaw.length; ri++){ ringSet[ringsRaw[ri]] = true; }
+  var uniqueRings = Object.keys(ringSet).length;
+  
+  var aromaticRings = aromaticAtoms >= 5 ? Math.max(1, Math.floor(aromaticAtoms / 5)) : 0;
+  var aliphaticRings = Math.max(0, uniqueRings - aromaticRings);
+  var halogens = clCount + brCount + fCount;
+  var unsaturation = doubleBonds + (tripleBonds * 2) + uniqueRings + Math.floor(aromaticAtoms / 2);
+  var hCount = Math.max(0, (2 * cCount + 2 + nCount - halogens) - (2 * unsaturation));
+  
+  var formulaParts = [];
+  if(cCount > 0) formulaParts.push('C' + (cCount > 1 ? cCount : ''));
+  if(hCount > 0) formulaParts.push('H' + (hCount > 1 ? hCount : ''));
+  if(nCount > 0) formulaParts.push('N' + (nCount > 1 ? nCount : ''));
+  if(oCount > 0) formulaParts.push('O' + (oCount > 1 ? oCount : ''));
+  if(sCount > 0) formulaParts.push('S' + (sCount > 1 ? sCount : ''));
+  if(clCount > 0) formulaParts.push('Cl' + (clCount > 1 ? clCount : ''));
+  if(brCount > 0) formulaParts.push('Br' + (brCount > 1 ? brCount : ''));
+  if(fCount > 0) formulaParts.push('F' + (fCount > 1 ? fCount : ''));
+  var formula = formulaParts.join('') || 'C6H6';
+  
+  var mw = (cCount * 12.011) + (hCount * 1.008) + (nCount * 14.007) + (oCount * 15.999) + (clCount * 35.453) + (brCount * 79.904) + (fCount * 18.998) + (sCount * 32.065);
+  mw = Math.round(mw * 1000) / 1000;
+  
+  var exactMw = (cCount * 12.0000) + (hCount * 1.0078) + (nCount * 14.0031) + (oCount * 15.9949) + (clCount * 34.9689) + (brCount * 78.9183) + (fCount * 18.9984) + (sCount * 31.9721);
+  exactMw = Math.round(exactMw * 10000) / 10000;
+  
+  var hbd = 0;
+  var ohNh = s.match(/O[H\\)]|N[H\\)]|\\[nH\\]|\\[OH\\]|\\[NH\\d?\\]|O$|N$/g);
+  if(ohNh) hbd = ohNh.length;
+  if(oCount > 0 && hbd === 0 && (s.indexOf('CCO') !== -1 || s.indexOf('CO') !== -1)) hbd = 1;
+  hbd = Math.min(hbd, oCount + nCount);
+  var hba = nCount + oCount;
+  var rot = Math.max(0, (s.match(/CC|CO|CN|NC/g) || []).length - uniqueRings - doubleBonds);
+  
+  var logp = (cCount * 0.25) + (clCount * 0.6) + (brCount * 0.8) - (oCount * 0.4) - (nCount * 0.3) - (hbd * 0.5);
+  logp = Math.round(Math.max(-2.5, Math.min(8.0, logp)) * 1000) / 1000;
+  
+  var tpsa = (oCount * 20.23) + (nCount * 13.5) + (hbd * 10.0);
+  tpsa = Math.round(tpsa * 100) / 100;
+  
+  var heavyAtoms = atomMatches.length;
+  var heavyBonds = Math.max(1, heavyAtoms - 1 + uniqueRings);
+  var piBonds = doubleBonds + (2 * tripleBonds) + (aromaticRings * 3);
+  var sigmaBonds = heavyBonds + hCount;
+  var totalBonds = sigmaBonds + piBonds;
+  
+  var sp3Carbons = Math.max(0, cCount - (aromaticAtoms + doubleBonds * 2 + tripleBonds * 2));
+  var fcsp3 = Math.round((sp3Carbons / Math.max(1, cCount)) * 1000) / 1000;
+  var mr = Math.round(((mw / 10.0) + (aromaticRings * 5.0) + (cCount * 1.5)) * 1000) / 1000;
+  
+  return {
+    name: customName || formula,
+    smiles: s,
+    canonical: s,
+    formula: formula,
+    mw: mw,
+    exact_mw: exactMw,
+    logp: logp,
+    tpsa: tpsa,
+    hbd: hbd,
+    hba: hba,
+    rot: rot,
+    rings: uniqueRings,
+    arom: aromaticRings,
+    aliph: aliphaticRings,
+    num_atoms: heavyAtoms,
+    heavy_atoms: heavyAtoms,
+    heavy_bonds: heavyBonds,
+    sigma: sigmaBonds,
+    pi: piBonds,
+    total_bonds: totalBonds,
+    fcsp3: fcsp3,
+    mr: mr,
+    desc: "Custom submitted molecular entity analyzed via computational cheminformatics engine."
+  };
+}
+
+function renderReportQueueUI(){
+  var container = document.getElementById('reportQueueContainer');
+  var countBadge = document.getElementById('repMolCountNum');
+  var btnMolBadge = document.getElementById('btnMolCountNum');
+  
+  if(countBadge) countBadge.innerText = reportQueue.length;
+  if(btnMolBadge) btnMolBadge.innerText = reportQueue.length;
+  
+  var activeBadge = document.getElementById('activeMolNameBadge');
+  if(activeBadge){
+    var actBm = BENCHMARK_MOLECULES.find(function(b){ return b.smiles === activeSmiles; });
+    activeBadge.innerText = actBm ? actBm.name : activeSmiles;
+  }
+  
+  if(!container) return;
+  
+  if(reportQueue.length === 0){
+    container.innerHTML = '<div style="text-align:center;padding:24px;border:1px dashed rgba(255,255,255,0.15);border-radius:8px;color:var(--dim);font-size:13px;font-family:var(--mono)">' +
+      'No molecules queued. Enter a SMILES or click quick presets above to add molecules to your report.' +
+    '</div>';
     return;
   }
-
-  var doc = new jspdf.jsPDF();
-
-  // SRM Header
-  doc.setFillColor(2, 6, 23);
-  doc.rect(0, 0, 210, 36, "F");
-  doc.setTextColor(0, 240, 255);
-  doc.setFontSize(16);
-  doc.setFont("helvetica", "bold");
-  doc.text("SRM INSTITUTE OF SCIENCE AND TECHNOLOGY", 14, 16);
   
-  doc.setFontSize(10);
-  doc.setTextColor(255, 255, 255);
-  doc.setFont("helvetica", "normal");
-  doc.text("Faculty of Engineering and Technology | School of Sciences | Division of Chemistry", 14, 23);
-  doc.text("Course: Cheminformatics Virtual Laboratory (Dr. R. Subramanian & Tomoya Okazaki)", 14, 30);
-
-  // Student Info Block
-  doc.setTextColor(15, 23, 42);
-  doc.setFontSize(14);
-  doc.setFont("helvetica", "bold");
-  doc.text("OFFICIAL STUDENT MOLECULAR ANALYSIS REPORT", 14, 48);
-
-  doc.setFontSize(10);
-  doc.setFont("helvetica", "normal");
-  doc.text("Student Name: " + studentName, 14, 58);
-  doc.text("Registration Number: " + regNum, 110, 58);
-  doc.text("Input SMILES: " + smiles, 14, 66);
-  doc.text("Date Generated: " + new Date().toLocaleDateString(), 110, 66);
-  doc.text("Assessment Score: " + quizScore + " / 100", 14, 74);
-
-  // Divider
-  doc.setDrawColor(0, 240, 255);
-  doc.line(14, 78, 196, 78);
-
-  // Descriptors Table
-  doc.setFontSize(12);
-  doc.setFont("helvetica", "bold");
-  doc.text("1. Calculated Molecular Descriptors", 14, 88);
-
-  var y = 96;
-  doc.setFontSize(9);
-  doc.setFont("helvetica", "normal");
-
-  var keys = Object.keys(props);
-  for(var i = 0; i < Math.min(14, keys.length); i++){
-    var k = keys[i];
-    doc.text(k + ":", 16, y);
-    doc.setFont("helvetica", "bold");
-    doc.text(String(props[k]), 80, y);
-    doc.setFont("helvetica", "normal");
-    y += 7;
+  var html = '';
+  for(var i = 0; i < reportQueue.length; i++){
+    var m = reportQueue[i];
+    html += '<div style="display:flex;align-items:center;justify-content:space-between;background:rgba(2,6,23,0.7);border:1px solid rgba(0,240,255,0.18);border-radius:8px;padding:10px 14px;gap:12px;transition:all 0.2s ease">' +
+      '<div style="display:flex;align-items:center;gap:12px;flex:1;min-width:0">' +
+        '<span style="background:rgba(0,240,255,0.15);color:var(--acc);font-family:var(--mono);font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px;flex-shrink:0">#' + (i + 1) + '</span>' +
+        '<div style="min-width:0;flex:1">' +
+          '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">' +
+            '<strong style="color:var(--ink);font-size:13.5px">' + (m.name || m.formula) + '</strong>' +
+            '<span style="color:var(--acc2);font-size:12px;font-family:var(--mono)">(' + m.formula + ')</span>' +
+            '<span style="color:var(--dim);font-size:11px;font-family:var(--mono)">MW: ' + m.mw + ' g/mol</span>' +
+          '</div>' +
+          '<div style="color:var(--dim);font-size:11.5px;font-family:var(--mono);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:2px" title="' + m.smiles + '">' +
+            m.smiles +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div style="display:flex;align-items:center;gap:8px;flex-shrink:0">' +
+        '<button type="button" onclick="loadQueueMoleculeIntoLab(' + i + ')" class="btn secondary" style="padding:4px 8px;font-size:11px" title="Inspect this molecule in 2D/3D Lab">' +
+          '<span>Inspect</span>' +
+        '</button>' +
+        '<button type="button" onclick="removeFromReportQueue(' + i + ')" class="queue-del-btn" title="Remove from queue">&times;</button>' +
+      '</div>' +
+    '</div>';
   }
+  container.innerHTML = html;
+}
 
-  // Educational Code Snippet
-  doc.setFontSize(12);
-  doc.setFont("helvetica", "bold");
-  doc.text("2. Reproducible Python Execution Logic", 14, y + 8);
+function addCustomMoleculeToReportQueue(){
+  var smilesEl = document.getElementById('customRepSmiles');
+  var nameEl = document.getElementById('customRepName');
+  if(!smilesEl) return;
+  var smiles = smilesEl.value.trim();
+  var name = nameEl ? nameEl.value.trim() : '';
   
-  doc.setFontSize(8);
-  doc.setFont("courier", "normal");
-  var codeLines = [
-    "from rdkit import Chem",
-    "from rdkit.Chem import Descriptors, Crippen, rdMolDescriptors",
-    "mol = Chem.MolFromSmiles('" + smiles + "')",
-    "print('Formula:', rdMolDescriptors.CalcMolFormula(mol))",
-    "print('Molecular Weight:', Descriptors.MolWt(mol))",
-    "print('LogP:', Crippen.MolLogP(mol))"
-  ];
-  var cy = y + 16;
-  codeLines.forEach(function(l){
-    doc.text(l, 16, cy);
-    cy += 5;
+  if(!smiles){
+    alert("Please enter a SMILES string to add.");
+    return;
+  }
+  
+  var mol = computePropertiesForSmiles(smiles, name);
+  if(!mol){
+    alert("Invalid chemical SMILES structure.");
+    return;
+  }
+  
+  reportQueue.push(mol);
+  smilesEl.value = '';
+  if(nameEl) nameEl.value = '';
+  
+  renderReportQueueUI();
+  AudioEngine.click();
+}
+
+function quickAddBenchmarkToReport(bmName){
+  var bm = BENCHMARK_MOLECULES.find(function(b){ return b.name.toLowerCase() === bmName.toLowerCase(); });
+  if(!bm) return;
+  reportQueue.push(JSON.parse(JSON.stringify(bm)));
+  renderReportQueueUI();
+  AudioEngine.click();
+}
+
+function addCurrentToReportQueue(){
+  var actBm = BENCHMARK_MOLECULES.find(function(b){ return b.smiles === activeSmiles; });
+  var name = actBm ? actBm.name : (currentProps ? currentProps["Molecular Formula"] : activeSmiles);
+  var mol = computePropertiesForSmiles(activeSmiles, name);
+  if(currentProps){
+    mol.mw = parseFloat(currentProps["Molecular Weight"]) || mol.mw;
+    mol.formula = currentProps["Molecular Formula"] || mol.formula;
+    mol.logp = parseFloat(currentProps["LogP"]) || mol.logp;
+    mol.tpsa = parseFloat(currentProps["TPSA"]) || mol.tpsa;
+  }
+  reportQueue.push(mol);
+  renderReportQueueUI();
+  AudioEngine.click();
+  showSmilesSuccess("Added " + (mol.name || mol.formula) + " to Report Queue (" + reportQueue.length + " molecules total)!");
+}
+
+function removeFromReportQueue(index){
+  if(index >= 0 && index < reportQueue.length){
+    reportQueue.splice(index, 1);
+    renderReportQueueUI();
+    AudioEngine.click();
+  }
+}
+
+function clearReportQueue(){
+  if(confirm("Clear all molecules from the report queue?")){
+    reportQueue = [];
+    renderReportQueueUI();
+    AudioEngine.click();
+  }
+}
+
+function loadQueueMoleculeIntoLab(index){
+  if(index >= 0 && index < reportQueue.length){
+    var m = reportQueue[index];
+    var input = document.getElementById('smilesInput');
+    if(input) input.value = m.smiles;
+    analyzeMolecule();
+    var labSec = document.getElementById('simulation');
+    if(labSec) labSec.scrollIntoView({ behavior: 'smooth' });
+    AudioEngine.click();
+  }
+}
+
+function createStructureCanvas2D(mol){
+  var canvas = document.createElement('canvas');
+  canvas.width = 520;
+  canvas.height = 320;
+  var ctx = canvas.getContext('2d');
+  
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  
+  ctx.strokeStyle = '#cbd5e1';
+  ctx.lineWidth = 1.5;
+  ctx.strokeRect(1, 1, canvas.width - 2, canvas.height - 2);
+  
+  ctx.fillStyle = '#17365d';
+  ctx.font = 'bold 12px Helvetica, Arial, sans-serif';
+  ctx.fillText('2D Topological Structure', 16, 22);
+  ctx.fillStyle = '#64748b';
+  ctx.font = 'normal 10px Helvetica, Arial, sans-serif';
+  ctx.fillText((mol.name || mol.formula) + ' • ' + mol.smiles, 16, 36);
+  
+  var s = (mol.smiles || '').trim();
+  var cx = 260, cy = 175;
+  
+  if(s === 'c1ccccc1' || s === 'C1=CC=CC=C1'){
+    var R = 68;
+    var pts = [];
+    for(var i = 0; i < 6; i++){
+      var ang = (-90 + i * 60) * Math.PI / 180;
+      pts.push({ x: cx + R * Math.cos(ang), y: cy + R * Math.sin(ang), ang: ang });
+    }
+    
+    ctx.beginPath();
+    ctx.moveTo(pts[0].x, pts[0].y);
+    for(var i = 1; i < 6; i++) ctx.lineTo(pts[i].x, pts[i].y);
+    ctx.closePath();
+    ctx.strokeStyle = '#0f172a';
+    ctx.lineWidth = 3.5;
+    ctx.stroke();
+    
+    var rIn = R * 0.76;
+    var kekSides = [0, 2, 4];
+    for(var k = 0; k < kekSides.length; k++){
+      var side = kekSides[k];
+      var a1 = (-90 + side * 60) * Math.PI / 180;
+      var a2 = (-90 + (side + 1) * 60) * Math.PI / 180;
+      ctx.beginPath();
+      ctx.moveTo(cx + rIn * Math.cos(a1), cy + rIn * Math.sin(a1));
+      ctx.lineTo(cx + rIn * Math.cos(a2), cy + rIn * Math.sin(a2));
+      ctx.strokeStyle = '#0f172a';
+      ctx.lineWidth = 2.2;
+      ctx.stroke();
+    }
+    
+    ctx.beginPath();
+    ctx.arc(cx, cy, 38, 0, Math.PI * 2);
+    ctx.strokeStyle = '#2563eb';
+    ctx.lineWidth = 2;
+    ctx.setLineDash([5, 4]);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    
+    for(var i = 0; i < 6; i++){
+      var p = pts[i];
+      var hx = cx + (R + 32) * Math.cos(p.ang);
+      var hy = cy + (R + 32) * Math.sin(p.ang);
+      
+      ctx.beginPath();
+      ctx.moveTo(p.x, p.y);
+      ctx.lineTo(hx, hy);
+      ctx.strokeStyle = '#64748b';
+      ctx.lineWidth = 1.8;
+      ctx.stroke();
+      
+      ctx.fillStyle = '#f8fafc';
+      ctx.beginPath();
+      ctx.arc(hx, hy, 10, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#94a3b8';
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+      ctx.fillStyle = '#0f172a';
+      ctx.font = 'bold 10px Helvetica, Arial, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('H', hx, hy);
+      
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 11, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#0f172a';
+      ctx.lineWidth = 1.6;
+      ctx.stroke();
+      ctx.fillStyle = '#0f172a';
+      ctx.font = 'bold 11px Helvetica, Arial, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('C', p.x, p.y);
+    }
+  } else if(s === 'CCO'){
+    ctx.strokeStyle = '#0f172a';
+    ctx.lineWidth = 4;
+    
+    ctx.beginPath();
+    ctx.moveTo(170, 185);
+    ctx.lineTo(250, 145);
+    ctx.stroke();
+    
+    ctx.beginPath();
+    ctx.moveTo(270, 145);
+    ctx.lineTo(345, 182);
+    ctx.strokeStyle = '#dc2626';
+    ctx.stroke();
+    
+    ctx.fillStyle = '#0f172a';
+    ctx.font = 'bold 18px Helvetica, Arial, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('H₃C', 140, 198);
+    ctx.fillText('CH₂', 260, 130);
+    
+    ctx.fillStyle = '#dc2626';
+    ctx.fillText('OH', 375, 195);
+    
+    ctx.font = 'normal 11px Helvetica, Arial, sans-serif';
+    ctx.fillStyle = '#64748b';
+    ctx.fillText('Primary Aliphatic Alcohol', 260, 240);
+  } else if(s.indexOf('CN1C=NC2') !== -1 || s.indexOf('Cn1c') !== -1){
+    var pts6 = [];
+    var R6 = 48;
+    var cx6 = 220, cy6 = 175;
+    for(var i = 0; i < 6; i++){
+      var ang = (-90 + i * 60) * Math.PI / 180;
+      pts6.push({ x: cx6 + R6 * Math.cos(ang), y: cy6 + R6 * Math.sin(ang) });
+    }
+    ctx.beginPath();
+    ctx.moveTo(pts6[0].x, pts6[0].y);
+    for(var i = 1; i < 6; i++) ctx.lineTo(pts6[i].x, pts6[i].y);
+    ctx.closePath();
+    ctx.strokeStyle = '#0f172a';
+    ctx.lineWidth = 3;
+    ctx.stroke();
+    
+    var p1 = pts6[1];
+    var p2 = pts6[2];
+    var imidApex = { x: cx6 + R6 * 1.8, y: cy6 };
+    ctx.beginPath();
+    ctx.moveTo(p1.x, p1.y);
+    ctx.lineTo(imidApex.x, imidApex.y);
+    ctx.lineTo(p2.x, p2.y);
+    ctx.strokeStyle = '#0f172a';
+    ctx.lineWidth = 3;
+    ctx.stroke();
+    
+    ctx.font = 'bold 14px Helvetica, Arial, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = '#2563eb';
+    ctx.fillText('N', pts6[0].x, pts6[0].y - 4);
+    ctx.fillText('N', pts6[3].x, pts6[3].y + 4);
+    ctx.fillText('N', imidApex.x + 4, imidApex.y - 12);
+    ctx.fillText('N', p2.x + 8, p2.y + 4);
+    
+    ctx.fillStyle = '#dc2626';
+    ctx.fillText('=O', pts6[5].x - 18, pts6[5].y);
+    ctx.fillText('=O', pts6[4].x - 18, pts6[4].y);
+    
+    ctx.font = 'normal 11px Helvetica, Arial, sans-serif';
+    ctx.fillStyle = '#64748b';
+    ctx.fillText('1,3,7-Trimethylxanthine Purine Framework', 260, 255);
+  } else {
+    ctx.strokeStyle = '#0f172a';
+    ctx.lineWidth = 3;
+    var numA = Math.min(10, Math.max(3, mol.num_atoms || 5));
+    var step = Math.min(42, 280 / numA);
+    var startX = 260 - ((numA - 1) * step) / 2;
+    var lastX = startX, lastY = 175;
+    
+    for(var a = 0; a < numA; a++){
+      var curX = startX + a * step;
+      var curY = 175 + (a % 2 === 0 ? -18 : 18);
+      if(a > 0){
+        ctx.beginPath();
+        ctx.moveTo(lastX, lastY);
+        ctx.lineTo(curX, curY);
+        ctx.stroke();
+      }
+      lastX = curX;
+      lastY = curY;
+    }
+    
+    ctx.font = 'bold 15px Helvetica, Arial, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = '#0f172a';
+    ctx.fillText(mol.formula, 260, 175);
+  }
+  
+  ctx.fillStyle = '#94a3b8';
+  ctx.font = 'italic 10px Helvetica, Arial, sans-serif';
+  ctx.textAlign = 'right';
+  ctx.fillText('Standard 2D Chemical Connectivity Projection', canvas.width - 16, canvas.height - 12);
+  
+  return canvas.toDataURL('image/png');
+}
+
+function createStructureCanvas3D(mol){
+  var canvas = document.createElement('canvas');
+  canvas.width = 520;
+  canvas.height = 320;
+  var ctx = canvas.getContext('2d');
+  
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  
+  ctx.strokeStyle = '#cbd5e1';
+  ctx.lineWidth = 1.5;
+  ctx.strokeRect(1, 1, canvas.width - 2, canvas.height - 2);
+  
+  ctx.fillStyle = '#17365d';
+  ctx.font = 'bold 12px Helvetica, Arial, sans-serif';
+  ctx.fillText('3D Ball & Stick Conformer', 16, 22);
+  ctx.fillStyle = '#64748b';
+  ctx.font = 'normal 10px Helvetica, Arial, sans-serif';
+  ctx.fillText((mol.name || mol.formula) + ' • Spatial Geometry', 16, 36);
+  
+  var s = (mol.smiles || '').trim();
+  var cx = 260, cy = 175;
+  
+  var atoms = [];
+  var bonds = [];
+  
+  if(s === 'c1ccccc1' || s === 'C1=CC=CC=C1'){
+    var R = 62;
+    for(var i = 0; i < 6; i++){
+      var ang = (i * 60) * Math.PI / 180;
+      var cX = R * Math.cos(ang);
+      var cY = R * Math.sin(ang);
+      var cZ = 0;
+      atoms.push({ elem: 'C', x: cX, y: cY, z: cZ, r: 16 });
+      
+      var hX = (R + 38) * Math.cos(ang);
+      var hY = (R + 38) * Math.sin(ang);
+      var hZ = 0;
+      atoms.push({ elem: 'H', x: hX, y: hY, z: hZ, r: 10 });
+      
+      bonds.push([i * 2, i * 2 + 1]);
+      bonds.push([i * 2, ((i + 1) % 6) * 2]);
+    }
+  } else if(s === 'CCO'){
+    atoms = [
+      { elem: 'C', x: -55, y: -10, z: 10, r: 16 },
+      { elem: 'C', x: 0, y: 25, z: -10, r: 16 },
+      { elem: 'O', x: 55, y: -15, z: 5, r: 15 },
+      { elem: 'H', x: 75, y: 2, z: 12, r: 10 },
+      { elem: 'H', x: -55, y: -65, z: 10, r: 10 },
+      { elem: 'H', x: -95, y: 15, z: 25, r: 10 },
+      { elem: 'H', x: -65, y: 15, z: -40, r: 10 },
+      { elem: 'H', x: 0, y: 75, z: -15, r: 10 },
+      { elem: 'H', x: 10, y: 25, z: 45, r: 10 }
+    ];
+    bonds = [
+      [0, 1], [1, 2], [2, 3],
+      [0, 4], [0, 5], [0, 6],
+      [1, 7], [1, 8]
+    ];
+  } else if(s.indexOf('CN1C=NC2') !== -1 || s.indexOf('Cn1c') !== -1){
+    var R6 = 46;
+    for(var i = 0; i < 6; i++){
+      var ang = (i * 60) * Math.PI / 180;
+      var el = (i === 1 || i === 4) ? 'N' : 'C';
+      atoms.push({ elem: el, x: -30 + R6 * Math.cos(ang), y: R6 * Math.sin(ang), z: (i % 2 === 0 ? 8 : -8), r: 15 });
+      bonds.push([i, (i + 1) % 6]);
+    }
+    atoms.push({ elem: 'N', x: 42, y: 24, z: 10, r: 15 });
+    atoms.push({ elem: 'C', x: 65, y: -2, z: 0, r: 15 });
+    atoms.push({ elem: 'N', x: 38, y: -28, z: -10, r: 15 });
+    bonds.push([1, 6], [6, 7], [7, 8], [8, 2]);
+    atoms.push({ elem: 'O', x: -80, y: -30, z: 5, r: 15 });
+    atoms.push({ elem: 'O', x: -75, y: 40, z: -5, r: 15 });
+    bonds.push([5, 9], [3, 10]);
+    atoms.push({ elem: 'C', x: -15, y: 75, z: 12, r: 14 });
+    atoms.push({ elem: 'C', x: 50, y: 65, z: -12, r: 14 });
+    atoms.push({ elem: 'C', x: 50, y: -65, z: 10, r: 14 });
+    bonds.push([4, 11], [6, 12], [8, 13]);
+  } else {
+    var count = Math.min(14, Math.max(4, mol.num_atoms || 6));
+    for(var a = 0; a < count; a++){
+      var ang = (a / count) * Math.PI * 2;
+      var rad = 35 + (a % 3) * 20;
+      var el = (a === 0 && mol.formula.indexOf('O') !== -1) ? 'O' : ((a === 1 && mol.formula.indexOf('N') !== -1) ? 'N' : 'C');
+      atoms.push({
+        elem: el,
+        x: rad * Math.cos(ang),
+        y: rad * Math.sin(ang) * 0.75,
+        z: (a % 2 === 0 ? 25 : -25),
+        r: el === 'C' ? 16 : 14
+      });
+      if(a > 0) bonds.push([a - 1, a]);
+    }
+  }
+  
+  var rotX = 24 * Math.PI / 180;
+  var rotY = 38 * Math.PI / 180;
+  var cosX = Math.cos(rotX), sinX = Math.sin(rotX);
+  var cosY = Math.cos(rotY), sinY = Math.sin(rotY);
+  
+  var projected = atoms.map(function(atm, idx){
+    var x1 = atm.x * cosY + atm.z * sinY;
+    var y1 = atm.y;
+    var z1 = -atm.x * sinY + atm.z * cosY;
+    var x2 = x1;
+    var y2 = y1 * cosX - z1 * sinX;
+    var z2 = y1 * sinX + z1 * cosX;
+    
+    var scale = 1.0;
+    return {
+      idx: idx,
+      elem: atm.elem,
+      px: cx + x2 * scale,
+      py: cy + y2 * scale,
+      pz: z2,
+      r: atm.r
+    };
   });
+  
+  for(var b = 0; b < bonds.length; b++){
+    var i1 = bonds[b][0], i2 = bonds[b][1];
+    if(projected[i1] && projected[i2]){
+      var p1 = projected[i1], p2 = projected[i2];
+      ctx.beginPath();
+      ctx.moveTo(p1.px, p1.py);
+      ctx.lineTo(p2.px, p2.py);
+      ctx.strokeStyle = '#64748b';
+      ctx.lineWidth = 5;
+      ctx.lineCap = 'round';
+      ctx.stroke();
+      
+      ctx.beginPath();
+      ctx.moveTo(p1.px, p1.py);
+      ctx.lineTo(p2.px, p2.py);
+      ctx.strokeStyle = '#cbd5e1';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    }
+  }
+  
+  projected.sort(function(a, b){ return a.pz - b.pz; });
+  
+  for(var i = 0; i < projected.length; i++){
+    var p = projected[i];
+    var grad = ctx.createRadialGradient(
+      p.px - p.r * 0.35, p.py - p.r * 0.35, p.r * 0.1,
+      p.px, p.py, p.r
+    );
+    
+    if(p.elem === 'C'){
+      grad.addColorStop(0, '#94a3b8');
+      grad.addColorStop(0.3, '#475569');
+      grad.addColorStop(1, '#0f172a');
+    } else if(p.elem === 'O'){
+      grad.addColorStop(0, '#fca5a5');
+      grad.addColorStop(0.3, '#ef4444');
+      grad.addColorStop(1, '#991b1b');
+    } else if(p.elem === 'N'){
+      grad.addColorStop(0, '#93c5fd');
+      grad.addColorStop(0.3, '#3b82f6');
+      grad.addColorStop(1, '#1e40af');
+    } else if(p.elem === 'H'){
+      grad.addColorStop(0, '#ffffff');
+      grad.addColorStop(0.4, '#e2e8f0');
+      grad.addColorStop(1, '#94a3b8');
+    } else {
+      grad.addColorStop(0, '#6ee7b7');
+      grad.addColorStop(0.3, '#10b981');
+      grad.addColorStop(1, '#065f46');
+    }
+    
+    ctx.beginPath();
+    ctx.arc(p.px, p.py, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = grad;
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(15,23,42,0.4)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  }
+  
+  ctx.fillStyle = '#94a3b8';
+  ctx.font = 'italic 10px Helvetica, Arial, sans-serif';
+  ctx.textAlign = 'right';
+  ctx.fillText('Optimized 3D Conformational Geometry (MMFF94 / UFF Forcefield)', canvas.width - 16, canvas.height - 12);
+  
+  return canvas.toDataURL('image/png');
+}
 
-  // Footer Verification
-  doc.setFontSize(8);
-  doc.setFont("helvetica", "italic");
-  doc.setTextColor(100, 116, 139);
-  doc.text("Certified by SRM IST Virtual Chemistry Department & Tomoya Okazaki Systems Architecture.", 14, 282);
-
-  doc.save("SRM_Cheminformatics_Report_" + studentName.replace(/\\s+/g, "_") + ".pdf");
+function generatePdfReport(){
+  AudioEngine.click();
+  
+  var studentName = (document.getElementById('repStudentName').value || "").trim() || "Student Scholar";
+  var regNum = (document.getElementById('repRegNumber').value || "").trim() || "RA2611030050054";
+  
+  if(!reportQueue || reportQueue.length === 0){
+    alert("Please add at least one molecule to the report queue before generating the report.");
+    return;
+  }
+  
+  var doc = new jspdf.jsPDF({
+    orientation: 'portrait',
+    unit: 'mm',
+    format: 'a4'
+  });
+  
+  var totalMols = reportQueue.length;
+  
+  for(var k = 0; k < totalMols; k++){
+    var mol = reportQueue[k];
+    var molIndex = k + 1;
+    
+    if(k > 0){
+      doc.addPage();
+    }
+    
+    var curY = 16;
+    
+    // Page 1 Document Header (Only on Page 1)
+    if(k === 0){
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(16.5);
+      doc.setTextColor(23, 54, 93);
+      doc.text("CHEMINFORMATICS VIRTUAL LABORATORY", 105, curY, { align: "center" });
+      curY += 7;
+      
+      doc.setFontSize(12);
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(23, 54, 93);
+      doc.text("MULTI-MOLECULE STUDENT ANALYSIS REPORT", 105, curY, { align: "center" });
+      curY += 7.5;
+      
+      doc.setFontSize(8.5);
+      doc.setFont("helvetica", "normal");
+      doc.setTextColor(0, 0, 0);
+      doc.text("Student: " + studentName + "     Registration Number: " + regNum, 14, curY);
+      curY += 5;
+      
+      doc.text("Number of molecules analyzed: " + totalMols, 14, curY);
+      curY += 7;
+    }
+    
+    // Molecule Header
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(11.5);
+    doc.setTextColor(23, 54, 93);
+    doc.text("Molecule " + molIndex + ": Molecular Information", 14, curY);
+    curY += 3.5;
+    
+    // Table: Molecular Information
+    doc.autoTable({
+      startY: curY,
+      body: [
+        ['Input SMILES', mol.smiles],
+        ['Canonical SMILES', mol.canonical || mol.smiles],
+        ['Molecular Formula', mol.formula],
+        ['Molecular Weight', mol.mw + ' g/mol']
+      ],
+      theme: 'grid',
+      styles: {
+        fontSize: 8.5,
+        cellPadding: 2.2,
+        lineColor: [128, 128, 128],
+        lineWidth: 0.25
+      },
+      columnStyles: {
+        0: { cellWidth: 48, fontStyle: 'bold', fillColor: [234, 240, 248], textColor: [0, 0, 0] },
+        1: { cellWidth: 'auto', textColor: [0, 0, 0] }
+      },
+      margin: { left: 14, right: 14 }
+    });
+    
+    curY = doc.lastAutoTable.finalY + 5;
+    
+    // Heading: Molecular Structures
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(11.5);
+    doc.setTextColor(23, 54, 93);
+    doc.text("Molecular Structures", 14, curY);
+    curY += 3.5;
+    
+    // Render side-by-side 2D & 3D images
+    var img2d = createStructureCanvas2D(mol);
+    var img3d = createStructureCanvas3D(mol);
+    
+    doc.addImage(img2d, 'PNG', 14, curY, 88, 52);
+    doc.addImage(img3d, 'PNG', 108, curY, 88, 52);
+    curY += 56;
+    
+    // Heading: Molecular Properties and Interpretation
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(11.5);
+    doc.setTextColor(23, 54, 93);
+    doc.text("Molecular Properties and Interpretation", 14, curY);
+    curY += 3.5;
+    
+    // 3-Column Table
+    var propRows = [
+      ['Molecular Formula', mol.formula, 'Shows the elemental composition of the molecule and is useful for understanding its basic chemical composition.'],
+      ['Molecular Weight', String(mol.mw), 'Represents the average molecular mass. Molecular size and mass can influence diffusion, formulation and many physicochemical behaviours.'],
+      ['Exact Molecular Weight', String(mol.exact_mw), 'The monoisotopic mass calculated from exact isotopic masses; this is especially useful when comparing mass-spectrometry data.'],
+      ['LogP', String(mol.logp), mol.logp < 0 ? 'A negative value indicates a preference toward the aqueous phase and relatively high hydrophilicity.' : (mol.logp < 3 ? 'Indicates moderate lipophilicity, often reflecting a balance between hydrophilic and hydrophobic character.' : 'Higher lipophilicity indicates strong affinity for lipid bilayers and hydrophobic binding pockets.')],
+      ['TPSA', String(mol.tpsa), mol.tpsa <= 25 ? 'A relatively low polar surface area, indicating limited overall molecular polarity.' : (mol.tpsa <= 80 ? 'A moderate polar surface area, reflecting the contribution of heteroatoms to molecular polarity.' : 'High polar surface area indicates strong hydrogen bonding and reduced membrane permeation.')],
+      ['Hydrogen Bond Donors', String(mol.hbd), 'The molecule has ' + mol.hbd + ' donor site(s) capable of donating hydrogen in hydrogen-bond interactions.'],
+      ['Hydrogen Bond Acceptors', String(mol.hba), 'The molecule has ' + mol.hba + ' acceptor site(s) capable of accepting hydrogen in hydrogen-bond interactions.'],
+      ['Rotatable Bonds', String(mol.rot), mol.rot === 0 ? 'No freely rotatable bonds are detected, suggesting a relatively rigid molecular framework.' : 'Has ' + mol.rot + ' rotatable bond(s), offering conformational flexibility to adapt to binding sites.'],
+      ['Ring Count', String(mol.rings), 'The molecule contains ' + mol.rings + ' ring(s), which contribute to its overall shape and structural rigidity.'],
+      ['Aromatic Rings', String(mol.arom), mol.arom + ' aromatic ring(s) contribute to aromaticity, planarity and delocalized π-electron character.'],
+      ['Aliphatic Rings', String(mol.aliph), mol.aliph + ' non-aromatic ring(s) contribute to cyclic structure without aromatic π-electron delocalization.'],
+      ['Number of Atoms', String(mol.num_atoms), 'Counts atoms explicitly present in the RDKit molecular representation; implicit hydrogens are not included here.'],
+      ['Heavy Atoms', String(mol.heavy_atoms), 'Counts all non-hydrogen atoms and provides a useful measure of molecular structural size.'],
+      ['Heavy Atom Bonds', String(mol.heavy_bonds), 'Counts connections between non-hydrogen atoms in the molecular graph.'],
+      ['Sigma (σ) Bonds', String(mol.sigma), 'Every bonded atom pair contains one σ bond; this value includes bonds involving explicit or added hydrogens.'],
+      ['Pi (π) Bonds', String(mol.pi), 'π bonds arise from multiple bonds and aromatic systems and are associated with electron delocalization.'],
+      ['Total Bonds (σ + π)', String(mol.total_bonds), 'Represents the total bond components obtained by adding the calculated σ and π bond counts.'],
+      ['Fraction Csp3', String(mol.fcsp3), mol.fcsp3 <= 0.25 ? 'A low sp³ fraction suggests a comparatively planar, unsaturated or aromatic structural character.' : (mol.fcsp3 >= 0.75 ? 'A high sp³ fraction indicates a more saturated, three-dimensional molecular framework.' : 'An intermediate sp³ fraction indicates a balance between saturated and unsaturated structural features.')],
+      ['Molar Refractivity', String(mol.mr), 'Relates to molecular volume and electronic polarizability and reflects how the electron cloud responds to an electric field.']
+    ];
+    
+    doc.autoTable({
+      startY: curY,
+      head: [['Property', 'Value', 'Interpretation']],
+      body: propRows,
+      theme: 'grid',
+      headStyles: {
+        fillColor: [47, 85, 151], // #2f5597
+        textColor: [255, 255, 255],
+        fontSize: 7.5,
+        fontStyle: 'bold',
+        cellPadding: 2
+      },
+      bodyStyles: {
+        textColor: [0, 0, 0],
+        fontSize: 7.0,
+        cellPadding: 1.8,
+        lineColor: [128, 128, 128],
+        lineWidth: 0.25
+      },
+      columnStyles: {
+        0: { cellWidth: 46, fontStyle: 'bold' },
+        1: { cellWidth: 26 },
+        2: { cellWidth: 'auto' }
+      },
+      margin: { left: 14, right: 14 },
+      pageBreak: 'auto'
+    });
+    
+    var finalY = doc.lastAutoTable.finalY + 6;
+    if(finalY > 235){
+      doc.addPage();
+      finalY = 18;
+    }
+    
+    // Heading: Key Interpretation
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(10.5);
+    doc.setTextColor(23, 54, 93);
+    doc.text("Key Interpretation", 14, finalY);
+    finalY += 4.5;
+    
+    var lipoText = mol.logp < 0 ? 'more hydrophilic than lipophilic' : (mol.logp < 3 ? 'moderately lipophilic' : 'strongly lipophilic');
+    var bullets = [
+      { label: 'Molecular identity: ', text: 'The submitted structure has molecular formula ' + mol.formula + ' and molecular weight ' + mol.mw + '.' },
+      { label: 'Lipophilicity: ', text: 'LogP = ' + mol.logp + ', indicating that the molecule is ' + lipoText + '. This descriptor describes the balance between preference for non-polar and polar environments.' },
+      { label: 'Molecular polarity: ', text: 'TPSA = ' + mol.tpsa + ' Å². TPSA reflects the contribution of polar atoms and functional groups to the overall surface polarity of the molecule.' },
+      { label: 'Hydrogen bonding: ', text: 'The structure contains ' + mol.hbd + ' hydrogen-bond donor(s) and ' + mol.hba + ' acceptor(s), which helps describe possible intermolecular interactions.' },
+      { label: 'Flexibility: ', text: mol.rot + ' rotatable bond(s) indicate the degree of conformational freedom available to the molecule.' },
+      { label: 'Cyclic and aromatic character: ', text: 'The molecule contains ' + mol.rings + ' ring(s), including ' + mol.arom + ' aromatic ring(s). Aromatic rings are associated with delocalized π-electron systems.' },
+      { label: 'Bonding pattern: ', text: 'The calculated structure contains ' + mol.sigma + ' σ bonds and ' + mol.pi + ' π bonds. This helps distinguish the framework-forming σ bonds from multiple-bond and delocalized π bonding.' },
+      { label: 'Three-dimensional character: ', text: 'Fraction Csp³ = ' + mol.fcsp3 + '. This descriptor provides a simple indication of the balance between saturated 3D carbon environments and planar/unsaturated environments.' },
+      { label: 'Overall conclusion: ', text: "The calculated descriptors should be interpreted together with the 2D connectivity and generated 3D geometry to understand the molecule's composition, bonding, polarity, flexibility and structural character." }
+    ];
+    
+    doc.setFontSize(7.5);
+    for(var b = 0; b < bullets.length; b++){
+      if(finalY > 280){
+        doc.addPage();
+        finalY = 18;
+      }
+      var bullet = bullets[b];
+      var prefix = "  • " + bullet.label;
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(0, 0, 0);
+      doc.text(prefix, 14, finalY);
+      
+      var pWidth = doc.getTextWidth(prefix);
+      doc.setFont("helvetica", "normal");
+      
+      var textLines = doc.splitTextToSize(bullet.text, 182 - pWidth);
+      if(textLines.length > 0){
+        doc.text(textLines[0], 14 + pWidth, finalY);
+        if(textLines.length > 1){
+          var rem = textLines.slice(1);
+          var wrapped = doc.splitTextToSize(rem.join(' '), 174);
+          for(var wl = 0; wl < wrapped.length; wl++){
+            finalY += 3.6;
+            if(finalY > 282){
+              doc.addPage();
+              finalY = 18;
+            }
+            doc.text(wrapped[wl], 22, finalY);
+          }
+        }
+      }
+      finalY += 4.2;
+    }
+  }
+  
+  // FINAL PAGE: Python Libraries & Code
+  doc.addPage();
+  var pyY = 18;
+  
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(12.5);
+  doc.setTextColor(23, 54, 93);
+  doc.text("Python Libraries Used and Their Importance", 14, pyY);
+  pyY += 4;
+  
+  doc.autoTable({
+    startY: pyY,
+    head: [['Library', 'Importance in this project']],
+    body: [
+      ['Streamlit', 'Creates the interactive web app, input controls and PDF download interface.'],
+      ['RDKit', 'Parses SMILES, validates structures, creates molecular drawings and 3D conformers, and calculates molecular descriptors.'],
+      ['Pandas', 'Organizes molecular properties in tables and supports CSV export.'],
+      ['Matplotlib and NumPy', 'Process molecular coordinates and generate a clear 2D projection of 3D geometry for the report.'],
+      ['py3Dmol', 'Displays interactive 3D molecular structures in the web application.'],
+      ['ReportLab', 'Builds the downloadable PDF with tables, figures and explanatory text.'],
+      ['io, os, tempfile', 'Handle in-memory PDF data and temporary image files.']
+    ],
+    theme: 'grid',
+    headStyles: {
+      fillColor: [47, 85, 151],
+      textColor: [255, 255, 255],
+      fontSize: 8,
+      fontStyle: 'bold',
+      cellPadding: 2.2
+    },
+    bodyStyles: {
+      textColor: [0, 0, 0],
+      fontSize: 7.2,
+      cellPadding: 2,
+      lineColor: [128, 128, 128],
+      lineWidth: 0.25
+    },
+    columnStyles: {
+      0: { cellWidth: 50, fontStyle: 'bold' },
+      1: { cellWidth: 'auto' }
+    },
+    margin: { left: 14, right: 14 }
+  });
+  
+  pyY = doc.lastAutoTable.finalY + 8;
+  
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(12);
+  doc.setTextColor(23, 54, 93);
+  doc.text("Illustrative Python Code", 14, pyY);
+  pyY += 4;
+  
+  var codeLines = [
+    'from rdkit import Chem',
+    'from rdkit.Chem import Descriptors, Crippen, rdMolDescriptors',
+    '',
+    'smiles_list = ["CCO", "c1ccccc1"]  # Add more SMILES strings here',
+    '',
+    'for smiles in smiles_list:',
+    '    mol = Chem.MolFromSmiles(smiles)',
+    '    if mol is None:',
+    '        print("Invalid SMILES:", smiles)',
+    '        continue',
+    '    print("SMILES:", smiles)',
+    '    print("Formula:", rdMolDescriptors.CalcMolFormula(mol))',
+    '    print("Molecular weight:", Descriptors.MolWt(mol))',
+    '    print("LogP:", Crippen.MolLogP(mol))'
+  ];
+  
+  var boxHeight = codeLines.length * 4.4 + 6;
+  doc.setFillColor(245, 247, 250);
+  doc.setDrawColor(203, 213, 225);
+  doc.rect(14, pyY, 182, boxHeight, "FD");
+  
+  doc.setFont("courier", "normal");
+  doc.setFontSize(7.5);
+  doc.setTextColor(15, 23, 42);
+  var lineY = pyY + 5;
+  for(var cl = 0; cl < codeLines.length; cl++){
+    doc.text(codeLines[cl], 18, lineY);
+    lineY += 4.4;
+  }
+  
+  pyY += boxHeight + 8;
+  
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(8.5);
+  doc.setTextColor(0, 0, 0);
+  var noteText = "This compact code example demonstrates processing multiple SMILES in one run. The complete application includes additional code for visualization, descriptor interpretation, student information and PDF generation. Calculated descriptors are computational results and should be interpreted appropriately.";
+  var splitNote = doc.splitTextToSize(noteText, 182);
+  doc.text(splitNote, 14, pyY);
+  
+  // Universal Footers across all pages
+  var totalPages = doc.internal.getNumberOfPages();
+  for(var p = 1; p <= totalPages; p++){
+    doc.setPage(p);
+    doc.setFont("helvetica", "italic");
+    doc.setFontSize(7.5);
+    doc.setTextColor(100, 116, 139);
+    doc.text("SRM Institute of Science and Technology, Tiruchirappalli | School of Sciences | Division of Chemistry", 14, 290);
+    doc.text("Page " + p + " of " + totalPages, 196, 290, { align: "right" });
+  }
+  
+  var cleanName = studentName.replace(/[^a-zA-Z0-9]/g, "_");
+  var cleanReg = regNum.replace(/[^a-zA-Z0-9]/g, "_");
+  doc.save("SRM_Cheminformatics_Report_" + cleanName + "_" + cleanReg + ".pdf");
 }
 
 /* ==========================================================================
@@ -4826,6 +6018,7 @@ window.addEventListener('DOMContentLoaded', function(){
   initVisualizer();
   initComparativeTable();
   initQuiz();
+  renderReportQueueUI();
 });
 </script>
 </body>

@@ -7,23 +7,17 @@
 [![License: Academic](https://img.shields.io/badge/License-Academic%20Fair--Use-00FF9D?style=for-the-badge)](index.html)
 [![Zero Build Pipeline](https://img.shields.io/badge/Build-Zero%20Bundler%20Static-00F0FF?style=for-the-badge)](index.html)
 
-A next-generation interactive Cheminformatics Virtual Laboratory and 3D molecular simulation workstation developed for the Division of Chemistry at **SRM Institute of Science and Technology, Tiruchirappalli**, in technical collaboration with **Tomoya Okazaki**.
+A next-generation interactive Cheminformatics Virtual Laboratory and 3D molecular simulation workstation developed for the Division of Chemistry at **SRM Institute of Science and Technology, Tiruchirappalli**.
 
 ---
 
-## 🏛️ Academic Leadership & Technical Credits
+## 🏛️ Academic Leadership & Curriculum Governance
 
 * **Curriculum Design & Academic Supervision:**  
   **Dr. R. Subramanian**, Assistant Professor  
   Division of Chemistry, School of Sciences, Faculty of Engineering and Technology  
   SRM Institute of Science and Technology, Tiruchirappalli  
   📧 Email: [rsmani84@gmail.com](mailto:rsmani84@gmail.com)
-
-* **Systems Architecture & Kinetic Engineering:**  
-  **Tomoya Okazaki**  
-  Purple Team Cybersecurity & Interactive Simulation Architecture  
-  📧 Email: [khalidnawaz7y@gmail.com](mailto:khalidnawaz7y@gmail.com)  
-  🛡️ TryHackMe: [Tomoya.okazaki](https://tryhackme.com/p/Tomoya.okazaki) | HackTheBox: [01a0be6e](https://profile.hackthebox.com/profile/01a0be6e-b00a-7335-9ff0-5864ad467519) | LinkedIn: [khalidnawaz-sec](https://www.linkedin.com/in/khalidnawaz-sec)
 
 ---
 

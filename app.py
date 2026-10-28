@@ -2,7 +2,7 @@
 """
 Cheminformatics Virtual Laboratory
 Institutional Deployment: SRM Institute of Science and Technology, Tiruchirappalli
-In collaboration with Tomoya Okazaki
+School of Sciences | Division of Chemistry
 
 Run locally:
     python3 app.py
@@ -51,7 +51,6 @@ def main():
     print("🧪 CHEMINFORMATICS VIRTUAL LABORATORY (PYTHON ENGINE)")
     print("🏛️  SRM Institute of Science and Technology, Tiruchirappalli")
     print("👨‍🏫 Dr. R. Subramanian | Division of Chemistry, School of Sciences")
-    print("⚡ Technical Collaboration: Tomoya Okazaki (Purple Team Systems)")
     print(f"🚀 Serving high-performance laboratory workstation on http://localhost:{PORT}")
     print("=" * 68)
     
