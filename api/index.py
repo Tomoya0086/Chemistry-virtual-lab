@@ -978,6 +978,67 @@ def get_molecule_of_the_day(day_override: int = None):
     }
 
 # ==============================================================================
+# 7.5 CURRICULUM QUIZ QUESTIONS (Static & API Cacheable)
+# ==============================================================================
+QUIZ_QUESTIONS = [
+    {
+        "q": "What does the SMILES acronym stand for in computational chemistry?",
+        "opts": [
+            "Simplified Molecular Input Line Entry System",
+            "Standard Molecular Identification & Logic Expression Set",
+            "Systematic Molecular Integration Line Exchange Scheme",
+            "Substituent Mapping & Isomer Linear Evaluation Syntax"
+        ],
+        "ans": 0,
+        "exp": "SMILES stands for Simplified Molecular Input Line Entry System, a specification in form of a line notation for describing chemical species."
+    },
+    {
+        "q": "Which of the following is NOT one of Lipinski's Rule of 5 criteria?",
+        "opts": [
+            "Molecular weight < 500 Da",
+            "LogP < 5",
+            "Topological Polar Surface Area (TPSA) > 140 Å²",
+            "No more than 5 Hydrogen Bond Donors"
+        ],
+        "ans": 2,
+        "exp": "Lipinski's Rule of 5 includes: MW <= 500 Da, LogP <= 5, H-bond donors <= 5, and H-bond acceptors <= 10. TPSA is Veber's rule (TPSA <= 140 Å²)."
+    },
+    {
+        "q": "In SMILES notation, how are aromatic ring atoms conventionally represented?",
+        "opts": [
+            "Upper-case letters followed by an asterisk (e.g. C*)",
+            "Lower-case letters (e.g. c1ccccc1 for benzene)",
+            "Enclosed in curly braces {C6H6}",
+            "Prefixing with '@' symbol (@C=C)"
+        ],
+        "ans": 1,
+        "exp": "Aromatic atoms in SMILES are specified using lowercase letters (c, n, o, s, p). For example, benzene is written as c1ccccc1."
+    },
+    {
+        "q": "What does Topological Polar Surface Area (TPSA) primarily estimate in medicinal chemistry?",
+        "opts": [
+            "Covalent bond dissociation energy",
+            "Cellular membrane permeability and oral bioavailability",
+            "Mass spectrometry parent ion intensity",
+            "Chromatographic retention time on C18 columns"
+        ],
+        "ans": 1,
+        "exp": "TPSA correlates strongly with passive molecular transport across cell membranes and blood-brain barrier permeability (typically <= 140 Å² for intestinal absorption)."
+    },
+    {
+        "q": "Which bond type in computational molecular modeling is treated as rotatable for conformational search?",
+        "opts": [
+            "Any single, non-ring bond bound to non-terminal heavy atoms",
+            "Aromatic carbon-carbon bonds",
+            "Amide C-N bonds with partial double bond character",
+            "Terminal carbon-hydrogen bonds"
+        ],
+        "ans": 0,
+        "exp": "A rotatable bond is defined as any single non-ring bond bound to non-terminal heavy atoms (excluding amides, alkynes, etc.)."
+    }
+]
+
+# ==============================================================================
 # 8. CLASS LEADERBOARD & ASSESSMENT PROGRESS (Persistent Supabase + Local Resilience)
 # ==============================================================================
 LEADERBOARD_FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "leaderboard.json")
@@ -1240,8 +1301,16 @@ class handler(BaseHTTPRequestHandler):
                 "engine": "Python 3 Cheminformatics Virtual Lab Engine",
                 "institution": "SRM Institute of Science and Technology, Tiruchirappalli",
                 "department": "Division of Chemistry",
-                "version": "3.14.0"
+                "version": "3.14.0",
+                "version_string": "v3.14",
+                "python_version": "3.14"
             }).encode('utf-8'))
+            return
+
+        # Quiz questions endpoint (instant static delivery)
+        if path.endswith('/quiz') or path.endswith('/questions'):
+            self._set_headers(200)
+            self.wfile.write(json.dumps(QUIZ_QUESTIONS).encode('utf-8'))
             return
 
         # Examples
@@ -1338,8 +1407,11 @@ class handler(BaseHTTPRequestHandler):
         self._set_headers(200)
         self.wfile.write(json.dumps({
             "name": "Cheminformatics Virtual Laboratory API",
+            "version": "3.14.0",
+            "version_string": "v3.14",
             "routes": [
                 "/api/health",
+                "/api/quiz",
                 "/api/examples",
                 "/api/motd",
                 "/api/calculate?smiles=CCO",

@@ -3413,7 +3413,7 @@ for smiles in smiles_list:
 
     <div class="footer-bottom">
       <div>&copy; 2026 SRM Institute of Science and Technology. All rights reserved. Zero tracking cookies.</div>
-      <div style="font-family:var(--mono);color:var(--acc)">PYTHON SERVERLESS ENGINE 3.14 &times; VERCEL EDGE</div>
+      <div id="footerEngineVersion" style="font-family:var(--mono);color:var(--acc)">PYTHON SERVERLESS ENGINE v3.14 &times; VERCEL EDGE</div>
     </div>
   </div>
 </footer>
@@ -5544,26 +5544,83 @@ function initComparativeTable(){
 var currentQ = 0;
 var quizScore = 0;
 
+function initHealthCheck(){
+  fetch('/api/health')
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      var el = document.getElementById('footerEngineVersion');
+      if(el && d && (d.version || d.version_string)){
+        var v = d.version_string || (d.version.startsWith('v') ? d.version : 'v' + d.version);
+        el.innerHTML = 'PYTHON SERVERLESS ENGINE ' + (v.indexOf('3.14') !== -1 ? 'v3.14' : v) + ' &times; VERCEL EDGE';
+      }
+    })
+    .catch(function(){});
+}
+
 function initQuiz(){
+  var quizResolved = false;
+
+  // 1. Immediately hydrate static array (zero network wait time)
   renderQuizQuestion();
+
+  // 2. Hardcoded fallback timer: if network fetch doesn't resolve in 2 seconds, force-render static array
+  var fallbackTimer = setTimeout(function(){
+    if(!quizResolved){
+      quizResolved = true;
+      renderQuizQuestion();
+    }
+  }, 2000);
+
+  // 3. Attempt dynamic curriculum fetch to /api/quiz
+  fetch('/api/quiz')
+    .then(function(r){
+      if(!r.ok) throw new Error('Quiz API HTTP ' + r.status);
+      return r.json();
+    })
+    .then(function(data){
+      clearTimeout(fallbackTimer);
+      if(!quizResolved && Array.isArray(data) && data.length > 0){
+        QUIZ_DATA = data;
+        renderQuizQuestion();
+        quizResolved = true;
+      }
+    })
+    .catch(function(err){
+      // Immediate fallback to static curriculum array on network error
+      clearTimeout(fallbackTimer);
+      if(!quizResolved){
+        quizResolved = true;
+        renderQuizQuestion();
+      }
+    });
 }
 
 function renderQuizQuestion(){
-  var q = QUIZ_DATA[currentQ];
-  document.getElementById('quizProgress').innerText = 'QUESTION ' + (currentQ + 1) + ' OF ' + QUIZ_DATA.length;
-  document.getElementById('quizScore').innerText = 'SCORE: ' + quizScore;
-  document.getElementById('quizQuestion').innerText = q.q;
-
+  if(!QUIZ_DATA || !QUIZ_DATA.length){
+    return;
+  }
+  var q = QUIZ_DATA[currentQ] || QUIZ_DATA[0];
+  var progEl = document.getElementById('quizProgress');
+  var scoreEl = document.getElementById('quizScore');
+  var qEl = document.getElementById('quizQuestion');
   var opts = document.getElementById('quizOptions');
-  opts.innerHTML = q.opts.map(function(opt, idx){
-    return '<button class="quiz-opt" onclick="checkAnswer(' + idx + ')">' +
-      '<span>' + String.fromCharCode(65 + idx) + '.</span> ' + opt +
-    '</button>';
-  }).join('');
 
-  document.getElementById('btnNextQuiz').style.display = 'none';
+  if(progEl) progEl.innerText = 'QUESTION ' + (currentQ + 1) + ' OF ' + QUIZ_DATA.length;
+  if(scoreEl) scoreEl.innerText = 'SCORE: ' + quizScore;
+  if(qEl && q && q.q) qEl.innerText = q.q;
 
-  if(window.gsap){
+  if(opts && q && Array.isArray(q.opts)){
+    opts.innerHTML = q.opts.map(function(opt, idx){
+      return '<button class="quiz-opt" onclick="checkAnswer(' + idx + ')">' +
+        '<span>' + String.fromCharCode(65 + idx) + '.</span> ' + opt +
+      '</button>';
+    }).join('');
+  }
+
+  var btnNext = document.getElementById('btnNextQuiz');
+  if(btnNext) btnNext.style.display = 'none';
+
+  if(window.gsap && opts){
     gsap.fromTo(".quiz-opt",
       { x: -30, opacity: 0 },
       { x: 0, opacity: 1, duration: 0.4, stagger: 0.06, ease: "power2.out" }
@@ -7434,6 +7491,7 @@ function initSectionScrollAnimations(){
    ========================================================================== */
 window.addEventListener('DOMContentLoaded', function(){
   initTheme();
+  initHealthCheck();
   initSectionScrollAnimations();
   ScrollEngine.init();
   SpaceStage.init();
